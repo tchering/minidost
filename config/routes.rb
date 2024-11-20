@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "home", to: "static_pages#home"
+  get "contact", to: "static_pages#contact"
+  get "blog", to: "static_pages#blog"
+  get "help", to: "static_pages#help"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -8,4 +12,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "static_pages#home"
 end

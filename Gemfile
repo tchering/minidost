@@ -58,6 +58,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "guard"
+  gem "guard-livereload"
 end
 
 group :test do
@@ -71,3 +73,5 @@ gem "devise", "~> 4.9"
 gem "rufo", "~> 0.18.0"
 
 gem "rubocop", "~> 1.68"
+
+gem "eventmachine", "~> 1.2"
