@@ -5,4 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :companies, class_name: "Company", foreign_key: "user_id", dependent: :destroy
+  accepts_nested_attributes_for :companies, allow_destroy: true
 end
