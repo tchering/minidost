@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  legal_status: MyString
+  company_name: MyString
+  siret_number: MyString
+  position: MyString
+  activity_sector: MyString
+  employees_number: 1
+  establishment_date: 2024-11-20
+  turnover: 9.99
+  user: one
+
+two:
+  legal_status: MyString
+  company_name: MyString
+  siret_number: MyString
+  position: MyString
+  activity_sector: MyString
+  employees_number: 1
+  establishment_date: 2024-11-20
+  turnover: 9.99
+  user: two
