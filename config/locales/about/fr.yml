@@ -1,0 +1,22 @@
+fr:
+  mission:
+    title: "Notre mission"
+    description: "MiniDost est une plateforme de gestion d'entreprise de pointe conçue pour donner plus de pouvoir aux entrepreneurs et aux propriétaires d'entreprise. Nous proposons une solution de niveau entreprise pour gérer plusieurs entités commerciales, adresses et flux de travail organisationnels dans un tableau de bord unifié."
+
+  solution:
+    title: "Solutions Entreprise"
+    management:
+      title: "Gestion centralisée"
+      description: "Notre plateforme offre un hub centralisé pour gérer tous les aspects de votre entreprise. De la gestion des ventes et des stocks à la gestion des employés et de la paie, MiniDost est votre solution unique pour la gestion d'entreprise."
+
+    support:
+      title: "Support multi-entités"
+      description: "Notre équipe de support dédiée est là pour vous aider à chaque étape. Que vous ayez besoin d'aide pour configurer votre compte ou pour résoudre un problème, nous sommes là pour nous assurer que vous tirez le meilleur parti de MiniDost."
+      
+    location:
+      title: "Intelligence de localisation"
+      description: "Nous fournissons des capacités avancées de suivi de localisation et de géocodage. Avec notre plateforme d'intelligence de localisation, vous pouvez facilement trouver l'emplacement et l'adresse les plus proches de votre entreprise."
+
+    finance:
+      title: "Analyse financière"
+      description: "Nos outils d'analyse financière vous aident à suivre la santé financière de votre entreprise. De l'analyse des flux de trésorerie aux états des profits et pertes, MiniDost fournit les informations dont vous avez besoin pour prendre des décisions éclairées."

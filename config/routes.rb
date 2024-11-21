@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  devise_for :users
-  get "contact", to: "static_pages#contact"
-  get "blog", to: "static_pages#blog"
-  get "help", to: "static_pages#help"
-  get "about", to: "static_pages#about"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  scope '(:locale)', locale: /#{I18n.available_locales.join('|')}/ do
+    devise_for :users
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+    # Static pages routes
+    get 'contact', to: 'static_pages#contact'
+    get 'blog', to: 'static_pages#blog'
+    get 'help', to: 'static_pages#help'
+    get 'about', to: 'static_pages#about'
 
-  # Defines the root path route ("/")
-  # root "posts#index"
-  root "static_pages#home"
+    # Root route inside locale scope
+    root 'static_pages#home'
+  end
+
+  # Health check route outside locale scope since it's for internal use
+  get 'up' => 'rails/health#show', as: :rails_health_check
 end

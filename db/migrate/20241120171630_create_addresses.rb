@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAddresses < ActiveRecord::Migration[7.1]
   def change
     create_table :addresses do |t|
@@ -5,7 +7,7 @@ class CreateAddresses < ActiveRecord::Migration[7.1]
       t.string :street
       t.string :area_code
       t.string :city
-      t.string :country, default: "France"
+      t.string :country, default: 'France'
       t.timestamps
     end
   end

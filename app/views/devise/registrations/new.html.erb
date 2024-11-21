@@ -8,6 +8,22 @@
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
+  <%= f.fields_for :company do |company_f| %>
+    <div class="field">
+      <%= company_f.label :legal_status ,"Legal Status" %>
+      <%= company_f.select :legal_status,SelectOption::LEGAL_STATUS  %>
+    </div>
+    <div class="field">
+      <%= company_f.label :name %><br />
+      <%= company_f.text_field :company_name,placeholder:"Company name" %>
+    </div>
+    <div class="field">
+      <%= f.label :année_de_création %>
+      <%= company_f.select :establishment_date, Range.new((Time.zone.now.year - 100),(Time.zone.now.year)).to_a.reverse %>
+    </div>
+  <% end %>
+  
+
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>

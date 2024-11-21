@@ -1,0 +1,22 @@
+en:
+  mission:
+    title: "Our Mission"
+    description: "MiniDost is a state-of-the-art business management platform engineered to empower entrepreneurs and business owners. We deliver an enterprise-grade solution for managing multiple business entities, addresses, and organizational workflows in one unified dashboard."
+
+  solution:
+    title: "Enterprise Solutions"
+    management:
+      title: "Centralized Management"
+      description: "Our platform provides a centralized hub for managing all aspects of your business. From tracking sales and inventory to managing employees and payroll, MiniDost is your one-stop solution for business management."
+
+    support:
+      title: "Multi-Entity Support"
+      description: "Our dedicated support team is here to help you every step of the way. Whether you need assistance setting up your account or troubleshooting an issue, we're here to ensure you get the most out of MiniDost."
+      
+    location:
+      title: "Location Intelligence"
+      description: "We provide advanced location tracking and geocoding capabilities. With our location intelligence platform, you can easily find your business's nearest location and address."
+
+    finance:
+      title: "Financial Analytics"
+      description: "Our financial analytics tools help you track your business's financial health. From cash flow analysis to profit and loss statements, MiniDost provides the insights you need to make informed decisions."
