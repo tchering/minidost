@@ -53,8 +53,8 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem 'rubocop', '~> 1.68'
   gem 'web-console'
-
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
@@ -72,8 +72,6 @@ end
 
 gem 'devise', '~> 4.9'
 
-gem 'rufo', '~> 0.18.0'
-
-gem 'rubocop', '~> 1.68'
-
 gem 'eventmachine', '~> 1.2'
+
+gem 'htmlbeautifier', '~> 1.4'

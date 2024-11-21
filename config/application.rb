@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -27,7 +27,7 @@ module Minidost
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Explicitly configure locale loading
-    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}")]
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     # Set the default locale to something other than :en
     I18n.available_locales = %i[en fr]
     I18n.default_locale = :fr

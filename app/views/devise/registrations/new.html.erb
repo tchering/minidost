@@ -1,45 +1,171 @@
-<h2>Sign up</h2>
+<%# encoding: utf-8 %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white py-3">
+          <h2 class="text-center h4 mb-0">Create Business Account</h2>
+        </div>
+        <div class="card-body p-4">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            
+            <%# Company Information Card %>
+            <div class="card shadow-sm mb-4">
+              <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Company Information</h3>
+              </div>
+              <div class="card-body">
+                <%= f.fields_for :companies do |cf| %>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <div class="form-floating">
+                        <%= cf.select :legal_status, SelectOption::LEGAL_STATUS, {}, class: "form-select" %>
+                        <%= cf.label :legal_status, class: "required" %>
+                        <div class="form-text">Select your company's legal structure</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <%= cf.label :company_name, class: "form-label" %>
+                      <%= cf.text_field :company_name, placeholder: "Company Name", class: "form-control" %>
+                      <div class="text-danger"><%= cf.object.errors[:company_name].join(", ") %></div>
+                    </div>
+                    <div class="col-md-4">
+                      <%= f.label :position, class: "form-label" %>
+                      <%= f.select :position, SelectOption::POSITION, {}, class: "form-select" %>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <%= cf.label :establishment_date, class: "form-label" %>
+                      <%= cf.select :establishment_date,
+                                Range.new((Time.zone.now.year - 100), (Time.zone.now.year)).to_a.reverse,
+                                {}, class: "form-select" %>
+                    </div>
+                    <div class="col-md-6">
+                      <%= cf.label :activity_sector, class: "form-label" %>
+                      <%= cf.select :activity_sector, SelectOption::ACTIVITY_SECTORS, {}, class: "form-select" %>
+                    </div>
+                  </div>
+                  <%# Address fields %>
+                  <%= cf.fields_for :addresses do |cfa| %>
+                    <div class="mt-4">
+                      <h4 class="h6 mb-3">Company Address</h4>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <%= cfa.label :city, class: "form-label" %>
+                          <%= cfa.text_field :city, placeholder: "City", class: "form-control" %>
+                          <div class="text-danger"><%= cfa.object.errors[:city].join(", ") %></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <%= cfa.label :area_code, class: "form-label" %>
+                          <%= cfa.text_field :area_code, placeholder: "Zip Code", class: "form-control" %>
+                          <div class="text-danger"><%= cfa.object.errors[:area_code].join(", ") %></div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <%= cfa.label :street, class: "form-label" %>
+                        <%= cfa.text_field :street, placeholder: "Street", class: "form-control" %>
+                        <div class="text-danger"><%= cfa.object.errors[:street].join(", ") %></div>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%# Company details %>
+                  <div class="row g-3 mt-3">
+                    <div class="col-md-4 mb-3">
+                      <%= cf.label :siret_number, class: "form-label" %>
+                      <%= cf.text_field :siret_number, placeholder: "Siret Number", class: "form-control" %>
+                      <div class="text-danger"><%= cf.object.errors[:siret_number].join(", ") %></div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <%= cf.label :employees_number, class: "form-label" %>
+                      <%= cf.number_field :employees_number, class: "form-control" %>
+                      <div class="text-danger"><%= cf.object.errors[:employees_number].join(", ") %></div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <%= cf.label :turnover, class: "form-label" %>
+                      <%= cf.number_field :turnover, step: 0.01, min: 0, class: "form-control" %>
+                      <div class="text-danger"><%= cf.object.errors[:turnover].join(", ") %></div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+            <%# Personal Information Card %>
+            <div class="card shadow-sm mb-4">
+              <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Personal Information</h3>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :first_name, class: "form-label" %>
+                    <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", class: "form-control" %>
+                    <div class="text-danger"><%= f.object.errors[:first_name].join(", ") %></div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :last_name, class: "form-label" %>
+                    <%= f.text_field :last_name, autocomplete: "last_name", class: "form-control" %>
+                    <div class="text-danger"><%= f.object.errors[:last_name].join(", ") %></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :email, class: "form-label" %>
+                    <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+                    <div class="text-danger"><%= f.object.errors[:email].join(", ") %></div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :phone_number, class: "form-label" %>
+                    <%= f.text_field :phone_number, class: "form-control" %>
+                    <div class="text-danger"><%= f.object.errors[:phone_number].join(", ") %></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :password, class: "form-label" %>
+                    <% if @minimum_password_length %>
+                      <small class="text-muted">(<%= @minimum_password_length %> characters minimum)</small>
+                    <% end %>
+                    <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+                    <div class="text-danger"><%= f.object.errors[:password].join(", ") %></div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :password_confirmation, class: "form-label" %>
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+                    <div class="text-danger"><%= f.object.errors[:password_confirmation].join(", ") %></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <%= f.fields_for :company do |company_f| %>
-    <div class="field">
-      <%= company_f.label :legal_status ,"Legal Status" %>
-      <%= company_f.select :legal_status,SelectOption::LEGAL_STATUS  %>
+            <%# Submit Button %>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <%= f.submit "Create Account", class: "btn btn-primary btn-lg px-5" %>
+            </div>
+          <% end %>
+          
+          <%# Links %>
+          <div class="text-center mt-4">
+            <p class="text-muted">Already have an account?</p>
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="field">
-      <%= company_f.label :name %><br />
-      <%= company_f.text_field :company_name,placeholder:"Company name" %>
-    </div>
-    <div class="field">
-      <%= f.label :année_de_création %>
-      <%= company_f.select :establishment_date, Range.new((Time.zone.now.year - 100),(Time.zone.now.year)).to_a.reverse %>
-    </div>
-  <% end %>
-  
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+<%# Add this to your stylesheet %>
+<style>
+.form-floating > label.required::after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+}
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+</style>

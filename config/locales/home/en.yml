@@ -1,0 +1,18 @@
+# config/locales/views/home/en.yml
+en:
+  home:
+    hero:
+      title: "Streamline Your Business Management"
+      subtitle: "Efficiently manage your companies, track performance, and grow your business with MiniDost"
+      signup: "Get Started"
+    features:
+      title: "Why Choose MiniDost"
+      management:
+        title: "Business Management"
+        description: "Centralize your business operations and manage multiple companies efficiently"
+      organization:
+        title: "Smart Organization"
+        description: "Keep your business data organized and accessible in one place"
+      analytics:
+        title: "Powerful Analytics"
+        description: "Get insights into your business performance with detailed analytics"

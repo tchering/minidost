@@ -1,3 +1,52 @@
-<h1>StaticPages#home</h1>
-<%= link_to "Signup", new_user_registration_path %>
-<h3><%= t("hello") %></h3>
+<div class="container-fluid bg-light py-5">
+  <!-- Hero Section -->
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4"><%= t('home.hero.title') %></h1>
+        <p class="lead mb-4"><%= t('home.hero.subtitle') %></p>
+        <%= link_to new_user_registration_path, 
+            class: "btn btn-success btn-lg px-4 me-sm-3" do %>
+          <i class="fas fa-user-plus me-2"></i><%= t('home.hero.signup') %>
+        <% end %>
+      </div>
+      <div class="col-lg-6">
+        <%= image_tag "https://img.freepik.com/free-vector/business-team-putting-together-jigsaw-puzzle-isolated-flat-vector-illustration-cartoon-partners-working-connection-teamwork-partnership-cooperation-concept_74855-9814.jpg" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="container py-5">
+    <h2 class="text-center mb-5"><%= t('home.features.title') %></h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+            <h3 class="h5 card-title"><%= t('home.features.management.title') %></h3>
+            <p class="card-text"><%= t('home.features.management.description') %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-tasks fa-3x text-success mb-3"></i>
+            <h3 class="h5 card-title"><%= t('home.features.organization.title') %></h3>
+            <p class="card-text"><%= t('home.features.organization.description') %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-analytics fa-3x text-success mb-3"></i>
+            <h3 class="h5 card-title"><%= t('home.features.analytics.title') %></h3>
+            <p class="card-text"><%= t('home.features.analytics.description') %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

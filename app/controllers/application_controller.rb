@@ -8,12 +8,15 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
+    # Add this before the permit call
+    Rails.logger.debug "User errors: #{resource.errors.full_messages}" if resource&.errors&.any?
+
     devise_parameter_sanitizer.permit(:sign_up,
-                                      keys: [:first_name, :last_name, :phone_number, :admin,
-                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :position, :activity_sector, :employees_number, :establishment_date, :turnover, :_destroy, { addresses_attributes: %i[id street city zip_code country _destroy] }] }])
+                                      keys: [:first_name, :last_name, :phone_number, :admin, :position,
+                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :activity_sector, :employees_number, :establishment_date, :turnover, { addresses_attributes: [:id, :street, :city, :area_code, :country] }] }])
     devise_parameter_sanitizer.permit(:account_update,
-                                      keys: [:first_name, :last_name, :phone_number, :admin,
-                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :position, :activity_sector, :employees_number, :establishment_date, :turnover, :_destroy, { addresses_attributes: %i[id street city zip_code country _destroy] }] }])
+                                      keys: [:first_name, :last_name, :phone_number, :admin, :position,
+                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :activity_sector, :employees_number, :establishment_date, :turnover, { addresses_attributes: [:id, :street, :city, :area_code, :country] }] }])
   end
 
   private

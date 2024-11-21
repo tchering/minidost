@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_241_120_171_630) do
+ActiveRecord::Schema[7.1].define(version: 20_241_121_181_523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -31,10 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 20_241_120_171_630) do
     t.string 'legal_status'
     t.string 'company_name'
     t.string 'siret_number'
-    t.string 'position'
     t.string 'activity_sector'
     t.integer 'employees_number'
-    t.date 'establishment_date'
+    t.integer 'establishment_date'
     t.decimal 'turnover', precision: 10, scale: 2
     t.bigint 'user_id', null: false
     t.datetime 'created_at', null: false
@@ -56,6 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 20_241_120_171_630) do
     t.string 'last_name'
     t.string 'phone_number'
     t.boolean 'admin'
+    t.string 'position'
     t.index ['email'], name: 'index_users_on_email', unique: true
     t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
   end

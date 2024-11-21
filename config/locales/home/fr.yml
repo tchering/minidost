@@ -1,0 +1,18 @@
+# config/locales/views/home/fr.yml
+fr:
+  home:
+    hero:
+      title: "Simplifiez votre Gestion d'Entreprise"
+      subtitle: "Gérez efficacement vos entreprises, suivez les performances et développez votre activité avec MiniDost"
+      signup: "Commencer"
+    features:
+      title: "Pourquoi Choisir MiniDost"
+      management:
+        title: "Gestion d'Entreprise"
+        description: "Centralisez vos opérations et gérez plusieurs entreprises efficacement"
+      organization:
+        title: "Organisation Intelligente"
+        description: "Gardez vos données commerciales organisées et accessibles en un seul endroit"
+      analytics:
+        title: "Analyses Puissantes"
+        description: "Obtenez des informations sur la performance de votre entreprise avec des analyses détaillées"

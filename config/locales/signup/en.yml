@@ -1,0 +1,73 @@
+# config/locales/devise.en.yml
+en:
+  devise:
+    failure:
+      not_found: "Invalid email or password."
+      invalid: "Invalid email or password."
+      unauthenticated: "You need to sign in or sign up before continuing."
+    sessions:
+      signed_in: "Signed in successfully."
+      signed_out: "Signed out successfully."
+    registrations:
+      signed_up: "Welcome! You have signed up successfully."
+      updated: "Your account has been updated successfully."
+
+  errors:
+    messages:
+      not_saved: "Prevented this record from being saved:"
+      blank: "can't be blank"
+
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "Email is required"
+              taken: "This email is already taken"
+            password:
+              blank: "Password is required"
+              too_short: "is too short (minimum %{count} characters)"
+        company:
+          attributes:
+            user:
+              required: "is required"
+            legal_status:
+              blank: "is required"
+            company_name:
+              blank: "Company name is required"
+            siret_number:
+              blank: "SIRET number is required"
+              invalid: "SIRET number is invalid"
+              taken: "This SIRET number is already taken"
+              wrong_length: "SIRET number must be 14 digits long"
+              not_a_number: "SIRET number must contain only numbers"
+            position:
+              blank: "Position is required"
+            activity_sector:
+              blank: "is required"
+            establishment_date:
+              blank: "is required"
+
+    attributes:
+      user:
+        first_name: "First Name"
+        last_name: "Last Name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+
+      company:
+        legal_status: "Legal Status"
+        company_name: "Company Name"
+        establishment_date: "Establishment Year"
+        siret_number: "Siret Number"
+        employees_number: "Number of Employees"
+        turnover: "Turnover"
+        activity_sector: "Activity Sector"
+
+      address:
+        street: "Street"
+        area_code: "Zip Code"
+        city: "City"
+  company_title: "Company Information"

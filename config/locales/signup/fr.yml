@@ -1,0 +1,78 @@
+# config/locales/devise.fr.yml
+fr:
+  devise:
+    failure:
+      not_found: "Email ou mot de passe incorrect."
+      invalid: "Email ou mot de passe incorrect."
+      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+    registrations:
+      signed_up: "Bienvenue! Vous êtes inscrit avec succès."
+      updated: "Votre compte a été mis à jour avec succès."
+
+  errors:
+    messages:
+      not_saved: "Des erreurs ont empêché l'enregistrement:"
+      blank: "ne peut pas être vide"
+
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "L'email est requis"
+              taken: "Cet email est déjà utilisé"
+            password:
+              blank: " Le mot de passe est requis"
+              too_short: "Le mot de passe est trop court (minimum %{count} caractères)"
+            password_confirmation:
+              blank: "La confirmation du mot de passe est requise"
+              confirmation: "La confirmation du mot de passe ne correspond pas"
+        company:
+          attributes:
+            user:
+              required: "est requis"
+            company_name:
+              blank: "est requis"
+            siret_number:
+              blank: "Numéro SIRET est requis"
+              invalid: "Numéro SIRET n'est pas valide"
+              taken: "Ce numéro SIRET est déjà utilisé"
+              wrong_length: "Le numéro SIRET doit contenir 14 chiffres"
+              not_a_number: "Le numéro SIRET doit contenir uniquement des chiffres"
+            position:
+              blank: "La position est requis"
+            activity_sector:
+              blank: "Le secteur d'activité est requis"
+            employees_number:
+              blank: "est requis"
+            establishment_date:
+              blank: "est requis"
+            turnover:
+              blank: "est requis"
+
+
+    attributes:
+      user:
+        first_name: "Prénom"
+        last_name: "Nom de famille"
+        email: "Email"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+
+      company:
+        legal_status: "Statut juridique"
+        company_name: "Nom de l'entreprise"
+        establishment_date: "Année de création"
+        siret_number: "Numéro SIRET"
+        employees_number: "Nombre d'employés"
+        turnover: "Chiffre d'affaires"
+        activity_sector: "Secteur d'activité"
+        
+      address:
+        street: "Rue"
+        area_code: "Code postal"
+        city: "Ville"

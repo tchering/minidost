@@ -20,13 +20,13 @@
   </head>
   <body>
     <%= render "layouts/navbar" %>
-    <% if Rails.env.development? %>
-      <div class="alert alert-info">
-        <%= debug(params.to_unsafe_h) %>
-      </div>
-    <% end %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+
+    <div>
+      <% if notice.present? || alert.present? %>
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
+      <% end %>
+    </div>
     <%= yield %>
     <%= render "layouts/footer" %>
     <script type="text/javascript"
