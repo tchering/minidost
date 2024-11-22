@@ -1,43 +1,131 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<%# encoding: utf-8 %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white py-3">
+          <h2 class="text-center h4 mb-0">Edit Profile</h2>
+        </div>
+        <div class="card-body p-4">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+            <%# Company Information Card %>
+            <div class="card shadow-sm mb-4">
+              <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Company Information</h3>
+              </div>
+              <div class="card-body">
+                <%= f.fields_for :companies do |cf| %>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <div class="form-floating">
+                        <%= cf.select :legal_status, SelectOption::LEGAL_STATUS, {}, class: "form-select" %>
+                        <%= cf.label :legal_status, class: "required" %>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <%= cf.label :company_name, class: "form-label" %>
+                      <%= cf.text_field :company_name, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4">
+                      <%= f.label :position, class: "form-label" %>
+                      <%= f.select :position, SelectOption::POSITION, {}, class: "form-select" %>
+                    </div>
+                  </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+                  <%# Company Address %>
+                  <%= cf.fields_for :addresses do |cfa| %>
+                    <div class="mt-4">
+                      <h4 class="h6 mb-3">Company Address</h4>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <%= cfa.label :city, class: "form-label" %>
+                          <%= cfa.text_field :city, class: "form-control" %>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <%= cfa.label :area_code, class: "form-label" %>
+                          <%= cfa.text_field :area_code, class: "form-control" %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+
+            <%# Personal Information Card %>
+            <div class="card shadow-sm mb-4">
+              <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Personal Information</h3>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :first_name, class: "form-label" %>
+                    <%= f.text_field :first_name, class: "form-control" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :last_name, class: "form-label" %>
+                    <%= f.text_field :last_name, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :email, class: "form-label" %>
+                    <%= f.email_field :email, class: "form-control" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :phone_number, class: "form-label" %>
+                    <%= f.text_field :phone_number, class: "form-control" %>
+                  </div>
+                </div>
+
+                <%# Password Fields %>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :password, class: "form-label" %> 
+                    <small class="text-muted">(leave blank if you don't want to change it)</small>
+                    <%= f.password_field :password, class: "form-control" %>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <%= f.label :password_confirmation, class: "form-label" %>
+                    <%= f.password_field :password_confirmation, class: "form-control" %>
+                  </div>
+                </div>
+
+                <%# Current Password %>
+                <div class="mb-3">
+                  <%= f.label :current_password, class: "form-label required" %>
+                  <small class="text-muted">(we need your current password to confirm your changes)</small>
+                  <%= f.password_field :current_password, class: "form-control" %>
+                </div>
+              </div>
+            </div>
+
+            <%# Actions %>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+              <%= f.submit "Update", class: "btn btn-primary btn-lg px-5" %>
+              <%= button_to "Delete Account", registration_path(resource_name), 
+                          data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, 
+                          method: :delete, 
+                          class: "btn btn-danger btn-lg px-5" %>
+            </div>
+          <% end %>
+
+          <div class="text-center mt-4">
+            <%= link_to "Back", :back, class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+<style>
+.form-floating > label.required::after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+}
+</style>
