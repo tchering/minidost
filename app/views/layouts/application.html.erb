@@ -17,10 +17,11 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.min.css"
       rel="stylesheet"/>
+      <%# For autocomplete addresses  %>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
   </head>
   <body>
     <%= render "layouts/navbar" %>
-
     <div>
       <% if notice.present? || alert.present? %>
         <p class="notice"><%= notice %></p>

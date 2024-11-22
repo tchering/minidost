@@ -75,3 +75,5 @@ gem 'devise', '~> 4.9'
 gem 'eventmachine', '~> 1.2'
 
 gem 'htmlbeautifier', '~> 1.4'
+
+gem "geocoder", "~> 1.8"

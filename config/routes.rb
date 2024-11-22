@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get "about", to: "static_pages#about"
 
     # Add this line to see all routes
-    get "/routes", to: "rails/info/routes#index" if Rails.env.development?
+    # get "/routes", to: "rails/info/routes#index" if Rails.env.development?
 
     # Root route inside locale scope
     root "static_pages#home"
