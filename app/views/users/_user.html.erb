@@ -1,6 +1,7 @@
 <div class="user-details">
-    <p><strong>Name:</strong> <%= user.first_name %></p>
-    <p><strong>Position:</strong> <%= user.position %></p>
-    <p><strong>Email:</strong> <%= user.email %></p>
-    <p><strong>Member Since:</strong> <%= user.created_at.strftime("%B %d, %Y") %></p>
+  <p><strong>Name:</strong> <%= user.first_name %></p>
+  <p><strong>Position:</strong> <%= user.position %></p>
+  <p><strong>Email:</strong> <%= user.email %></p>
+  <p><strong>Member Since:</strong> <%= user.created_at.strftime("%B %d, %Y") %></p>
+  <%= image_tag(user.companies.first.logo.attached? ? user.companies.first.logo : "default_logo.png", size: "100") %>
 </div>

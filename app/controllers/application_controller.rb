@@ -17,10 +17,10 @@ class ApplicationController < ActionController::Base
 
     devise_parameter_sanitizer.permit(:sign_up,
                                       keys: [:first_name, :last_name, :phone_number, :admin, :position, :bio,
-                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :activity_sector, :employees_number, :establishment_date, :turnover, { addresses_attributes: [:id, :street, :city, :area_code, :country] }] }])
+                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :activity_sector, :employees_number, :establishment_date, :turnover, :logo, { addresses_attributes: [:id, :street, :city, :area_code, :country] }] }])
     devise_parameter_sanitizer.permit(:account_update,
                                       keys: [:first_name, :last_name, :phone_number, :admin, :position, :bio,
-                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :activity_sector, :employees_number, :establishment_date, :turnover, { addresses_attributes: [:id, :street, :city, :area_code, :country] }] }])
+                                             { companies_attributes: [:id, :legal_status, :company_name, :siret_number, :activity_sector, :employees_number, :establishment_date, :turnover, :logo, { addresses_attributes: [:id, :street, :city, :area_code, :country] }] }])
   end
 
   private

@@ -4,8 +4,9 @@ class Company < ApplicationRecord
   belongs_to :user
   has_many :addresses, dependent: :destroy
   after_initialize :build_default_addresses, if: :new_record?
+  has_one_attached :logo
 
-  # before_create :build_default_addresses
+  validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"], size: { less_than: 4.megabytes, message: "is too big" }
 
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
@@ -16,6 +17,11 @@ class Company < ApplicationRecord
   validates :establishment_date, presence: true
   validates :employees_number, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :turnover, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  def thumbnail_logo
+    logo.attached? ?
+      logo.variant(:thumb).processed :
+      DEFAULT_LOGO
+  end
 
   private
 

@@ -77,3 +77,5 @@ gem 'eventmachine', '~> 1.2'
 gem 'htmlbeautifier', '~> 1.4'
 
 gem "geocoder", "~> 1.8"
+
+gem "active_storage_validations", "~> 1.3"
