@@ -1,0 +1,12 @@
+<div class="map-popup">
+  <div class="d-flex align-items-center">
+    <%= image_tag(user.logo.attached? ? user.logo : "default_logo.png", 
+                class: "rounded-circle me-2", 
+                size: "40") %>
+    <div>
+      <h6 class="mb-0"><%= user.company_name %></h6>
+      <small><%= user.full_address %></small>
+      <small><%= user.position %></small>
+    </div>
+  </div>
+</div>

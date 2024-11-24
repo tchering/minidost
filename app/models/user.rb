@@ -4,6 +4,17 @@ class User < ApplicationRecord
   include SelectOption
   before_create :set_default_country
   after_initialize :set_default_admin, if: :new_record?
+  # Tells geocoder which method to use for address
+  geocoded_by :full_address
+  # Automatically geocode when address fields change
+  after_validation :geocode, if: ->(obj) {
+                               obj.street_changed? || obj.area_code_changed? || obj.city_changed? || obj.country_changed?
+                             }
+
+  # Combines address fields into full address string
+  def full_address
+    "#{street}, #{area_code} #{city}, #{country}"
+  end
 
   # before_create :build_default_company
   # before_create :set_default_admin
@@ -14,6 +25,7 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, :email, :password, presence: true
   validates :email, uniqueness: true
+
   #company validation
   validates :legal_status, presence: true
   validates :company_name, presence: true
@@ -39,6 +51,18 @@ class User < ApplicationRecord
   has_one_attached :logo
 
   validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"], size: { less_than: 4.megabytes, message: "is too big" }
+
+  # Position validations and helper methods
+  validates :position, presence: true, inclusion: { in: ["Donneur-d'ordre", "Sous-traitant"] }
+
+  #helper methods for position checks
+  def contractor?
+    position == "Donneur-d'ordre"
+  end
+
+  def subcontractor?
+    position == "Sous-traitant"
+  end
 
   def thumbnail_logo
     logo.attached? ?

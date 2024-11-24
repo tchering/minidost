@@ -79,3 +79,5 @@ gem 'htmlbeautifier', '~> 1.4'
 gem "geocoder", "~> 1.8"
 
 gem "active_storage_validations", "~> 1.3"
+
+gem "mapbox-gl-rails", "~> 3.7"

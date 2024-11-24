@@ -1,0 +1,15 @@
+<!-- 
+  This file is used for rendering the map in the user interface. 
+  It initializes a Mapbox map and connects it to the Stimulus `map` controller.
+  The map:
+  1. Displays markers for users (contractors or subcontractors) based on the position of the logged-in user.
+  2. Shows a popup for each marker using the data passed from the Rails controller.
+  3. Uses the Mapbox API key for map rendering and interactions.
+-->
+<div id="map" 
+     class="mapboxgl-map"
+     style="width: 100%; height: 500px;" 
+     data-controller="map" <%# Stimulus map controller connected to this div %>
+     data-map-markers-value="<%= markers.to_json %>" <%# Rails usrs_controller->_user. बाट प्राप्त markers JSON format मा पठाइन्छ %>
+     data-map-api-key-value="<%= Rails.application.credentials.mapbox[:api_key] %>"> <%# Mapbox rendering को लागि API key पास गरिन्छ %>
+</div>

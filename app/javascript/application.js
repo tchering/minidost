@@ -1,7 +1,4 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "@hotwired/turbo-rails";
-import "controllers";
-// Initialization for ES Users
-import { Dropdown, Collapse, initMDB } from "mdb-ui-kit";
+// app/javascript/application.js
+import "@hotwired/turbo-rails"
+import "controllers"
 
-initMDB({ Dropdown, Collapse });
