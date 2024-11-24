@@ -1,78 +1,93 @@
-# config/locales/devise.fr.yml
 fr:
-  devise:
-    failure:
-      not_found: "Email ou mot de passe incorrect."
-      invalid: "Email ou mot de passe incorrect."
-      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
-    sessions:
-      signed_in: "Connexion réussie."
-      signed_out: "Déconnexion réussie."
-    registrations:
-      signed_up: "Bienvenue! Vous êtes inscrit avec succès."
-      updated: "Votre compte a été mis à jour avec succès."
-
-  errors:
-    messages:
-      not_saved: "Des erreurs ont empêché l'enregistrement:"
-      blank: "ne peut pas être vide"
-
   activerecord:
+    attributes:
+      user:
+        # Basic user information
+        first_name: "Prénom"
+        last_name: "Nom de famille"
+        email: "Email"
+        phone_number: "Numéro de téléphone"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+        admin: "Administrateur"
+
+        # Address fields
+        street: "Rue"
+        area_code: "Code postal"
+        city: "Ville"
+        country: "Pays"
+
+        # Company information
+        position: "Je suis..."
+        legal_status: "Statut juridique"
+        company_name: "Nom de l'entreprise"
+        siret_number: "Numéro SIRET"
+        activity_sector: "Secteur d'activité"
+        employees_number: "Nombre d'employés"
+        establishment_date: "Date d'établissement"
+        turnover: "Chiffre d'affaires"
+
     errors:
       models:
         user:
           attributes:
+            legal_status:
+              blank: "Le statut juridique est requis"
+            company_name:
+              blank: "Le nom de l'entreprise est requis"
+            city:
+              blank: "La ville est requise"
+            area_code:
+              blank: "Le code postal est requis"
+            street:
+              blank: "La rue est requise"
+            first_name:
+              blank: "Le prénom est requis"
+            last_name:
+              blank: "Le nom de famille est requis"
             email:
               blank: "L'email est requis"
               taken: "Cet email est déjà utilisé"
+              invalid: "L'email n'est pas valide"
             password:
-              blank: " Le mot de passe est requis"
-              too_short: "Le mot de passe est trop court (minimum %{count} caractères)"
+              blank: "Le mot de passe est requis"
+              too_short: "Le mot de passe doit contenir au moins 6 caractères"
             password_confirmation:
               blank: "La confirmation du mot de passe est requise"
-              confirmation: "La confirmation du mot de passe ne correspond pas"
-        company:
-          attributes:
-            user:
-              required: "est requis"
-            company_name:
-              blank: "est requis"
-            siret_number:
-              blank: "Numéro SIRET est requis"
-              invalid: "Numéro SIRET n'est pas valide"
-              taken: "Ce numéro SIRET est déjà utilisé"
-              wrong_length: "Le numéro SIRET doit contenir 14 chiffres"
-              not_a_number: "Le numéro SIRET doit contenir uniquement des chiffres"
+              confirmation: "Les mots de passe ne correspondent pas"
+            phone_number:
+              blank: "Le numéro de téléphone est requis"
             position:
-              blank: "La position est requis"
+              blank: "La position est requise"
             activity_sector:
               blank: "Le secteur d'activité est requis"
             employees_number:
-              blank: "est requis"
+              blank: "Le nombre d'employés est requis"
             establishment_date:
-              blank: "est requis"
+              blank: "La date d'établissement est requise"
             turnover:
-              blank: "est requis"
+              blank: "Le chiffre d'affaires est requis"
+            siret_number:
+              blank: "Le numéro SIRET est requis"
+              invalid: "Le numéro SIRET n'est pas valide"
+              taken: "Ce numéro SIRET est déjà utilisé"
+              wrong_length: "Le numéro SIRET doit contenir 14 chiffres"
 
-
-    attributes:
-      user:
-        first_name: "Prénom"
-        last_name: "Nom de famille"
-        email: "Email"
-        password: "Mot de passe"
-        password_confirmation: "Confirmation du mot de passe"
-
-      company:
-        legal_status: "Statut juridique"
-        company_name: "Nom de l'entreprise"
-        establishment_date: "Année de création"
-        siret_number: "Numéro SIRET"
-        employees_number: "Nombre d'employés"
-        turnover: "Chiffre d'affaires"
-        activity_sector: "Secteur d'activité"
-        
-      address:
-        street: "Rue"
-        area_code: "Code postal"
-        city: "Ville"
+  devise:
+    registrations:
+      signed_up: "Bienvenue ! Vous êtes inscrit avec succès."
+      signed_up_but_unconfirmed: "Un message avec un lien de confirmation a été envoyé à votre adresse email."
+      signed_up_but_inactive: "Vous êtes bien inscrit. Vous ne pouvez cependant pas vous connecter car votre compte n'est pas encore activé."
+      signed_up_but_locked: "Vous êtes bien inscrit. Vous ne pouvez cependant pas vous connecter car votre compte est verrouillé."
+      updated: "Votre compte a été modifié avec succès."
+      update_needs_confirmation: "Votre compte a bien été mis à jour mais nous devons vérifier votre nouvelle adresse email."
+      destroyed: "Au revoir ! Votre compte a été supprimé avec succès. Nous espérons vous revoir bientôt."
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+      already_signed_out: "Déconnexion réussie."
+    failure:
+      already_authenticated: "Vous êtes déjà connecté."
+      invalid: "Email ou mot de passe incorrect."
+      not_found_in_database: "Email ou mot de passe incorrect."
+      locked: "Votre compte est verrouillé."

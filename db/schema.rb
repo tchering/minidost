@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_22_140337) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_23_113322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,33 +42,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_22_140337) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "addresses", force: :cascade do |t|
-    t.bigint "company_id", null: false
-    t.string "street"
-    t.string "area_code"
-    t.string "city"
-    t.string "country", default: "France"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_addresses_on_company_id"
-  end
-
-  create_table "companies", force: :cascade do |t|
-    t.string "legal_status"
-    t.string "company_name"
-    t.string "siret_number"
-    t.string "activity_sector"
-    t.integer "employees_number"
-    t.integer "establishment_date"
-    t.decimal "turnover", precision: 10, scale: 2
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_name"], name: "index_companies_on_company_name"
-    t.index ["siret_number"], name: "index_companies_on_siret_number", unique: true
-    t.index ["user_id"], name: "index_companies_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -82,13 +55,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_22_140337) do
     t.string "phone_number"
     t.boolean "admin"
     t.string "position"
-    t.text "bio"
+    t.string "legal_status"
+    t.string "company_name"
+    t.string "siret_number"
+    t.string "activity_sector"
+    t.integer "employees_number"
+    t.integer "establishment_date"
+    t.decimal "turnover", precision: 10, scale: 2
+    t.string "street"
+    t.string "area_code"
+    t.string "city"
+    t.string "country", default: "France"
+    t.index ["city"], name: "index_users_on_city"
+    t.index ["company_name"], name: "index_users_on_company_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["siret_number"], name: "index_users_on_siret_number", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "addresses", "companies"
-  add_foreign_key "companies", "users"
 end

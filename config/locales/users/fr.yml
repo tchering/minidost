@@ -1,0 +1,9 @@
+fr:
+  users:
+    # Add any user-specific translations here
+    profile:
+      title: "User Profile"
+      edit: "Edit Profile"
+      name: "Nom"
+      position: "Position"
+      member: "Membre depuis"

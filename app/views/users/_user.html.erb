@@ -1,7 +1,31 @@
-<div class="user-details">
-  <p><strong>Name:</strong> <%= user.first_name %></p>
-  <p><strong>Position:</strong> <%= user.position %></p>
-  <p><strong>Email:</strong> <%= user.email %></p>
-  <p><strong>Member Since:</strong> <%= user.created_at.strftime("%B %d, %Y") %></p>
-  <%= image_tag(user.companies.first.logo.attached? ? user.companies.first.logo : "default_logo.png", size: "100") %>
+<div class="user-profile card p-4 shadow-sm">
+  <div class="d-flex align-items-center mb-4">
+    <%= image_tag(user.logo.attached? ? user.logo : "default_logo.png", 
+                  class: "rounded-circle me-4", 
+                  size: "100", 
+                  alt: "#{user.first_name}'s profile picture") %>
+    <div>
+      <h3 class="mb-1"><%= user.first_name %></h3>
+      <h5 class="text-muted mb-0"><%= user.position %></h5>
+    </div>
+  </div>
+  
+  <div class="user-info">
+    <div class="row mb-2">
+      <div class="col-md-3 text-muted"><%= t('users.profile.name') %></div>
+      <div class="col-md-9"><%= user.first_name %></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-3 text-muted">Position</div>
+      <div class="col-md-9"><%= user.position %></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-3 text-muted">Email</div>
+      <div class="col-md-9"><%= mail_to user.email %></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 text-muted"><%= t('users.profile.member') %></div>
+      <div class="col-md-9"><%= user.created_at.strftime("%B %d, %Y") %></div>
+    </div>
+  </div>
 </div>
