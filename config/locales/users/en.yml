@@ -7,3 +7,7 @@ en:
       name: "Name"
       position: "Position"
       member: "Member since"
+
+    map:
+      contractor: "Find Contractor from the Map"
+      subcontractor: "Find Subcontractor from the Map"

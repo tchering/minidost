@@ -7,3 +7,7 @@ fr:
       name: "Nom"
       position: "Position"
       member: "Membre depuis"
+
+    map:
+      contractor: "Trouver un Donneur d'ordre sur la carte"
+      subcontractor: "Trouver un Sous-traitant sur la carte"

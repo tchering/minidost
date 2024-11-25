@@ -6,12 +6,12 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     margin-bottom: 2rem;
   }
-  
+
   .profile-header {
     padding: 2rem;
     border-bottom: 1px solid #eef0f5;
   }
-  
+
   .profile-image {
     width: 100px;
     height: 100px;
@@ -20,22 +20,22 @@
     border: 3px solid #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
-  
+
   .profile-info {
     padding: 2rem;
   }
-  
+
   .info-label {
     color: #6b7280;
     font-size: 0.875rem;
     font-weight: 500;
   }
-  
+
   .info-value {
     color: #111827;
     font-size: 0.95rem;
   }
-  
+
   .map-card {
     background: #fff;
     border-radius: 8px;
@@ -43,12 +43,12 @@
     height: 100%;
     min-height: 400px;
   }
-  
+
   .map-header {
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #eef0f5;
   }
-  
+
   .empty-state {
     display: flex;
     align-items: center;
@@ -58,7 +58,6 @@
     text-align: center;
   }
 </style>
-
 <div class="container-fluid">
   <div class="row">
     <%# Profile Section %>
@@ -75,20 +74,18 @@
             </div>
           </div>
         </div>
-
         <div class="profile-info">
           <div class="row g-3">
             <div class="col-12">
               <div class="row">
                 <div class="col-md-4">
-                  <span class="info-label">Name</span>
+                  <span class="info-label"><%= t("users.profile.name") %></span>
                 </div>
                 <div class="col-md-8">
                   <span class="info-value"><%= user.first_name %></span>
                 </div>
               </div>
             </div>
-            
             <div class="col-12">
               <div class="row">
                 <div class="col-md-4">
@@ -99,7 +96,6 @@
                 </div>
               </div>
             </div>
-            
             <div class="col-12">
               <div class="row">
                 <div class="col-md-4">
@@ -110,11 +106,10 @@
                 </div>
               </div>
             </div>
-            
             <div class="col-12">
               <div class="row">
                 <div class="col-md-4">
-                  <span class="info-label">Member Since</span>
+                  <span class="info-label"><%= t("users.profile.member") %></span>
                 </div>
                 <div class="col-md-8">
                   <span class="info-value"><%= user.created_at.strftime("%B %d, %Y") %></span>
@@ -125,17 +120,15 @@
         </div>
       </div>
     </div>
-
     <%# Map Section %>
     <div class="col-12 col-lg-8">
       <% if user.position == "Donneur-d'ordre" || user.position == "Sous-traitant" %>
         <div class="map-card">
           <div class="map-header">
             <h5 class="mb-0">
-              <%= user.position == "Donneur-d'ordre" ? "Sous-traitants Map" : "Donneurs-d'ordre Map" %>
+              <%= user.position == "Donneur-d'ordre" ?  t("users.map.contractor") : t("users.map.subcontractor") %>
             </h5>
           </div>
-          
           <div class="map-content">
             <% if @markers.present? %>
               <%= render "map", markers: @markers %>
