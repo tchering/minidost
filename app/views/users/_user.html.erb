@@ -28,34 +28,36 @@
     </div>
   </div>
 </div>
-<% if user.position == "Donneur-d'ordre" %>
-  <div class="card mt-4">
-    <div class="card-header">
-      <h5 class="mb-0">Sous-traitants Map</h5>
+<div class="w-75">
+  <% if user.position == "Donneur-d'ordre" %>
+    <div class="card mt-4">
+      <div class="card-header">
+        <h5 class="mb-0">Sous-traitants Map</h5>
+      </div>
+      <div class="card-body p-0">
+        <% if @markers.present? %>
+          <%= render "map", markers: @markers %>
+        <% else %>
+          <div class="p-4 text-center text-muted">
+            <p>No sous-traitants available to display on the map.</p>
+          </div>
+        <% end %>
+      </div>
     </div>
-    <div class="card-body p-0">
-      <% if @markers.present? %>
-        <%= render "map", markers: @markers %>
-      <% else %>
-        <div class="p-4 text-center text-muted">
-          <p>No sous-traitants available to display on the map.</p>
-        </div>
-      <% end %>
+  <% elsif user.position == "Sous-traitant" %>
+    <div class="card mt-4">
+      <div class="card-header">
+        <h5 class="mb-0">Donneurs-d'ordre Map</h5>
+      </div>
+      <div class="card-body p-0">
+        <% if @markers.present? %>
+          <%= render "map", markers: @markers %>
+        <% else %>
+          <div class="p-4 text-center text-muted">
+            <p>No donneurs-d'ordre available to display on the map.</p>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
-<% elsif user.position == "Sous-traitant" %>
-  <div class="card mt-4">
-    <div class="card-header">
-      <h5 class="mb-0">Donneurs-d'ordre Map</h5>
-    </div>
-    <div class="card-body p-0">
-      <% if @markers.present? %>
-        <%= render "map", markers: @markers %>
-      <% else %>
-        <div class="p-4 text-center text-muted">
-          <p>No donneurs-d'ordre available to display on the map.</p>
-        </div>
-      <% end %>
-    </div>
-  </div>
-<% end %>
+  <% end %>
+</div>

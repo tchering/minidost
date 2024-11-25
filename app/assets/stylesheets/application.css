@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  */
-@import 'https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css';
+/* @import 'https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css';
 
 #map {
   width: 100%;
@@ -39,4 +39,4 @@
 .mapboxgl-canvas {
   width: 100% !important;
   height: 100% !important;
-}
+} */
