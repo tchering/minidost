@@ -4,6 +4,7 @@ class User < ApplicationRecord
   include SelectOption
   before_create :set_default_country
   after_initialize :set_default_admin, if: :new_record?
+  # ----Codes inside will transform address in lat and long---------->
   # Tells geocoder which method to use for address
   geocoded_by :full_address
   # Automatically geocode when address fields change
@@ -16,6 +17,7 @@ class User < ApplicationRecord
     "#{street}, #{area_code} #{city}, #{country}"
   end
 
+  # ------------------------------------------------------------------->
   # before_create :build_default_company
   # before_create :set_default_admin
   # Include default devise modules. Others available are:
@@ -42,10 +44,6 @@ class User < ApplicationRecord
   validates :city, presence: true
   validates :country, presence: true
   before_create :set_default_country
-
-  def full_address
-    "#{street}, #{area_code} #{city}, #{country}"
-  end
 
   #logo validation
   has_one_attached :logo

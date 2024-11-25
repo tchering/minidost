@@ -8,25 +8,25 @@ class UsersController < ApplicationController
 
     # 3. Profile हेर्ने user को आधारमा map का लागि markers बनाउनुहोस्
     @markers = case @user.position
-    when "Donneur-d'ordre"
-      # 4a. यदि contractor ले आफ्नो profile हेर्दै छ भने:
-      # - Database का सबै subcontractors खोज्नुहोस्
-      # - .geocoded ले सुनिश्चित गर्छ valid lat/long भएका users मात्रै आउँछ
-      # - .map ले प्रत्येक subcontractor लाई marker मा बदल्छ
-      User.where(position: "Sous-traitant").geocoded.map do |user|
-        create_marker(user)
+      when "Donneur-d'ordre"
+        # 4a. यदि contractor ले आफ्नो profile हेर्दै छ भने:
+        # - Database का सबै subcontractors खोज्नुहोस्
+        # - .geocoded ले सुनिश्चित गर्छ valid lat/long भएका users मात्रै आउँछ
+        # - .map ले प्रत्येक subcontractor लाई marker मा बदल्छ
+        User.where(position: "Sous-traitant").geocoded.map do |user|
+          create_marker(user)
+        end
+      when "Sous-traitant"
+        # 4b. यदि subcontractor ले आफ्नो profile हेर्दै छ भने:
+        # - सबै contractors खोज्नुहोस्
+        # - उस्तै process: geocoded users पाउनुहोस् र markers बनाउनुहोस्
+        User.where(position: "Donneur-d'ordre").geocoded.map do |user|
+          create_marker(user)
+        end
+      else
+        #! 4c. यदि position invalid छ भने, खाली array फिर्ता गर्नुहोस् (कुनै marker हुँदैन)
+        []
       end
-    when "Sous-traitant"
-      # 4b. यदि subcontractor ले आफ्नो profile हेर्दै छ भने:
-      # - सबै contractors खोज्नुहोस्
-      # - उस्तै process: geocoded users पाउनुहोस् र markers बनाउनुहोस्
-      User.where(position: "Donneur-d'ordre").geocoded.map do |user|
-        create_marker(user)
-      end
-    else
-      # 4c. यदि position invalid छ भने, खाली array फिर्ता गर्नुहोस् (कुनै marker हुँदैन)
-      []
-    end
   end
 
   private
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
       # 4. Result HTML हो जुन Mapbox ले popup मा देखाउनेछ
       info_window_html: render_to_string(
         partial: "users/user_popup",
-        locals: { user: user }
+        locals: { user: user },
       ),
 
       # Marker image set गर्नुहोस्:
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
       # यो URL Mapbox ले custom marker icon देखाउन प्रयोग गर्नेछ
       image_url: user.logo.attached? ?
         rails_blob_url(user.logo) :
-        helpers.asset_url("default_logo.png")
+        helpers.asset_url("default_logo.png"),
     }
   end
 end

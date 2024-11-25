@@ -1,63 +1,158 @@
-<div class="user-profile card p-4 shadow-sm">
-  <div class="d-flex align-items-center mb-4">
-    <%= image_tag(user.logo.attached? ? user.logo : "default_logo.png", 
-                  class: "rounded-circle me-4", 
-                  size: "100", 
-                  alt: "#{user.first_name}'s profile picture") %>
-    <div>
-      <h3 class="mb-1"><%= user.first_name %></h3>
-      <h5 class="text-muted mb-0"><%= user.position %></h5>
+<%# User Profile Template %>
+<style>
+  .profile-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+  }
+  
+  .profile-header {
+    padding: 2rem;
+    border-bottom: 1px solid #eef0f5;
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .profile-info {
+    padding: 2rem;
+  }
+  
+  .info-label {
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .info-value {
+    color: #111827;
+    font-size: 0.95rem;
+  }
+  
+  .map-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    height: 100%;
+    min-height: 400px;
+  }
+  
+  .map-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eef0f5;
+  }
+  
+  .empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #6b7280;
+    text-align: center;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <%# Profile Section %>
+    <div class="col-12 col-lg-4">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="d-flex align-items-center">
+            <%= image_tag(user.logo.attached? ? user.logo : "default_logo.png",
+                         class: "profile-image me-4",
+                         alt: "#{user.first_name}'s profile picture") %>
+            <div>
+              <h3 class="h4 mb-1"><%= user.first_name %></h3>
+              <h5 class="h6 text-muted mb-0"><%= user.position %></h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="info-label">Name</span>
+                </div>
+                <div class="col-md-8">
+                  <span class="info-value"><%= user.first_name %></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="info-label">Position</span>
+                </div>
+                <div class="col-md-8">
+                  <span class="info-value"><%= user.position %></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="info-label">Email</span>
+                </div>
+                <div class="col-md-8">
+                  <span class="info-value"><%= mail_to user.email %></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="info-label">Member Since</span>
+                </div>
+                <div class="col-md-8">
+                  <span class="info-value"><%= user.created_at.strftime("%B %d, %Y") %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Map Section %>
+    <div class="col-12 col-lg-8">
+      <% if user.position == "Donneur-d'ordre" || user.position == "Sous-traitant" %>
+        <div class="map-card">
+          <div class="map-header">
+            <h5 class="mb-0">
+              <%= user.position == "Donneur-d'ordre" ? "Sous-traitants Map" : "Donneurs-d'ordre Map" %>
+            </h5>
+          </div>
+          
+          <div class="map-content">
+            <% if @markers.present? %>
+              <%= render "map", markers: @markers %>
+            <% else %>
+              <div class="empty-state">
+                <div>
+                  <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
+                  <p class="mb-0">
+                    No <%= user.position == "Donneur-d'ordre" ? "sous-traitants" : "donneurs-d'ordre" %>
+                    available to display on the map.
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
-  <div class="user-info">
-    <div class="row mb-2">
-      <div class="col-md-3 text-muted"><%= t('users.profile.name') %></div>
-      <div class="col-md-9"><%= user.first_name %></div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-md-3 text-muted">Position</div>
-      <div class="col-md-9"><%= user.position %></div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-md-3 text-muted">Email</div>
-      <div class="col-md-9"><%= mail_to user.email %></div>
-    </div>
-    <div class="row">
-      <div class="col-md-3 text-muted"><%= t('users.profile.member') %></div>
-      <div class="col-md-9"><%= user.created_at.strftime("%B %d, %Y") %></div>
-    </div>
-  </div>
-</div>
-<div class="w-75">
-  <% if user.position == "Donneur-d'ordre" %>
-    <div class="card mt-4">
-      <div class="card-header">
-        <h5 class="mb-0">Sous-traitants Map</h5>
-      </div>
-      <div class="card-body p-0">
-        <% if @markers.present? %>
-          <%= render "map", markers: @markers %>
-        <% else %>
-          <div class="p-4 text-center text-muted">
-            <p>No sous-traitants available to display on the map.</p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% elsif user.position == "Sous-traitant" %>
-    <div class="card mt-4">
-      <div class="card-header">
-        <h5 class="mb-0">Donneurs-d'ordre Map</h5>
-      </div>
-      <div class="card-body p-0">
-        <% if @markers.present? %>
-          <%= render "map", markers: @markers %>
-        <% else %>
-          <div class="p-4 text-center text-muted">
-            <p>No donneurs-d'ordre available to display on the map.</p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
 </div>
