@@ -12,7 +12,7 @@
 </div>
 <div class="mt-2">
   <% if user.position=="Sous-traitant" %>
-    <p class="mb-0"><strong>Activity Sector:</strong> <%= user.activity_sector %></p>
+    <p class="mb-0"><strong><%= t("map.activity") %>:</strong> <%= user.activity_sector %></p>
   <% elsif user.position=="Donneur-d'ordre"%>
     <p class="mb-0"><strong>Looking for:</strong> <%= user.activity_sector %></p>
   <% end %>
