@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_24_100322) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_27_132752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,31 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_24_100322) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "taskable_type", null: false
+    t.bigint "taskable_id", null: false
+    t.bigint "contractor_id", null: false
+    t.bigint "sub_contractor_id", null: false
+    t.string "site_name"
+    t.string "street"
+    t.string "city"
+    t.string "area_code"
+    t.decimal "proposed_price", precision: 10, scale: 2
+    t.decimal "accepted_price", precision: 10, scale: 2
+    t.date "start_date"
+    t.date "end_date"
+    t.string "status"
+    t.string "work_progress"
+    t.string "billing_process"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contractor_id"], name: "index_tasks_on_contractor_id"
+    t.index ["status"], name: "index_tasks_on_status"
+    t.index ["sub_contractor_id"], name: "index_tasks_on_sub_contractor_id"
+    t.index ["taskable_id", "taskable_type"], name: "index_tasks_on_taskable_id_and_taskable_type"
+    t.index ["taskable_type", "taskable_id"], name: "index_tasks_on_taskable"
   end
 
   create_table "users", force: :cascade do |t|
@@ -77,4 +102,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_24_100322) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "tasks", "users", column: "contractor_id"
+  add_foreign_key "tasks", "users", column: "sub_contractor_id"
 end

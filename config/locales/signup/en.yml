@@ -1,5 +1,8 @@
 # en.yml
 en:
+  positions:
+    contractor: "Contractor"
+    subcontractor: "Subcontractor"
   activerecord:
     errors:
       models:
@@ -56,12 +59,12 @@ en:
       updated: "Your account has been updated successfully."
       update_needs_confirmation: "Your account has been updated successfully, but we need to verify your new email address."
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
-    
+
     sessions:
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
-    
+
     failure:
       already_authenticated: "You are already signed in."
       invalid: "Invalid email or password."

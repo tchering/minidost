@@ -18,6 +18,9 @@ class User < ApplicationRecord
   end
 
   # ------------------------------------------------------------------->
+  # Associations with Task model
+  has_many :created_tasks, class_name: "Task", foreign_key: "contractor_id"
+  has_many :accepted_tasks, class_name: "Task", foreign_key: "sub_contractor_id"
   # before_create :build_default_company
   # before_create :set_default_admin
   # Include default devise modules. Others available are:
@@ -51,15 +54,15 @@ class User < ApplicationRecord
   validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"], size: { less_than: 4.megabytes, message: "is too big" }
 
   # Position validations and helper methods
-  validates :position, presence: true, inclusion: { in: ["Donneur-d'ordre", "Sous-traitant"] }
+  validates :position, presence: true, inclusion: { in: ["contractor", "sub-contractor"] }
 
   #helper methods for position checks
   def contractor?
-    position == "Donneur-d'ordre"
+    position == "contractor"
   end
 
   def subcontractor?
-    position == "Sous-traitant"
+    position == "sub-contractor"
   end
 
   def thumbnail_logo
