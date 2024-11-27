@@ -17,7 +17,11 @@ Rails.application.routes.draw do
     root "static_pages#home"
 
     resources :users, only: [:show, :index]
-    resources :tasks
+    resources :tasks do
+      collection do
+        get :load_taskable_fields
+      end
+    end
   end
 
   # Health check route outside locale scope since it's for internal use

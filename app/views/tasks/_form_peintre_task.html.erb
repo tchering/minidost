@@ -1,0 +1,106 @@
+<%# app/views/tasks/_form_peintre_task.html.erb %>
+<div class="card shadow-sm">
+  <div class="card-header bg-light p-3">
+    <h4 class="mb-0"><i class="fas fa-paint-roller me-2"></i>Painting Task Details</h4>
+  </div>
+  <%= fields_for :taskable, task.taskable do |taskable_form| %>
+    <% if task.taskable&.errors&.any? %>
+      <div class="alert alert-danger" role="alert">
+        <%= task.taskable.errors.full_messages.to_sentence %>
+      </div>
+    <% end %>
+    <div class="card-body p-4">
+      <%# Property Details Section %>
+      <div class="mb-5">
+        <h5 class="mb-4 text-primary"><i class="fas fa-building me-2"></i>Property Details</h5>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :type_de_travaux, "Type of Work", class: "form-label" %>
+              <%= taskable_form.text_field :type_de_travaux, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :type_de_surface, "Surface Type", class: "form-label" %>
+              <%= taskable_form.text_field :type_de_surface, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :nombre_de_logements, "Number of Housing Units", class: "form-label" %>
+              <%= taskable_form.text_field :nombre_de_logements, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :nombre_de_pieces, "Number of Rooms", class: "form-label" %>
+              <%= taskable_form.text_field :nombre_de_pieces, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%# Surface Measurements %>
+      <div class="mb-5">
+        <h5 class="mb-4 text-primary"><i class="fas fa-ruler-combined me-2"></i>Surface Measurements</h5>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="input-group">
+              <%= taskable_form.label :surface_sol, "Floor Surface", class: "form-label" %>
+              <%= taskable_form.text_field :surface_sol, class: "form-control" %>
+              <span class="input-group-text">m²</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group">
+              <%= taskable_form.label :surface_mur, "Wall Surface", class: "form-label" %>
+              <%= taskable_form.text_field :surface_mur, class: "form-control" %>
+              <span class="input-group-text">m²</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group">
+              <%= taskable_form.label :surface_plafond, "Ceiling Surface", class: "form-label" %>
+              <%= taskable_form.text_field :surface_plafond, class: "form-control" %>
+              <span class="input-group-text">m²</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%# Services Required %>
+      <div class="mb-5">
+        <h5 class="mb-4 text-primary"><i class="fas fa-tasks me-2"></i>Services Required</h5>
+        <div class="row g-3">
+          <% boolean_fields = [:peinture_lisse, :gouttelette, :gouttelette_ecrase, 
+                             :pose_revetement_tapisserie, :pose_revetement_toile_de_verre,
+                             :pose_revetement_type_vescom, :pose_sol_sans_soudure,
+                             :pose_sol_avec_soudure_a_chaux, :stuco_decoration,
+                             :peinture_facade, :pose_plaques_type_decochoc,
+                             :pose_faience, :pose_petite_platrerie, :pose_plinthe,
+                             :pose_parquet_fottant, :rattrapage_bande_placo,
+                             :ratissage, :pose_baguette_angles] %>
+          <% boolean_fields.each_slice(3) do |fields_group| %>
+            <div class="col-md-4">
+              <% fields_group.each do |field| %>
+                <div class="form-check mb-3">
+                  <%= taskable_form.check_box field, class: "form-check-input" %>
+                  <%= taskable_form.label field, field.to_s.humanize, class: "form-check-label" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%# Additional Information %>
+      <div class="mb-4">
+        <h5 class="mb-4 text-primary"><i class="fas fa-info-circle me-2"></i>Additional Information</h5>
+        <div class="form">
+          <%= taskable_form.label :other_task, "Other Requirements", class: "form-label" %>
+          <%= taskable_form.text_area :other_task, class: "form-control", rows: 4 %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<%# Add required Font Awesome CSS in your layout %>
+<%# <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" /> %>

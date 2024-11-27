@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_27_132752) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_27_211414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,11 +42,42 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_27_132752) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "peintre_tasks", force: :cascade do |t|
+    t.string "type_de_travaux"
+    t.string "type_de_surface"
+    t.string "nombre_de_logements"
+    t.string "nombre_de_pieces"
+    t.string "surface_sol"
+    t.string "surface_mur"
+    t.string "surface_plafond"
+    t.boolean "peinture_lisse"
+    t.boolean "gouttelette"
+    t.boolean "gouttelette_ecrase"
+    t.boolean "pose_revetement_tapisserie"
+    t.boolean "pose_revetement_toile_de_verre"
+    t.boolean "pose_revetement_type_vescom"
+    t.boolean "pose_sol_sans_soudure"
+    t.boolean "pose_sol_avec_soudure_a_chaux"
+    t.boolean "stuco_decoration"
+    t.boolean "peinture_facade"
+    t.boolean "pose_plaques_type_decochoc"
+    t.boolean "pose_faience"
+    t.boolean "pose_petite_platrerie"
+    t.boolean "pose_plinthe"
+    t.boolean "pose_parquet_fottant"
+    t.boolean "rattrapage_bande_placo"
+    t.boolean "ratissage"
+    t.boolean "pose_baguette_angles"
+    t.text "other_task"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "taskable_type", null: false
     t.bigint "taskable_id", null: false
     t.bigint "contractor_id", null: false
-    t.bigint "sub_contractor_id", null: false
+    t.bigint "sub_contractor_id"
     t.string "site_name"
     t.string "street"
     t.string "city"

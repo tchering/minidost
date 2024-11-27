@@ -1,0 +1,57 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type_de_travaux: MyString
+  type_de_surface: MyString
+  nombre_de_logements: MyString
+  nombre_de_pieces: MyString
+  surface_sol: MyString
+  surface_mur: MyString
+  surface_plafond: MyString
+  peinture_lisse: false
+  gouttelette: false
+  gouttelette_ecrase: false
+  pose_revetement_tapisserie: false
+  pose_revetement_toile_de_verre: false
+  pose_revetement_type_vescom: false
+  pose_sol_sans_soudure: false
+  pose_sol_avec_soudure_a_chaux: false
+  stuco_decoration: false
+  peinture_facade: false
+  pose_plaques_type_decochoc: false
+  pose_faience: false
+  pose_petite_platrerie: false
+  pose_plinthe: false
+  pose_parquet_fottant: false
+  rattrapage_bande_placo: false
+  ratissage: false
+  pose_baguette_angles: false
+  other_task: MyText
+
+two:
+  type_de_travaux: MyString
+  type_de_surface: MyString
+  nombre_de_logements: MyString
+  nombre_de_pieces: MyString
+  surface_sol: MyString
+  surface_mur: MyString
+  surface_plafond: MyString
+  peinture_lisse: false
+  gouttelette: false
+  gouttelette_ecrase: false
+  pose_revetement_tapisserie: false
+  pose_revetement_toile_de_verre: false
+  pose_revetement_type_vescom: false
+  pose_sol_sans_soudure: false
+  pose_sol_avec_soudure_a_chaux: false
+  stuco_decoration: false
+  peinture_facade: false
+  pose_plaques_type_decochoc: false
+  pose_faience: false
+  pose_petite_platrerie: false
+  pose_plinthe: false
+  pose_parquet_fottant: false
+  rattrapage_bande_placo: false
+  ratissage: false
+  pose_baguette_angles: false
+  other_task: MyText

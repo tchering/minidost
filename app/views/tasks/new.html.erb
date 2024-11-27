@@ -1,2 +1,137 @@
-<h1>Tasks#new</h1>
-<p>Find me in app/views/tasks/new.html.erb</p>
+<%# app/views/tasks/new.html.erb %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light p-3">
+          <h4 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Create New Task</h4>
+        </div>
+        <div class="card-body p-4" data-controller="task-form">
+          <%= form_with(model: @task, class: "needs-validation") do |f| %>
+            <% if @task.errors.any? %>
+              <div class="alert alert-danger" role="alert">
+                <%= @task.errors.full_messages.to_sentence %>
+              </div>
+            <% end %>
+            <%# Activity Selection %>
+            <div class="mb-5">
+              <h5 class="mb-4 text-primary"><i class="fas fa-tasks me-2"></i>Task Type</h5>
+              <div class="form-outline">
+                <%= f.label :taskable_type, "Select Activity", class: "form-label" %>
+                <%= f.select :taskable_type, 
+                    SelectOption::ACTIVITY_SECTORS.values.flatten.map { |activity| #takes activity from the ActivitySectors
+                      [activity, "#{activity.parameterize.classify}Task"] #Transforms the activity into a class name | Example: ["Peintre", "PeintreTask"]
+                    },
+                    { prompt: "Choose an activity" },
+                    { 
+                      class: 'form-select',
+                      data: { 
+                        task_form_target: "activitySelect", #makes select element targetable
+                        action: "change->task-form#updateTaskableFields" #triggered when the user selects an activity
+                      }
+                    }
+                %>
+              </div>
+            </div>
+            <%# Site Details %>
+            <div class="mb-5" data-controller="address-autocomplete" 
+                 data-address-autocomplete-api-key-value="<%= Rails.application.credentials.mapbox[:api_key] %>">
+              <h5 class="mb-4 text-primary"><i class="fas fa-building me-2"></i>Site Information</h5>
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="form">
+                    <%= f.label :site_name, "Site Name", class: "form-label" %>
+                    <%= f.text_field :site_name, class: "form-control"%>
+                  </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                  <div class="form">
+                    <%= f.label :street, "Street Address", class: "form-label" %>
+                    <%= f.text_field :street, 
+                        class: "form-control",
+                        data: {
+                          address_autocomplete_target: "street",
+                          action: "input->address-autocomplete#search"
+                        }
+                    %>
+                  </div>
+                  <%# Results container %>
+                  <div data-address-autocomplete-target="results"
+                       class="position-absolute w-100 mt-1 shadow-sm bg-white rounded-3 z-3"
+                       style="display: none; max-height: 200px; overflow-y: auto;">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form">
+                    <%= f.label :city,"City", class: "form-label" %>
+                    <%= f.text_field :city, 
+                        class: "form-control",
+                        data: { address_autocomplete_target: "city" }
+                    %>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form">
+                    <%= f.label :area_code, "Area Code", class: "form-label" %>
+                    <%= f.text_field :area_code, 
+                        class: "form-control",
+                        data: { address_autocomplete_target: "areaCode" }
+                    %>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <%= f.number_field :proposed_price, class: "form-control" %>
+                    <span class="input-group-text">€</span>
+                    <%= f.label :proposed_price, "Proposed Price", class: "form-label" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%# Schedule & Status %>
+            <div class="mb-5">
+              <h5 class="mb-4 text-primary"><i class="fas fa-calendar me-2"></i>Schedule & Status</h5>
+              <div class="row g-4">
+                <div class="col-md-4">
+                  <div class="form-outline">
+                    <%= f.date_field :start_date, class: "form-control" %>
+                    <%= f.label :start_date, "Start Date", class: "form-label" %>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-outline">
+                    <%= f.date_field :end_date, class: "form-control" %>
+                    <%= f.label :end_date, "End Date", class: "form-label" %>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-outline">
+                    <%= f.select :status, 
+                        ['Pending', 'In Progress', 'Completed'], 
+                        {}, 
+                        { class: 'form-select' } 
+                    %>
+                    <%= f.label :status, "Status", class: "form-label" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%# Dynamic Taskable Fields %>
+            <div class="taskable-fields" data-task-form-target="taskableFields">
+              <%= f.fields_for :taskable do |taskable_form| %>
+                <%= render "tasks/form_#{@taskable_type.underscore}", 
+                         f: taskable_form if @taskable_type.present? %>
+              <% end %>
+            </div>
+            <div class="text-center mt-5">
+              <%= f.submit "Create Task", 
+                  class: "btn btn-primary btn-lg px-5" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%# Add required Font Awesome CSS in your layout %>
+<%# <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" /> %>
