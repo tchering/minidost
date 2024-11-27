@@ -1,2 +1,28 @@
-<h1>Tasks#show</h1>
-<p>Find me in app/views/tasks/show.html.erb</p>
+<%# app/views/tasks/show.html.erb %>
+<div class="card shadow-sm">
+  <div class="card-header bg-light p-3">
+    <h4 class="mb-0">
+      <i class="fas fa-clipboard-check me-2"></i>
+      Task Details
+    </h4>
+  </div>
+  <div class="card-body p-4">
+    <%# Common Task Details %>
+    <div class="mb-5">
+      <h5 class="mb-4 text-primary">
+        <i class="fas fa-info-circle me-2"></i>Basic Information
+      </h5>
+      <div class="row g-4">
+        <%= render 'tasks/common_details', task: @task %>
+      </div>
+    </div>
+    <%# Dynamic Taskable Details %>
+    <div class="mb-5">
+      <h5 class="mb-4 text-primary">
+        <i class="<%= task_type_icon(@task.taskable_type) %> me-2"></i>
+        <%= @task.taskable_type.underscore.humanize %> Details
+      </h5>
+      <%= render_taskable_attributes(@task.taskable) %>
+    </div>
+  </div>
+</div>
