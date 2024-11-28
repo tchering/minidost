@@ -1,4 +1,4 @@
-# app/helpers/tasks_helper.rb
+#responsible for rendering the attributes of a taskable object
 module TasksHelper
   def render_taskable_attributes(taskable)
     return unless taskable
@@ -17,33 +17,33 @@ module TasksHelper
 
   def status_color(status)
     case status&.downcase
-    when 'pending' then 'warning'
-    when 'in progress' then 'info'
-    when 'completed' then 'success'
-    else 'secondary'
+    when "pending" then "warning"
+    when "in progress" then "info"
+    when "completed" then "success"
+    else "secondary"
     end
   end
 
   def task_type_icon(taskable_type)
     case taskable_type
-    when 'PeintreTask'
-      'fas fa-paint-roller'
-    when 'PlombierTask'
-      'fas fa-wrench'
-    when 'ElectricienTask'
-      'fas fa-bolt'
-    when 'CharpentierBoisTask'
-      'fas fa-hammer'
-    when 'CouvreurTask'
-      'fas fa-home'
-    when 'MaconTask'
-      'fas fa-hard-hat'
-    when 'CarreleurTask'
-      'fas fa-th-large'
-    when 'MenuisierTask'
-      'fas fa-door-open'
+    when "PeintreTask"
+      "fas fa-paint-roller"
+    when "PlombierTask"
+      "fas fa-wrench"
+    when "ElectricienTask"
+      "fas fa-bolt"
+    when "CharpentierBoisTask"
+      "fas fa-hammer"
+    when "CouvreurTask"
+      "fas fa-home"
+    when "MaconTask"
+      "fas fa-hard-hat"
+    when "CarreleurTask"
+      "fas fa-th-large"
+    when "MenuisierTask"
+      "fas fa-door-open"
     else
-      'fas fa-tools'  # Default icon
+      "fas fa-tools"  # Default icon
     end
   end
 
