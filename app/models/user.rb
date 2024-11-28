@@ -17,6 +17,10 @@ class User < ApplicationRecord
     "#{street}, #{area_code} #{city}, #{country}"
   end
 
+  def address
+    "#{street}, #{area_code} #{city}"
+  end
+
   # ------------------------------------------------------------------->
   # Associations with Task model
   has_many :created_tasks, class_name: "Task", foreign_key: "contractor_id"
@@ -56,6 +60,8 @@ class User < ApplicationRecord
   # Position validations and helper methods
   validates :position, presence: true, inclusion: { in: ["contractor", "sub-contractor"] }
 
+  #user bio
+  has_one :bio, dependent: :destroy
   #helper methods for position checks
   def contractor?
     position == "contractor"

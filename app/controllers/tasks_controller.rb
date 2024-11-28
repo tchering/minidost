@@ -9,6 +9,13 @@ class TasksController < ApplicationController
     else
       @tasks = Task.all
     end
+    # Filter by status if provided
+    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
+    respond_to do |format|
+      format.html { }
+      format.turbo_stream do
+      end
+    end
   end
 
   def show

@@ -2,11 +2,12 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
   def show
-    # 1. जब user "/users/1" visit गर्छ, Rails यो action मा जान्छ
-    # 2. params[:id] ले URL बाट "1" राख्छ
-    @user = User.find(params[:id])
 
-    # 3. Profile हेर्ने user को आधारमा map का लागि markers बनाउनुहोस्
+    @user = User.find(params[:id])
+  end
+
+  def show_map
+    @user = User.find(params[:id])
     @markers = case @user.position
       when "Donneur-d'ordre"
         # 4a. यदि contractor ले आफ्नो profile हेर्दै छ भने:
@@ -27,6 +28,7 @@ class UsersController < ApplicationController
         #! 4c. यदि position invalid छ भने, खाली array फिर्ता गर्नुहोस् (कुनै marker हुँदैन)
         []
       end
+    render partial: "users/map", locals: { markers: @markers, user: @user }
   end
 
   private

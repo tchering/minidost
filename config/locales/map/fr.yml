@@ -1,3 +1,6 @@
 fr:
   map:
     activity: "Secteur d'activité"
+    pending: "Travaux en attente"
+    in_progress: "Chantier en cours"
+    completed: "Chantier réalisé"

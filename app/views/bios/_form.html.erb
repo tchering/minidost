@@ -1,0 +1,14 @@
+<%= turbo_frame_tag "bio_form_frame" do  %>
+  <%= form_with(model:@bio ,local: false) do |f| %>
+    <% if @bio.errors.any? %>
+      <% @bio.errors.full_messages.each do |msg| %>
+        <div class="alert alert-danger" role="alert">
+          <%= msg %>
+        </div>
+      <% end %>
+    <% end %>
+    <%= f.label :text ,"Bio" %>
+    <%= f.text_area :text, class: "form-control" %>
+    <%= f.submit t('bios.button.save'), class: "btn btn-primary" %>
+  <% end %>
+<% end %>

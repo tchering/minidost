@@ -1,0 +1,22 @@
+# config/locales/bios/en.yml
+en:
+  bios:
+    button:
+      save: "Save"
+      cancel: "Cancel"
+      edit: "Edit"
+      delete: "Delete"
+      update: "Update"
+  activerecord:
+    models:
+      bio: "Bio"
+    attributes:
+      bio:
+        text: "Text"
+    errors:
+      models:
+        bio:
+          attributes:
+            text:
+              too_short: "must have at least %{count} characters"
+              too_long: "must have at most %{count} characters"

@@ -1,3 +1,6 @@
 en:
   map:
     activity: "Activity sector"
+    pending: "Pending work"
+    in_progress: "Work in progress"
+    completed: "Work completed"

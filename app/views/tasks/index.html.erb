@@ -1,2 +1,19 @@
-<h1>Tasks#index</h1>
-<p>Find me in app/views/tasks/index.html.erb</p>
+<%# app/views/tasks/_task_list.html.erb %>
+<%= turbo_frame_tag "map_frame" do %>
+  <div class="list-group">
+    <% @tasks.each do |task| %>
+      <%= link_to task_path(task), 
+          class: "list-group-item list-group-item-action d-flex justify-content-between align-items-center", 
+          data: { turbo_frame: "_top" } do %>
+        <div>
+          <span class="badge bg-<%= status_color(task.status) %> me-2">
+            <%= task.status %>
+          </span>
+          <%= task.site_name %>
+          <span class="text-muted">(<%= task.street %>)</span>
+        </div>
+        <i class="fas fa-chevron-right"></i>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,11 @@
+<div class="tasks-container">
+    <div class="task-item">
+        <span class="task-label"><%= t("users.profile.tasks") %></span>
+        <span class="task-count"><%= user.created_tasks.count %></span>
+            <% if user.created_tasks.any? %>
+              <%= link_to t("users.profile.view_tasks"), 
+                         tasks_path, 
+                                    class: "task-link" %>
+            <% end %>
+          </div>
+        </div>

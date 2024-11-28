@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get "bios/show"
+  get "bios/new"
+  get "bios/create"
+  get "bios/edit"
+  get "bios/update"
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     devise_for :users, controllers: {}, sign_out_via: [:get, :delete]  # Add this option
 
@@ -16,7 +21,13 @@ Rails.application.routes.draw do
     # Root route inside locale scope
     root "static_pages#home"
 
-    resources :users, only: [:show, :index]
+    resources :users, only: [:show, :index] do
+      member do
+        get :map, to: "users#show_map" #create link to map_user_path(user)
+      end
+    end
+
+    resources :bios, only: [:show, :new, :create, :edit, :update]
     resources :tasks do
       collection do
         get :load_taskable_fields

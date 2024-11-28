@@ -1,0 +1,22 @@
+# config/locales/bios/fr.yml
+fr:
+  bios:
+    button:
+      save: "Enregistrer"
+      cancel: "Annuler"
+      edit: "Modifier"
+      delete: "Supprimer"
+      update: "Mettre à jour"
+  activerecord:
+    models:
+      bio: "Bio"
+    attributes:
+      bio:
+        text: "Texte"
+    errors:
+      models:
+        bio:
+          attributes:
+            text:
+              too_short: "doit avoir au moins %{count} caractères"
+              too_long: "ne doit pas dépasser %{count} caractères"

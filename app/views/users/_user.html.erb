@@ -1,166 +1,37 @@
-<%# User Profile Template %>
-<style>
-  .profile-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    margin-bottom: 2rem;
-  }
-
-  .profile-header {
-    padding: 2rem;
-    border-bottom: 1px solid #eef0f5;
-  }
-
-  .profile-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-
-  .profile-info {
-    padding: 2rem;
-  }
-
-  .info-label {
-    color: #6b7280;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  .info-value {
-    color: #111827;
-    font-size: 0.95rem;
-  }
-
-  .map-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    height: 100%;
-    min-height: 400px;
-  }
-
-  .map-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #eef0f5;
-  }
-
-  .empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 300px;
-    color: #6b7280;
-    text-align: center;
-  }
-</style>
-<div class="container-fluid">
-  <div class="row">
-    <%# Profile Section %>
-    <div class="col-12 col-lg-4">
-      <div class="profile-card">
-        <div class="profile-header">
-          <div class="d-flex align-items-center">
-            <%= image_tag(user.logo.attached? ? user.logo : "default_logo.png",
-                         class: "profile-image me-4",
-                         alt: "#{user.first_name}'s profile picture") %>
-            <div>
-              <h3 class="h4 mb-1"><%= user.first_name %></h3>
-              <h5 class="h6 text-muted mb-0"><%= user.position %></h5>
-            </div>
-          </div>
+<div class="container dashboard-container">
+  <div class="row g-4">
+    <%#! <!-- User Info Column --> %>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <%= render "shared/user_info", user: user %>
         </div>
-        <div class="profile-info">
-          <div class="row g-3">
-            <div class="col-12">
-              <div class="row">
-                <div class="col-md-4">
-                  <span class="info-label"><%= t("users.profile.name") %></span>
-                </div>
-                <div class="col-md-8">
-                  <span class="info-value"><%= user.first_name %></span>
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="row">
-                <div class="col-md-4">
-                  <span class="info-label">Position</span>
-                </div>
-                <div class="col-md-8">
-                  <span class="info-value"><%= user.position %></span>
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="row">
-                <div class="col-md-4">
-                  <span class="info-label">Email</span>
-                </div>
-                <div class="col-md-8">
-                  <span class="info-value"><%= mail_to user.email %></span>
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="row">
-                <div class="col-md-4">
-                  <span class="info-label"><%= t("users.profile.member") %></span>
-                </div>
-                <div class="col-md-8">
-                  <span class="info-value"><%= user.created_at.strftime("%B %d, %Y") %></span>
-                </div>
-              </div>
-            </div>
-            <%#! Task section | user_statistics %>
-            <div class="col-12">
-              <div class="row">
-                <div class="col-md-4">
-                  <span class="info-label">Your task</span>
-                </div>
-                <div class="col-md-8">
-                  <span class="info-value"><%= user.created_tasks.count %></span>
-                  <% user.created_tasks.each do |task| %>
-                    <%= link_to "Tasks",task_path(task) %>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-            <%#! End Task section %>
-          </div>
+      </div>
+      <%#!-- Bio Section --> %>
+      <div class="card">
+        <div class="card-body">
+          <%= turbo_frame_tag "bio_form_frame" do  %>
+            <%= render "bios/bio", user: user %>
+          <% end %>
         </div>
       </div>
     </div>
-    <%#! Map Section %>
-    <div class="col-12 col-lg-8">
-      <% if user.position = "Donneur-d'ordre" || user.position = "Sous-traitant" %>
-        <div class="map-card">
-          <div class="map-header">
-            <h5 class="mb-0">
-              <%= user.position == "Donneur-d'ordre" ?  t("users.map.contractor") : t("users.map.subcontractor") %>
-            </h5>
-          </div>
-          <div class="map-content">
-            <% if @markers.present? %>
-              <%= render "map", markers: @markers %>
-            <% else %>
-              <div class="empty-state">
-                <div>
-                  <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
-                  <p class="mb-0">
-                    No <%= user.position == "Donneur-d'ordre" ? "sous-traitants" : "donneurs-d'ordre" %>
-                    available to display on the map.
-                  </p>
-                </div>
-              </div>
-            <% end %>
-          </div>
+    <%#! <!-- Task Status Column --> %>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <%= render "tasks/task_status" %>
+          <%#! <!-- Map Section --> %>
+          <%= render "shared/button_collection", user: user %>
         </div>
-      <% end %>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <%= turbo_frame_tag "map_frame" do %>
+          test
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

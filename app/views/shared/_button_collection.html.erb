@@ -1,0 +1,32 @@
+<div class="section-card d-flex justify-content-between">
+  <div class=" gap-3">
+    <%if current_user == user%>
+      <%= link_to map_user_path(user), 
+                    class: "btn btn-primary btn-custom", 
+                    data: { turbo_frame: "map_frame" } do %>
+        <i class="fas fa-map-marked-alt"></i>
+        Load Map
+      <% end %>
+    <% end %>
+  </div>
+  <div>
+    <%= link_to  new_task_path, class: "btn btn-primary btn-custom" do %>
+      <i class="fas fa-tasks"></i>
+      New Task
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .btn-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  transition: all var(--transition-speed) ease;
+    }
+
+    .btn-custom:hover {
+  transform: scale(1.05);
+    }
+</style>
