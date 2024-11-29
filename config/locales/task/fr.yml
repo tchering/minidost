@@ -1,0 +1,49 @@
+fr:
+  task:
+    title: "Créer une nouvelle tâche"
+    task_type: "Type de tâche"
+    select_activity: "Sélectionner une activité"
+    site_info: "Informations du site"
+    schedule_status: "Planning & Statut"
+    create_button: "Créer la tâche"
+    choose_activity: "Choisissez une activité"
+    task_type: "Type de travaux"
+    site_info: "Informations site"
+    site_name: "Nom du site"
+    street: "Rue"
+    city: "Ville"
+    area_code: "Code postal"
+    proposed_price: "Prix proposé"
+    taskable_type: "Type d'activité"
+    taskable: "Activité"
+    start_date: "Date de commencement"
+    end_date: "Date de fin"
+    status: "Statut"
+    enter_price: "Entrez le prix"
+    status_pending: "En attente"
+    status_in_progress: "En cours"
+    status_completed: "Terminé"
+  activerecord:
+    errors:
+      models:
+        task:
+          attributes:
+            site_name:
+              blank: "Le nom du site est requis"
+            street:
+              blank: "L'adresse est requise"
+            city:
+              blank: "La ville est requise"
+            area_code:
+              blank: "Le code postal est requis"
+            proposed_price:
+              blank: "Le prix proposé est requis"
+            taskable_type:
+              blank: "L'activité doit être sélectionnée"
+    attributes:
+      task:
+        site_name: "Nom du site"
+        street: "Adresse"
+        city: "Ville"
+        area_code: "Code postal"
+        proposed_price: "Prix proposé"

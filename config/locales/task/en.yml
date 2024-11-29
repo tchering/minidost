@@ -1,0 +1,47 @@
+en:
+  task:
+    title: "Create New Task"
+    task_type: "Task Type"
+    select_activity: "Select Activity"
+    site_info: "Site Information"
+    schedule_status: "Schedule & Status"
+    create_button: "Create Task"
+    choose_activity: "Choose an activity"
+    site_name: "Site Name"
+    street: "Street Address"
+    city: "City"
+    area_code: "Area Code"
+    proposed_price: "Proposed Price"
+    taskable_type: "Activity Type"
+    taskable: "Activity"
+    start_date: "Start Date"
+    end_date: "End Date"
+    status: "Status"
+    enter_price: "Enter price"
+    status_pending: "Pending"
+    status_in_progress: "In Progress"
+    status_completed: "Completed"
+  activerecord:
+    errors:
+      models:
+        task:
+          attributes:
+            site_name:
+              blank: "Site name cannot be blank"
+            street:
+              blank: "Street address cannot be blank"
+            city:
+              blank: "City cannot be blank"
+            area_code:
+              blank: "Area code cannot be blank"
+            proposed_price:
+              blank: "Proposed price cannot be blank"
+            taskable_type:
+              blank: "Activity must be selected"
+    attributes:
+      task:
+        site_name: "Site Name"
+        street: "Street Address"
+        city: "City"
+        area_code: "Area Code"
+        proposed_price: "Proposed Price"

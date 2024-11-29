@@ -97,17 +97,24 @@ class TasksController < ApplicationController
     end
   end
 
-  def destroy; end
+  def destroy
+    respond_to do |format|
+      if @task.destroy
+        format.html { redirect_to tasks_url, notice: "Task was successfully destroyed" }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to tasks_url, alert: "Task could not be destroyed", status: :unprocessable_entity }
+        format.json { }
+      end
+    end
+  end
 
   def load_taskable_fields
-    @taskable_type = params[:taskable_type] # received from stimulus controller
-    @task = Task.new(taskable_type: @taskable_type)
-    @task.taskable = @taskable_type.constantize.new
+    @taskable_type = params[:taskable_type]
 
     respond_to do |format|
       format.html do
         render partial: "tasks/form_#{@taskable_type.underscore}",
-               locals: { task: @task },
                layout: false
       end
     end

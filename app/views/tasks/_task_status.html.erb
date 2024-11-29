@@ -7,7 +7,7 @@
             <i class="fas fa-clock fa-2x"></i>
           </div>
           <div class="stat-info">
-            <h6><%= t("map.pending") %></h6>
+            <h6><%= t("task.status_pending") %></h6>
             <h2 class="mb-0"><%= @user.created_tasks.where(status: "pending").count %></h2>
           </div>
         </div>
@@ -20,7 +20,7 @@
             <i class="fas fa-hammer fa-2x"></i>
           </div>
           <div class="stat-info">
-            <h6><%= t("map.in_progress") %></h6>
+            <h6><%= t("task.status_in_progress") %></h6>
             <h2 class="mb-0"><%= @user.created_tasks.where(status: "in progress").count %></h2>
           </div>
         </div>
@@ -33,7 +33,7 @@
             <i class="fas fa-check-circle fa-2x"></i>
           </div>
           <div class="stat-info">
-            <h6><%= t("map.completed") %></h6>
+            <h6><%= t("task.status_completed") %></h6>
             <h2 class="mb-0"><%= @user.created_tasks.where(status: "completed").count %></h2>
           </div>
         </div>
