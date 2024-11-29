@@ -7,11 +7,13 @@
     </h4>
   </div>
   <div class="card-body p-4">
+    <div>
+      <%= link_to "Edit", edit_task_path(@task), class: "btn btn-primary btn-sm" %>
+      <%= link_to "Delete",task_path(@task),data: {turbo_method: :delete,turbo_confirm: "Are you sure?"},class:"btn btn-danger btn-sm" %></div>
     <%# Common Task Details %>
     <div class="mb-5">
       <h5 class="mb-4 text-primary">
         <i class="fas fa-info-circle me-2"></i>Basic Information
-        <%= link_to "Edit", edit_task_path(@task), class: "btn btn-primary btn-sm" %>
       </h5>
       <div class="row g-4">
         <%= render 'tasks/common_details', task: @task %>

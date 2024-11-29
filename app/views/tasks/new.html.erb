@@ -122,7 +122,8 @@
                           [t("task.status_in_progress"), "in progress"],
                           [t("task.status_completed"), "completed"]
                         ], selected: @task.status), 
-                        { class: "form-control" } %>
+                        {},#empty hash for select options
+                        { class: "form-select" } %>
                   </div>
                 </div>
               </div>

@@ -61,7 +61,7 @@ class TasksController < ApplicationController
     if @taskable_type.present?
       @task.taskable = @taskable_type.constantize.new(taskable_params.to_h)
     else
-      @task.errors.add(:base, "Activity must be selected")
+      @task.errors.add(:base, t("task.select_activity"))
       # @task.errors.add(:taskable_type, "Activity must be selected")
       render :new, status: :unprocessable_entity
       return
@@ -100,7 +100,7 @@ class TasksController < ApplicationController
   def destroy
     respond_to do |format|
       if @task.destroy
-        format.html { redirect_to tasks_url, notice: "Task was successfully destroyed" }
+        format.html { redirect_to user_path(current_user), notice: "Task was successfully destroyed" }
         format.json { head :no_content }
       else
         format.html { redirect_to tasks_url, alert: "Task could not be destroyed", status: :unprocessable_entity }

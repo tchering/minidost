@@ -1,5 +1,6 @@
 fr:
   task:
+    select_acitivity: "Sélectionner une activité"
     title: "Créer une nouvelle tâche"
     task_type: "Type de tâche"
     select_activity: "Sélectionner une activité"
