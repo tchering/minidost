@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BiosController < ApplicationController
   include ActionView::RecordIdentifier
 
@@ -13,10 +15,10 @@ class BiosController < ApplicationController
     @bio = current_user.build_bio(bio_params)
     respond_to do |format|
       if @bio.save
-        format.html { redirect_to user_path(@bio.user), notice: "Bio was successfully created" }
+        format.html { redirect_to user_path(@bio.user), notice: 'Bio was successfully created' }
         format.json { render :show, status: :created, location: @bio }
       else
-        format.html { render :new, status: :unprocessable_entity, notice: "Bio was not created" }
+        format.html { render :new, status: :unprocessable_entity, notice: 'Bio was not created' }
         format.json { render json: @bio.errors, status: :unprocessable_entity }
       end
     end
@@ -28,9 +30,9 @@ class BiosController < ApplicationController
       format.html
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
-          "bio_form_frame",
-          partial: "bios/form",
-          locals: { bio: @bio },
+          'bio_form_frame',
+          partial: 'bios/form',
+          locals: { bio: @bio }
         )
       end
     end
@@ -40,13 +42,13 @@ class BiosController < ApplicationController
     @bio = Bio.find(params[:id])
     respond_to do |format|
       if @bio.update(bio_params)
-        format.html { redirect_to user_path(@bio.user), notice: "Bio was successfully updated" }
+        format.html { redirect_to user_path(@bio.user), notice: 'Bio was successfully updated' }
         format.json { render :show, status: :ok, location: @bio }
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
-            "bio_form_frame",
-            partial: "bios/bio",
-            locals: { user: @bio.user, bio: @bio },
+            'bio_form_frame',
+            partial: 'bios/bio',
+            locals: { user: @bio.user, bio: @bio }
           )
         end
       else
@@ -54,9 +56,9 @@ class BiosController < ApplicationController
         format.json { render json: @bio.errors, status: :unprocessable_entity }
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
-            "bio_form_frame",
-            partial: "bios/form",
-            locals: { bio: @bio },
+            'bio_form_frame',
+            partial: 'bios/form',
+            locals: { bio: @bio }
           )
         end
       end

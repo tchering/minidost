@@ -5,9 +5,9 @@ class StaticPagesController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[home contact blog help about]
 
   def home
-    if user_signed_in?
-      redirect_to user_path(current_user)
-    end
+    return unless user_signed_in?
+
+    redirect_to user_path(current_user)
   end
 
   def contact; end

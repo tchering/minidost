@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCompanyFieldsToUsers < ActiveRecord::Migration[7.1]
   def change
     add_column :users, :legal_status, :string

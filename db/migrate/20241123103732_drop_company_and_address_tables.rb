@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropCompanyAndAddressTables < ActiveRecord::Migration[7.1]
   def up
     drop_table :addresses

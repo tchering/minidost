@@ -1,11 +1,11 @@
-<%# app/views/bios/_bio.html.erb %>
-<%= turbo_frame_tag "bio_form_frame" do  %>
+<% # app/views/bios/_bio.html.erb %>
+<%= turbo_frame_tag "bio_form_frame" do %>
   <% if user.bio.present? %>
     <div class="bio-content">
       <h5>Bio</h5>
       <p><%= user.bio.text %></p>
-      <% if current_user == user  %>
-        <%= link_to t("bios.button.edit"), edit_bio_path(user.bio), class: "btn btn-primary", data: { turbo_frame: "bio_form_frame",turbo_method: :get } %>
+      <% if current_user == user %>
+        <%= link_to t("bios.button.edit"), edit_bio_path(user.bio), class: "btn btn-primary", data: { turbo_frame: "bio_form_frame", turbo_method: :get } %>
       <% end %>
     </div>
   <% else %>

@@ -8,9 +8,9 @@ class User < ApplicationRecord
   # Tells geocoder which method to use for address
   geocoded_by :full_address
   # Automatically geocode when address fields change
-  after_validation :geocode, if: ->(obj) {
-                               obj.street_changed? || obj.area_code_changed? || obj.city_changed? || obj.country_changed?
-                             }
+  after_validation :geocode, if: lambda { |obj|
+    obj.street_changed? || obj.area_code_changed? || obj.city_changed? || obj.country_changed?
+  }
 
   # Combines address fields into full address string
   def full_address
@@ -23,8 +23,8 @@ class User < ApplicationRecord
 
   # ------------------------------------------------------------------->
   # Associations with Task model
-  has_many :created_tasks, class_name: "Task", foreign_key: "contractor_id"
-  has_many :accepted_tasks, class_name: "Task", foreign_key: "sub_contractor_id"
+  has_many :created_tasks, class_name: 'Task', foreign_key: 'contractor_id'
+  has_many :accepted_tasks, class_name: 'Task', foreign_key: 'sub_contractor_id'
   # before_create :build_default_company
   # before_create :set_default_admin
   # Include default devise modules. Others available are:
@@ -35,7 +35,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, :email, :password, presence: true
   validates :email, uniqueness: true
 
-  #company validation
+  # company validation
   validates :legal_status, presence: true
   validates :company_name, presence: true
   validates :siret_number, presence: true, uniqueness: true, format: { with: /\A[0-9A-Za-z]+\z/ }
@@ -44,7 +44,7 @@ class User < ApplicationRecord
   validates :employees_number, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :turnover, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
-  #address validation
+  # address validation
   #  belongs_to :company
   validates :street, presence: true
   validates :area_code, presence: true
@@ -52,29 +52,32 @@ class User < ApplicationRecord
   validates :country, presence: true
   before_create :set_default_country
 
-  #logo validation
+  # logo validation
   has_one_attached :logo
 
-  validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"], size: { less_than: 4.megabytes, message: "is too big" }
+  validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
+                   size: { less_than: 4.megabytes, message: 'is too big' }
 
   # Position validations and helper methods
-  validates :position, presence: true, inclusion: { in: ["contractor", "sub-contractor"] }
+  validates :position, presence: true, inclusion: { in: %w[contractor sub-contractor] }
 
-  #user bio
+  # user bio
   has_one :bio, dependent: :destroy
-  #helper methods for position checks
+  # helper methods for position checks
   def contractor?
-    position == "contractor"
+    position == 'contractor'
   end
 
   def subcontractor?
-    position == "sub-contractor"
+    position == 'sub-contractor'
   end
 
   def thumbnail_logo
-    logo.attached? ?
-      logo.variant(:thumb).processed :
+    if logo.attached?
+      logo.variant(:thumb).processed
+    else
       DEFAULT_LOGO
+    end
   end
 
   private
@@ -84,6 +87,6 @@ class User < ApplicationRecord
   end
 
   def set_default_country
-    self.country ||= "France"
+    self.country ||= 'France'
   end
 end

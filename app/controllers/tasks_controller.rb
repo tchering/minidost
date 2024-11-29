@@ -1,35 +1,36 @@
+# frozen_string_literal: true
+
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: %i[show edit update destroy]
 
   def index
-    if current_user.position == "contractor"
-      @tasks = current_user.created_tasks
-    elsif current_user.position == "subcontractor"
-      @tasks = current_user.accepted_tasks
-    else
-      @tasks = Task.all
-    end
+    @tasks = if current_user.position == 'contractor'
+               current_user.created_tasks
+             elsif current_user.position == 'subcontractor'
+               current_user.accepted_tasks
+             else
+               Task.all
+             end
     # Filter by status if provided
     @tasks = @tasks.where(status: params[:status]) if params[:status].present?
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.turbo_stream do
       end
     end
   end
 
-  def show
-  end
+  def show; end
 
   def activity_to_taskable_type(activity)
     return nil if activity.nil?
 
     # Convert activity name to model name format
-    activity.gsub(/[^\w\s]/, "") # Remove special characters
-      .split # Split into words
-      .map(&:capitalize) # Capitalize each word
-      .join # Join words together
-      .concat("Task") # Add 'Task' suffix
+    activity.gsub(/[^\w\s]/, '') # Remove special characters
+            .split # Split into words
+            .map(&:capitalize) # Capitalize each word
+            .join # Join words together
+            .concat('Task') # Add 'Task' suffix
   end
 
   # "Charpentier bois"
@@ -58,26 +59,23 @@ class TasksController < ApplicationController
     # @task.contractor = current_user
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: "Task was successfully created" }
+        format.html { redirect_to @task, notice: 'Task was successfully created' }
         format.json { render :show, status: :created, location: @task }
       else
-        format.html { render :new, status: :unprocessable_entity, notice: "Task was not created" }
+        format.html { render :new, status: :unprocessable_entity, notice: 'Task was not created' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  def edit
-  end
+  def edit; end
 
-  def update
-  end
+  def update; end
 
-  def destroy
-  end
+  def destroy; end
 
   def load_taskable_fields
-    @taskable_type = params[:taskable_type] #received from stimulus controller
+    @taskable_type = params[:taskable_type] # received from stimulus controller
     @task = Task.new(taskable_type: @taskable_type)
     @task.taskable = @taskable_type.constantize.new
 
@@ -97,13 +95,14 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    common_fields = [:taskable_type, :sub_contractor_id, :site_name, :street, :city, :area_code, :proposed_price, :accepted_price, :start_date, :end_date, :status, :work_progress, :billing_process]
+    common_fields = %i[taskable_type sub_contractor_id site_name street city area_code proposed_price
+                       accepted_price start_date end_date status work_progress billing_process]
     params.require(:task).permit(common_fields, taskable_attributes: taskable_params)
   end
 
   def taskable_params
     case params[:task][:taskable_type]
-    when "PeintreTask"
+    when 'PeintreTask'
       params.require(:taskable).permit(
         :type_de_travaux,
         :type_de_surface,

@@ -1,10 +1,14 @@
-class Users::SessionsController < Devise::SessionsController
-  # def after_sign_in_path_for(resource)
-  #   about_path
-  # end
+# frozen_string_literal: true
+
+module Users
+  class SessionsController < Devise::SessionsController
+    # def after_sign_in_path_for(resource)
+    #   about_path
+    # end
+  end
 end
 
 # Sessions Controller: Only affects sign-in redirects
 #
-#if i put this in application controller
+# if i put this in application controller
 # Application Controller: Affects all Devise redirects (sign in, sign up, etc.)

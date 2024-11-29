@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
   def show
-
     @user = User.find(params[:id])
   end
 
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
           create_marker(user)
         end
       else
-        #! 4c. यदि position invalid छ भने, खाली array फिर्ता गर्नुहोस् (कुनै marker हुँदैन)
+        # ! 4c. यदि position invalid छ भने, खाली array फिर्ता गर्नुहोस् (कुनै marker हुँदैन)
         []
       end
     render partial: "users/map", locals: { markers: @markers, user: @user }
@@ -63,9 +64,11 @@ class UsersController < ApplicationController
       # 2. यदि हो भने: uploaded logo को URL generate गर्नुहोस् (rails_blob_url)
       # 3. यदि छैन भने: default logo image प्रयोग गर्नुहोस् (helpers.asset_url)
       # यो URL Mapbox ले custom marker icon देखाउन प्रयोग गर्नेछ
-      image_url: user.logo.attached? ?
-        rails_blob_url(user.logo) :
-        helpers.asset_url("default_logo.png"),
+      image_url: if user.logo.attached?
+        rails_blob_url(user.logo)
+      else
+        helpers.asset_url("default_logo.png")
+      end,
     }
   end
 end
