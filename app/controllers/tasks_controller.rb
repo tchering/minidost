@@ -2,19 +2,21 @@
 
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
+  helper_method :group_attributes
+  include TasksHelper
 
   def index
-    @tasks = if current_user.position == 'contractor'
-               current_user.created_tasks
-             elsif current_user.position == 'subcontractor'
-               current_user.accepted_tasks
-             else
-               Task.all
-             end
+    @tasks = if current_user.position == "contractor"
+        current_user.created_tasks
+      elsif current_user.position == "subcontractor"
+        current_user.accepted_tasks
+      else
+        Task.all
+      end
     # Filter by status if provided
     @tasks = @tasks.where(status: params[:status]) if params[:status].present?
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.turbo_stream do
       end
     end
@@ -26,11 +28,11 @@ class TasksController < ApplicationController
     return nil if activity.nil?
 
     # Convert activity name to model name format
-    activity.gsub(/[^\w\s]/, '') # Remove special characters
+    activity.gsub(/[^\w\s]/, "") # Remove special characters
             .split # Split into words
             .map(&:capitalize) # Capitalize each word
             .join # Join words together
-            .concat('Task') # Add 'Task' suffix
+            .concat("Task") # Add 'Task' suffix
   end
 
   # "Charpentier bois"
@@ -59,18 +61,33 @@ class TasksController < ApplicationController
     # @task.contractor = current_user
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created' }
+        format.html { redirect_to @task, notice: "Task was successfully created" }
         format.json { render :show, status: :created, location: @task }
       else
-        format.html { render :new, status: :unprocessable_entity, notice: 'Task was not created' }
+        format.html { render :new, status: :unprocessable_entity, notice: "Task was not created" }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  def edit; end
+  def edit
+    @task = Task.find(params[:id])
+    attributes = @task.taskable.attributes.except("id", "created_at", "updated_at")
+    @grouped_attributes = group_attributes(@task.taskable, attributes)
+  end
 
-  def update; end
+  def update
+    @task = Task.find(params[:id])
+
+    if @task.update(task_params)
+      @task.taskable.update(taskable_params)
+      redirect_to @task, notice: "Task successfully updated"
+    else
+      attributes = @task.taskable.attributes.except("id", "created_at", "updated_at")
+      @grouped_attributes = group_attributes(@task.taskable, attributes)
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   def destroy; end
 
@@ -102,7 +119,7 @@ class TasksController < ApplicationController
 
   def taskable_params
     case params[:task][:taskable_type]
-    when 'PeintreTask'
+    when "PeintreTask"
       params.require(:taskable).permit(
         :type_de_travaux,
         :type_de_surface,

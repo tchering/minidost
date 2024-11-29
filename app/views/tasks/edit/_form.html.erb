@@ -1,0 +1,16 @@
+<%# app/views/tasks/_form.html.erb %>
+<%= form_with(model: @task) do |f| %>
+  <%# Common fields %>
+  <div class="row g-4">
+    <%= render 'tasks/edit/common_fields', f: f %>
+  </div>
+  <%# Taskable fields %>
+  <div class="row g-4">
+    <%= f.fields_for :taskable do |tf| %>
+      <%= render 'tasks/edit/taskable_fields', tf: tf %>
+    <% end %>
+  </div>
+  <div class="text-center mt-4">
+    <%= f.submit class: "btn btn-primary btn-lg px-5" %>
+  </div>
+<% end %>

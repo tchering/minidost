@@ -2,11 +2,11 @@
   <div class="row justify-content-center">
     <div class="col-md-3">
       <div class="card text-center mb-2 shadow-sm">
-        <%= link_to tasks_path(status: "Pending"), class: "text-decoration-none hover-trigger" , data:{turbo_frame: "map_frame"} do %>
+        <%= link_to tasks_path(status: "pending"), class: "text-decoration-none hover-trigger" , data:{turbo_frame: "map_frame"} do %>
           <div class="card-body p-2">
             <h6 class="card-title text-warning mb-1"><%= t("map.pending") %></h6>
             <h3 class="mb-1">
-              <%= @user.created_tasks.where(status: "Pending").count %>
+              <%= @user.created_tasks.where(status: "pending").count %>
             </h3>
           </div>
         <% end %>
@@ -14,20 +14,20 @@
     </div>
     <div class="col-md-3">
       <div class="card text-center mb-2 shadow-sm">
-        <%= link_to tasks_path(status: "In Progress"), class: "text-decoration-none hover-trigger",data:{turbo_frame: "map_frame"} do %>
+        <%= link_to tasks_path(status: "in progress"), class: "text-decoration-none hover-trigger",data:{turbo_frame: "map_frame"} do %>
           <div class="card-body p-2">
             <h6 class="card-title text-primary mb-1"><%= t("map.in_progress") %></h6>
-            <h3 class="mb-1"><%= @user.created_tasks.where(status: "In Progress").count %></h3>
+            <h3 class="mb-1"><%= @user.created_tasks.where(status: "in progress").count %></h3>
           </div>
         <% end %>
       </div>
     </div>
     <div class="col-md-3">
       <div class="card text-center mb-2 shadow-sm">
-        <%= link_to tasks_path(status: "Completed"), class: "text-decoration-none hover-trigger" do %>
+        <%= link_to tasks_path(status: "completed"), class: "text-decoration-none hover-trigger",data:{turbo_frame: "map_frame"} do %>
           <div class="card-body p-2">
             <h6 class="card-title text-success mb-1"><%= t("map.completed") %></h6>
-            <h3 class="mb-1"><%= @user.created_tasks.where(status: "Completed").count %></h3>
+            <h3 class="mb-1"><%= @user.created_tasks.where(status: "completed").count %></h3>
           </div>
         <% end %>
       </div>
