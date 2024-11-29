@@ -1,7 +1,11 @@
-<div class="construction-stats">
+<%# app/views/shared/_construction_stats.html.erb %>
+<div class="construction-stats container-fluid px-4">
   <div class="row g-4">
+    <%# Pending Tasks Card %>
     <div class="col-md-4">
-      <%= link_to tasks_path(status: "pending"), class: "stat-card pending", data: {turbo_frame: "map_frame"} do %>
+      <%= link_to tasks_path(status: "pending"), 
+                  class: "stat-card pending", 
+                  data: { turbo_frame: "map_frame" } do %>
         <div class="stat-content">
           <div class="stat-icon">
             <i class="fas fa-clock fa-2x"></i>
@@ -13,8 +17,12 @@
         </div>
       <% end %>
     </div>
+
+    <%# In Progress Tasks Card %>
     <div class="col-md-4">
-      <%= link_to tasks_path(status: "in progress"), class: "stat-card in-progress", data: {turbo_frame: "map_frame"} do %>
+      <%= link_to tasks_path(status: "in progress"), 
+                  class: "stat-card in-progress", 
+                  data: { turbo_frame: "map_frame" } do %>
         <div class="stat-content">
           <div class="stat-icon">
             <i class="fas fa-hammer fa-2x"></i>
@@ -26,8 +34,12 @@
         </div>
       <% end %>
     </div>
+
+    <%# Completed Tasks Card %>
     <div class="col-md-4">
-      <%= link_to tasks_path(status: "completed"), class: "stat-card completed", data: {turbo_frame: "map_frame"} do %>
+      <%= link_to tasks_path(status: "completed"), 
+                  class: "stat-card completed", 
+                  data: { turbo_frame: "map_frame" } do %>
         <div class="stat-content">
           <div class="stat-icon">
             <i class="fas fa-check-circle fa-2x"></i>
@@ -41,6 +53,7 @@
     </div>
   </div>
 </div>
+
 <style>
   .construction-stats {
     padding: 1rem 0;
@@ -93,5 +106,16 @@
 
   .stat-card:hover {
     transform: translateY(-5px);
+  }
+
+  @media (max-width: 768px) {
+    .stat-content {
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    .stat-icon {
+      padding: 0.75rem;
+    }
   }
 </style>
