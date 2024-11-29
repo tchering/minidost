@@ -1,72 +1,159 @@
-<div class="user-profile-card">
-  <%= image_tag(
-            user.logo.attached? ? user.logo : "default_logo.png", 
-            alt: "#{user.company_name}'s profile picture", 
-            class: "rounded-circle user-avatar", 
-            style: "width:150px; height:150px; object-fit: cover;"
-        ) %>
-  <div class="user-details">
-    <h4 class="mb-1"><%= user.first_name %></h4>
-    <p class="text-muted mb-3"><%= user.position %></p>
-    <div class="profile-info-row">
-      <span class="profile-label"><%= t('users.profile.name') %>:</span>
-      <span class="profile-info"><%= user.first_name %></span>
-    </div>
-    <div class="profile-info-row">
-      <span class="profile-label">Position:</span>
-      <span class="profile-info"><%= user.position %></span>
-    </div>
-    <div class="profile-info-row">
-      <span class="profile-label">Email:</span>
-      <span class="profile-info">
-        <%= mail_to user.email, user.email, class: "text-primary" %>
-      </span>
-    </div>
-    <div class="profile-info-row">
-      <span class="profile-label"><%= t('users.profile.member') %>:</span>
-      <span class="profile-info">
-        <%= user.created_at.strftime("%B %d, %Y") %>
-      </span>
-    </div>
-    <div class="profile-info-row">
-      <span class="profile-label">Address:</span>
-      <span class="profile-info"><%= user.address %></span>
+<%# _user_info.html.erb %>
+<div class="construction-profile-card">
+  <div class="profile-header">
+    <%= image_tag(
+      user.logo.attached? ? user.logo : "default_logo.png", 
+      alt: "#{user.company_name}'s profile picture", 
+      class: "company-logo"
+    ) %>
+  </div>
+  <div class="profile-content">
+    <h3 class="company-name"><%= user.first_name %></h3>
+    <div class="position-badge"><%= user.position %></div>
+    <div class="info-grid">
+      <div class="info-item">
+        <i class="fas fa-hard-hat"></i>
+        <div class="info-details">
+          <label><%= t('users.profile.name') %></label>
+          <span><%= user.first_name %></span>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-user-tie"></i>
+        <div class="info-details">
+          <label>Position</label>
+          <span><%= user.position %></span>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-envelope"></i>
+        <div class="info-details">
+          <label>Email</label>
+          <span><%= mail_to user.email, user.email, class: "email-link" %></span>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="info-details">
+          <label><%= t('users.profile.member') %></label>
+          <span><%= user.created_at.strftime("%B %d, %Y") %></span>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <div class="info-details">
+          <label>Address</label>
+          <span><%= user.address %></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <style>
-  .user-profile-card {
-      background-color: #f8f9fa;
-      border-radius: 12px;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .construction-profile-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
+    position: relative;
   }
 
-  .user-avatar {
-      border: 4px solid #e9ecef;
-      margin-bottom: 1rem;
+  .construction-profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FDB900 0%, #F29F05 100%);
   }
 
-  .user-details {
-      margin-top: 1rem;
+  .profile-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    padding: 2rem;
+    text-align: center;
   }
 
-  .profile-label {
-      color: #6c757d;
-      font-weight: 500;
-      margin-right: 0.5rem;
+  .company-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    object-fit: cover;
   }
 
-  .profile-info {
-      color: #343a40;
+  .profile-content {
+    padding: 2rem;
   }
 
-  .profile-info-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #e9ecef;
+  .company-name {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .position-badge {
+    background: #FDB900;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 0 auto 1.5rem;
+    font-weight: 500;
+    text-align: center;
+    width: fit-content;
+  }
+
+  .info-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.2s;
+  }
+
+  .info-item:hover {
+    transform: translateY(-2px);
+    background: #f0f2f5;
+  }
+
+  .info-item i {
+    color: #FDB900;
+    font-size: 1.25rem;
+    margin-right: 1rem;
+  }
+
+  .info-details {
+    flex: 1;
+  }
+
+  .info-details label {
+    display: block;
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .info-details span {
+    color: #2c3e50;
+    font-weight: 500;
+  }
+
+  .email-link {
+    color: #FDB900;
+    text-decoration: none;
+  }
+
+  .email-link:hover {
+    text-decoration: underline;
   }
 </style>

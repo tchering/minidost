@@ -1,20 +1,101 @@
-<% # app/views/bios/_bio.html.erb %>
 <%= turbo_frame_tag "bio_form_frame" do %>
-  <% if user.bio.present? %>
-    <div class="bio-content">
-      <h5>Bio</h5>
-      <p><%= user.bio.text %></p>
-      <% if current_user == user %>
-        <%= link_to t("bios.button.edit"), edit_bio_path(user.bio), class: "btn btn-primary", data: { turbo_frame: "bio_form_frame", turbo_method: :get } %>
-      <% end %>
+  <div class="construction-bio-card">
+    <div class="bio-header">
+      <i class="fas fa-hard-hat bio-icon"></i>
+      <h5>Professional Bio</h5>
     </div>
-  <% else %>
-    <div class="bio-content">
-      <h5>Bio</h5>
-      <p>No bio available.</p>
-      <% if current_user == user %>
-        <%= link_to "Create Bio", new_bio_path, class: "btn btn-primary", data: { turbo_frame: "bio_form_frame" } %>
-      <% end %>
-    </div>
-  <% end %>
+    <% if user.bio.present? %>
+      <div class="bio-content">
+        <p class="bio-text"><%= user.bio.text %></p>
+        <% if current_user == user %>
+          <%= link_to edit_bio_path(user.bio),
+              class: "bio-edit-btn",
+              data: { turbo_frame: "bio_form_frame", turbo_method: :get } do %>
+            <i class="fas fa-edit me-2"></i>
+            <%= t("bios.button.edit") %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="bio-content empty-bio">
+        <p class="text-muted">
+          <i class="fas fa-info-circle me-2"></i>
+          No professional bio available.
+        </p>
+        <% if current_user == user %>
+          <%= link_to new_bio_path,
+              class: "bio-create-btn",
+              data: { turbo_frame: "bio_form_frame" } do %>
+            <i class="fas fa-plus-circle me-2"></i>
+            Create Bio
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% end %>
+<style>
+  .construction-bio-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+  }
+
+  .bio-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ffc107;
+  }
+
+  .bio-icon {
+    color: #ffc107;
+    font-size: 1.5rem;
+  }
+
+  .bio-content {
+    padding: 1rem 0;
+  }
+
+  .bio-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #495057;
+  }
+
+  .bio-edit-btn, .bio-create-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .bio-edit-btn {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+  }
+
+  .bio-create-btn {
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+  }
+
+  .bio-edit-btn:hover, .bio-create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .empty-bio {
+    text-align: center;
+    padding: 2rem;
+  }
+</style>
