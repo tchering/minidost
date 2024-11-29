@@ -19,7 +19,8 @@ export default class extends Controller {
           this.taskableFieldsTarget.innerHTML = html;
         });
     } else {
-      this.taskableFieldsTarget.innerHTML = ''; // Clear fields if no selection
+      //When no activity is selected, clear fields
+      this.taskableFieldsTarget.innerHTML = ""; // Clear fields if no selection
     }
   }
 }

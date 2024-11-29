@@ -61,7 +61,8 @@ class TasksController < ApplicationController
     if @taskable_type.present?
       @task.taskable = @taskable_type.constantize.new(taskable_params.to_h)
     else
-      @task.errors.add(:taskable_type, "Activity must be selected")
+      #shows error message if no activity is selected
+      @task.errors.add(:base, "Activity must be selected")
       render :new, status: :unprocessable_entity
       return
     end
