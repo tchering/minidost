@@ -18,6 +18,8 @@ export default class extends Controller {
         .then((html) => {
           this.taskableFieldsTarget.innerHTML = html;
         });
+    } else {
+      this.taskableFieldsTarget.innerHTML = ''; // Clear fields if no selection
     }
   }
 }

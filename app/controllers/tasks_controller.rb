@@ -57,8 +57,15 @@ class TasksController < ApplicationController
   def create
     @task = current_user.created_tasks.build(task_params)
     @taskable_type = params[:task][:taskable_type]
-    @task.taskable = @taskable_type.constantize.new(taskable_params.to_h)
-    # @task.contractor = current_user
+
+    if @taskable_type.present?
+      @task.taskable = @taskable_type.constantize.new(taskable_params.to_h)
+    else
+      @task.errors.add(:taskable_type, "Activity must be selected")
+      render :new, status: :unprocessable_entity
+      return
+    end
+
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: "Task was successfully created" }
