@@ -1,25 +1,25 @@
-<%# app/views/tasks/_taskable_fields.html.erb %>
+<%# app/views/tasks/edit/_taskable_fields.html.erb %>
 <div class="row g-4">
   <%# Text Attributes %>
   <% @grouped_attributes[:text_attributes].each do |name, value| %>
     <div class="col-md-6">
-      <div class="form-group">
-        <%= tf.label name, name.humanize, class: 'form-label' %>
-        <%= tf.text_field name, value: value, class: 'form-control' %>
+      <div class="attribute-group">
+        <%= tf.label name, name.humanize, class: "form-label" %>
+        <%= tf.text_field name, value: value, class: "form-control" %>
       </div>
     </div>
   <% end %>
   <%# Measurements %>
   <% if @grouped_attributes[:measurements].present? %>
-    <div class="col-12">
-      <h6 class="mb-3">Measurements</h6>
+    <div class="col-12 mb-4">
+      <h5 class="text-primary border-bottom pb-2 mb-3">Measurements</h5>
       <div class="row g-3">
         <% @grouped_attributes[:measurements].each do |name, value| %>
           <div class="col-md-4">
-            <div class="form-group">
-              <%= tf.label name, name.humanize, class: 'form-label' %>
+            <div class="attribute-group">
+              <%= tf.label name, name.humanize, class: "form-label" %>
               <div class="input-group">
-                <%= tf.number_field name, value: value, class: 'form-control', step: 'any' %>
+                <%= tf.number_field name, value: value, class: "form-control", step: "any" %>
                 <span class="input-group-text">m²</span>
               </div>
             </div>
@@ -31,13 +31,13 @@
   <%# Boolean Services %>
   <% if @grouped_attributes[:boolean_services].present? %>
     <div class="col-12">
-      <h6 class="mb-3">Services</h6>
+      <h5 class="text-primary border-bottom pb-2 mb-3">Services</h5>
       <div class="row g-3">
         <% @grouped_attributes[:boolean_services].each do |name, value| %>
           <div class="col-md-4">
-            <div class="form-check">
-              <%= tf.check_box name, checked: value, class: 'form-check-input' %>
-              <%= tf.label name, name.humanize, class: 'form-check-label' %>
+            <div class="form-check form-switch">
+              <%= tf.check_box name, checked: value, class: "form-check-input" %>
+              <%= tf.label name, name.humanize, class: "form-check-label" %>
             </div>
           </div>
         <% end %>

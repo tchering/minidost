@@ -1,16 +1,41 @@
-<%# app/views/tasks/_form.html.erb %>
-<%= form_with(model: @task) do |f| %>
-  <%# Common fields %>
-  <div class="row g-4">
-    <%= render 'tasks/edit/common_fields', f: f %>
+<%# app/views/tasks/edit/_form.html.erb %>
+<div class="container-fluid px-4 py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center p-4">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-edit me-3 fa-2x"></i>
+            <h3 class="mb-0 fw-bold">Edit Task</h3>
+          </div>
+        </div>
+        <%= form_with(model: @task) do |f| %>
+          <div class="card-body p-5">
+            <%# Common Task Details %>
+            <section class="mb-5">
+              <div class="d-flex align-items-center mb-4 border-bottom pb-3">
+                <i class="fas fa-info-circle me-3 text-primary fa-2x"></i>
+                <h4 class="mb-0 text-primary fw-bold">Basic Information</h4>
+              </div>
+              <%= render 'tasks/edit/common_fields', f: f %>
+            </section>
+            <%# Taskable Details %>
+            <section class="mb-4">
+              <div class="d-flex align-items-center mb-4 border-bottom pb-3">
+                <i class="<%= task_type_icon(@task.taskable_type) %> me-3 text-primary fa-2x"></i>
+                <h4 class="mb-0 text-primary fw-bold"><%= @task.taskable_type.underscore.humanize %> Details</h4>
+              </div>
+              <%= f.fields_for :taskable do |tf| %>
+                <%= render 'tasks/edit/taskable_fields', tf: tf %>
+              <% end %>
+            </section>
+            <%# Submit Button %>
+            <div class="text-center mt-5">
+              <%= f.submit "Update Task", class: "btn btn-primary btn-lg px-5 btn-rounded" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-  <%# Taskable fields %>
-  <div class="row g-4">
-    <%= f.fields_for :taskable do |tf| %>
-      <%= render 'tasks/edit/taskable_fields', tf: tf %>
-    <% end %>
-  </div>
-  <div class="text-center mt-4">
-    <%= f.submit class: "btn btn-primary btn-lg px-5" %>
-  </div>
-<% end %>
+</div>
