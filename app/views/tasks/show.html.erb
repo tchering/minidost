@@ -1,31 +1,89 @@
 <%# app/views/tasks/show.html.erb %>
-<div class="card shadow-sm">
-  <div class="card-header bg-light p-3">
-    <h4 class="mb-0">
-      <i class="fas fa-clipboard-check me-2"></i>
-      Task Details
-    </h4>
-  </div>
-  <div class="card-body p-4">
-    <div>
-      <%= link_to "Edit", edit_task_path(@task), class: "btn btn-primary btn-sm" %>
-      <%= link_to "Delete",task_path(@task),data: {turbo_method: :delete,turbo_confirm: "Are you sure?"},class:"btn btn-danger btn-sm" %></div>
-    <%# Common Task Details %>
-    <div class="mb-5">
-      <h5 class="mb-4 text-primary">
-        <i class="fas fa-info-circle me-2"></i>Basic Information
-      </h5>
-      <div class="row g-4">
-        <%= render 'tasks/common_details', task: @task %>
+<div class="container-fluid px-4 py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center p-4">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-clipboard-check me-3 fa-2x"></i>
+            <h3 class="mb-0 fw-bold">Task Details</h3>
+          </div>
+          <div class="btn-group" role="group" aria-label="Task Actions">
+            <%= link_to edit_task_path(@task), class: "btn btn-outline-light btn-rounded" do %>
+              <i class="fas fa-edit me-2"></i>Edit
+            <% end %>
+            <%= link_to task_path(@task), 
+                data: {turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this task?"},
+                class: "btn btn-outline-danger btn-rounded" do %>
+              <i class="fas fa-trash-alt me-2"></i>Delete
+            <% end %>
+          </div>
+        </div>
+        <div class="card-body p-5">
+          <%# Common Task Details %>
+          <section class="mb-5">
+            <div class="d-flex align-items-center mb-4 border-bottom pb-3">
+              <i class="fas fa-info-circle me-3 text-primary fa-2x"></i>
+              <h4 class="mb-0 text-primary fw-bold">Basic Information</h4>
+            </div>
+            <%= render 'tasks/common_details', task: @task %>
+          </section>
+          <%# Dynamic Taskable Details %>
+          <section class="mb-4">
+            <div class="d-flex align-items-center mb-4 border-bottom pb-3">
+              <i class="<%= task_type_icon(@task.taskable_type) %> me-3 text-primary fa-2x"></i>
+              <h4 class="mb-0 text-primary fw-bold"><%= @task.taskable_type.underscore.humanize %> Details</h4>
+            </div>
+            <%= render_taskable_attributes(@task.taskable) %>
+          </section>
+        </div>
       </div>
-    </div>
-    <%# Dynamic Taskable Details %>
-    <div class="mb-5">
-      <h5 class="mb-4 text-primary">
-        <i class="<%= task_type_icon(@task.taskable_type) %> me-2"></i>
-        <%= @task.taskable_type.underscore.humanize %> Details
-      </h5>
-      <%= render_taskable_attributes(@task.taskable) %>
     </div>
   </div>
 </div>
+<%# Custom Styles %>
+<style>
+  body {
+    background-color: #f4f6f9;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .card {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(45deg, #3f51b5, #2196f3) !important;
+  }
+
+  .attribute-group label {
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  .attribute-group p {
+    font-size: 1rem;
+    color: #212529;
+    font-weight: 600;
+  }
+
+  .btn-rounded {
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 1.25rem;
+  }
+
+  .form-check-input {
+    border-radius: 4px;
+  }
+
+  .text-muted {
+    color: #6c757d !important;
+  }
+</style>

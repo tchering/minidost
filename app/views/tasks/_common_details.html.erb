@@ -1,83 +1,81 @@
 <%# app/views/tasks/_common_details.html.erb %>
-<div class="col-12">
+<div class="row">
   <%# Site Information %>
-  <div class="mb-4">
-    <h6 class="text-muted mb-3">Site Information</h6>
+  <div class="col-12 mb-4">
+    <h5 class="text-primary border-bottom pb-2 mb-3">Site Information</h5>
     <div class="row g-3">
       <div class="col-md-6">
         <div class="attribute-group">
-          <label class="text-muted">Site Name</label>
-          <p class="mb-0"><%= task.site_name %></p>
+          <label>Site Name</label>
+          <p class="text-dark"><%= task.site_name %></p>
         </div>
       </div>
       <div class="col-md-6">
         <div class="attribute-group">
-          <label class="text-muted">Address</label>
-          <p class="mb-0"><%= "#{task.street}, #{task.city}, #{task.area_code}" %></p>
+          <label>Address</label>
+          <p class="text-dark"><%= "#{task.street}, #{task.city}, #{task.area_code}" %></p>
         </div>
       </div>
     </div>
   </div>
   <%# Price Information %>
-  <div class="mb-4">
-    <h6 class="text-muted mb-3">Price Details</h6>
+  <div class="col-12 mb-4">
+    <h5 class="text-primary border-bottom pb-2 mb-3">Price Details</h5>
     <div class="row g-3">
       <div class="col-md-6">
         <div class="attribute-group">
-          <label class="text-muted">Proposed Price</label>
-          <p class="mb-0"><%= number_to_currency(task.proposed_price, unit: "€") %></p>
+          <label>Proposed Price</label>
+          <p class="text-dark"><%= number_to_currency(task.proposed_price, unit: "€") %></p>
         </div>
       </div>
       <div class="col-md-6">
         <div class="attribute-group">
-          <label class="text-muted">Accepted Price</label>
-          <p class="mb-0"><%= number_to_currency(task.accepted_price, unit: "€") if task.accepted_price %></p>
+          <label>Accepted Price</label>
+          <p class="text-dark"><%= number_to_currency(task.accepted_price, unit: "€") if task.accepted_price %></p>
         </div>
       </div>
     </div>
   </div>
   <%# Schedule Information %>
-  <div class="mb-4">
-    <h6 class="text-muted mb-3">Schedule</h6>
+  <div class="col-12 mb-4">
+    <h5 class="text-primary border-bottom pb-2 mb-3">Schedule</h5>
     <div class="row g-3">
       <div class="col-md-6">
         <div class="attribute-group">
-          <label class="text-muted">Start Date</label>
-          <p class="mb-0"><%= task.start_date&.strftime("%B %d, %Y") %></p>
+          <label>Start Date</label>
+          <p class="text-dark"><%= task.start_date&.strftime("%B %d, %Y") %></p>
         </div>
       </div>
       <div class="col-md-6">
         <div class="attribute-group">
-          <label class="text-muted">End Date</label>
-          <p class="mb-0"><%= task.end_date&.strftime("%B %d, %Y") %></p>
+          <label>End Date</label>
+          <p class="text-dark"><%= task.end_date&.strftime("%B %d, %Y") %></p>
         </div>
       </div>
     </div>
   </div>
   <%# Status Information %>
-  <div class="mb-4">
-    <h6 class="text-muted mb-3">Status</h6>
+  <div class="col-12 mb-4">
+    <h5 class="text-primary border-bottom pb-2 mb-3">Status</h5>
     <div class="row g-3">
       <div class="col-md-4">
         <div class="attribute-group">
-          <label class="text-muted">Current Status</label>
-          <p class="mb-0">
-            <span class="badge bg-<%= status_color(task.status) %>">
-              <%= task.status %>
-            </span>
-          </p>
+          <label>Current Status</label>
+          <span class="badge bg-<%= status_color(task.status) %> rounded-pill px-3 py-2">
+            <%= task.status %>
+          </span>
         </div>
       </div>
       <div class="col-md-4">
         <div class="attribute-group">
-          <label class="text-muted">Work Progress</label>
-          <p class="mb-0"><%= task.work_progress %></p>
+          <label>Work Progress</label>
+          <p class="text-dark"><%= task.work_progress %></p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="attribute-group">
-          <label class="text-muted">Billing Process</label>
-          <p class="mb-0"><%= task.billing_process %></p>
+          <label>Billing Process</label>
+          <p class="text-dark"><%= task.billing_process %></p>
         </div>
       </div>
     </div>

@@ -4,37 +4,39 @@
   <% groups[:text_attributes].each do |name, value| %>
     <div class="col-md-6">
       <div class="attribute-group">
-        <label class="text-muted"><%= name.humanize %></label>
-        <p class="mb-0"><%= value.presence || 'N/A' %></p>
+        <label><%= name.humanize %></label>
+        <p class="text-dark"><%= value.presence || 'N/A' %></p>
       </div>
     </div>
   <% end %>
+
   <%# Measurements %>
   <% if groups[:measurements].present? %>
-    <div class="col-12">
-      <h6 class="mb-3">Measurements</h6>
+    <div class="col-12 mb-4">
+      <h5 class="text-primary border-bottom pb-2 mb-3">Measurements</h5>
       <div class="row g-3">
         <% groups[:measurements].each do |name, value| %>
           <div class="col-md-4">
             <div class="attribute-group">
-              <label class="text-muted"><%= name.humanize %></label>
-              <p class="mb-0"><%= value %> m²</p>
+              <label><%= name.humanize %></label>
+              <p class="text-dark"><%= value %> m²</p>
             </div>
           </div>
         <% end %>
       </div>
     </div>
   <% end %>
+
   <%# Boolean Services %>
   <% if groups[:boolean_services].present? %>
     <div class="col-12">
-      <h6 class="mb-3">Services</h6>
+      <h5 class="text-primary border-bottom pb-2 mb-3">Services</h5>
       <div class="row g-3">
         <% groups[:boolean_services].each do |name, value| %>
           <div class="col-md-4">
-            <div class="form-check">
+            <div class="form-check form-switch">
               <input type="checkbox" class="form-check-input" disabled <%= 'checked' if value %>>
-              <label class="form-check-label"><%= name.humanize %></label>
+              <label class="form-check-label text-muted"><%= name.humanize %></label>
             </div>
           </div>
         <% end %>
