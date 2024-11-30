@@ -1,46 +1,43 @@
 <%= turbo_frame_tag "bio_form_frame" do %>
-  <div class="card shadow-2-strong h-100" data-mdb-animation="fade-in">
-    <div class="card-body p-4">
-      <div class="d-flex align-items-center mb-4" role="heading" aria-level="2">
-        <h5 class="mb-0 text-dark">Bio</h5>
+  <div class="card border h-100">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+        <i class="fas fa-user-circle text-secondary me-2"></i>
+        <h5 class="mb-0 text-secondary">Bio</h5>
       </div>
       <% if user.bio.present? %>
-        <div class="mb-4">
-          <p class="text-muted mb-4 lead" style="line-height: 1.6;">
+        <div class="mb-3">
+          <p class="text-dark mb-3" style="line-height: 1.6;">
             <%= user.bio.text %>
           </p>
           <% if current_user == user %>
             <%= link_to edit_bio_path(user.bio),
-                class: "btn btn-outline-primary btn-floating ripple-surface",
+                class: "btn btn-outline-secondary btn-sm",
                 data: { 
                   turbo_frame: "bio_form_frame",
-                  turbo_method: :get,
-                  mdb_toggle: "tooltip",
-                  mdb_placement: "top"
-                },
-                title: t("bios.button.edit") do %>
-              <i class="fas fa-edit"></i>
+                  turbo_method: :get
+                } do %>
+              <i class="fas fa-edit me-1"></i>
+              <%# <%= t('bios.button.edit') %>
             <% end %>
           <% end %>
         </div>
       <% else %>
         <div class="text-center py-4">
-          <div class="mb-4">
-            <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" 
-                 style="width: 80px; height: 80px;">
-              <i class="fas fa-file-alt text-muted fa-2x"></i>
+          <div class="mb-3">
+            <div class="bg-light rounded p-3 d-inline-block">
+              <i class="fas fa-file-alt text-secondary fa-2x"></i>
             </div>
           </div>
-          <p class="text-muted mb-4">
-            <i class="fas fa-info-circle me-2"></i>
-            No professional bio available.
+          <p class="text-secondary mb-3">
+            No professional biography has been added yet.
           </p>
           <% if current_user == user %>
             <%= link_to new_bio_path,
-                class: "btn btn-warning shadow-3 ripple-surface",
+                class: "btn btn-secondary",
                 data: { turbo_frame: "bio_form_frame" } do %>
-              <i class="fas fa-plus-circle me-2"></i>
-              Create Bio
+              <i class="fas fa-plus me-1"></i>
+              Add Biography
             <% end %>
           <% end %>
         </div>
@@ -49,12 +46,16 @@
   </div>
 <% end %>
 <style>
-  [data-mdb-animation="fade-in"] {
-    animation: fadeIn 0.5s ease-out;
+  .card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    border-color: #dee2e6;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+  }
+
+  .text-secondary {
+    color: #495057 !important;
   }
 </style>
