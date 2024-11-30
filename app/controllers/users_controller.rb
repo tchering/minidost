@@ -22,7 +22,7 @@ class UsersController < ApplicationController
         # 4b. यदि subcontractor ले आफ्नो profile हेर्दै छ भने:
         # - सबै contractors खोज्नुहोस्
         # - उस्तै process: geocoded users पाउनुहोस् र markers बनाउनुहोस्
-        User.where(position: "Donneur-d'ordre").geocoded.map do |user|
+        User.where(position: "Donneur-d'ordre").includes(:logo_attachment).geocoded.map do |user|
           create_marker(user)
         end
       else

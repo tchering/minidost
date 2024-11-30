@@ -27,7 +27,7 @@ class TasksController < ApplicationController
   def activity_to_taskable_type(activity)
     return nil if activity.nil?
 
-    # Convert activity name to model name format
+    #! Convert activity name to model name format but we dont need this here becuase it is handled in the form with this line-> [activity, "#{activity.parameterize.classify}Task"]
     activity.gsub(/[^\w\s]/, "") # Remove special characters
             .split # Split into words
             .map(&:capitalize) # Capitalize each word
@@ -161,6 +161,45 @@ class TasksController < ApplicationController
         :rattrapage_bande_placo,
         :ratissage,
         :pose_baguette_angles,
+        :other_task
+      )
+    when "ElectricienTask"
+      params.require(:taskable).permit(
+        # String fields
+        :type_de_travaux,
+        :type_de_batiment,
+        :nombre_de_pieces,
+        :surface_totale,
+        :amperage_principal,
+        :tension_requise,
+        :phase_type,
+
+        # Boolean fields
+        :installation_tableau_electrique,
+        :mise_aux_normes_tableau,
+        :pose_prises_electriques,
+        :pose_interrupteurs,
+        :installation_eclairage,
+        :pose_luminaires,
+        :installation_cuisine,
+        :installation_salle_de_bain,
+        :installation_exterieure,
+        :installation_cave_garage,
+        :mise_a_la_terre,
+        :installation_differentiel,
+        :installation_parafoudre,
+        :verification_conformite,
+        :installation_domotique,
+        :installation_videophone,
+        :installation_alarme,
+        :installation_ventilation,
+        :depannage_urgent,
+        :recherche_panne,
+        :modification_existant,
+        :passage_cables,
+        :saignee_murs,
+
+        # Text field
         :other_task
       )
     else

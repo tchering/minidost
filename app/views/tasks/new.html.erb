@@ -23,7 +23,7 @@
               <div class="form-outline">
                 <%= f.label :taskable_type, t("task.select_activity"), class: "form-label" %>
                 <%= f.select :taskable_type, 
-                    SelectOption::ACTIVITY_SECTORS.values.flatten.map { |activity| #takes activity from the ActivitySectors
+                    SelectOption::ACTIVITY_SECTORS.values.flatten.map { |activity| #takes activity from the ActivitySectors in select_option.rb
                       [activity, "#{activity.parameterize.classify}Task"] #Transforms the activity into a class name | Example: ["Peintre", "PeintreTask"]
                     },
                     { prompt: t("task.choose_activity") },

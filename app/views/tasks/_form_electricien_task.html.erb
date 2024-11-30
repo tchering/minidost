@@ -1,0 +1,98 @@
+<%# app/views/tasks/_form_electricien_task.html.erb %>
+<div class="card shadow-sm">
+  <div class="card-header bg-light p-3">
+    <h4 class="mb-0"><i class="fas fa-bolt me-2"></i>Electrical Task Details</h4>
+  </div>
+  <div class="card-body p-4">
+    <%= fields_for :taskable do |taskable_form| %>
+      <%# Property Details Section %>
+      <div class="mb-5">
+        <h5 class="mb-4 text-primary"><i class="fas fa-building me-2"></i>Property Details</h5>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :type_de_travaux, "Type of Work", class: "form-label" %>
+              <%= taskable_form.text_field :type_de_travaux, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :type_de_batiment, "Building Type", class: "form-label" %>
+              <%= taskable_form.text_field :type_de_batiment, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :nombre_de_pieces, "Number of Rooms", class: "form-label" %>
+              <%= taskable_form.text_field :nombre_de_pieces, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form">
+              <%= taskable_form.label :surface_totale, "Total Surface Area", class: "form-label" %>
+              <%= taskable_form.text_field :surface_totale, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%# Electrical Specifications %>
+      <div class="mb-5">
+        <h5 class="mb-4 text-primary"><i class="fas fa-plug me-2"></i>Electrical Specifications</h5>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="form">
+              <%= taskable_form.label :amperage_principal, "Main Amperage", class: "form-label" %>
+              <%= taskable_form.text_field :amperage_principal, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form">
+              <%= taskable_form.label :tension_requise, "Required Voltage", class: "form-label" %>
+              <%= taskable_form.text_field :tension_requise, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form">
+              <%= taskable_form.label :phase_type, "Phase Type", class: "form-label" %>
+              <%= taskable_form.text_field :phase_type, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%# Installation Services %>
+      <div class="mb-5">
+        <h5 class="mb-4 text-primary"><i class="fas fa-tools me-2"></i>Required Services</h5>
+        <div class="row g-3">
+          <% boolean_fields = [
+            :installation_tableau_electrique, :mise_aux_normes_tableau,
+            :pose_prises_electriques, :pose_interrupteurs, :installation_eclairage,
+            :pose_luminaires, :installation_cuisine, :installation_salle_de_bain,
+            :installation_exterieure, :installation_cave_garage, :mise_a_la_terre,
+            :installation_differentiel, :installation_parafoudre, :verification_conformite,
+            :installation_domotique, :installation_videophone, :installation_alarme,
+            :installation_ventilation, :depannage_urgent, :recherche_panne,
+            :modification_existant, :passage_cables, :saignee_murs
+          ] %>
+          <% boolean_fields.each_slice(3) do |fields_group| %>
+            <div class="col-md-4">
+              <% fields_group.each do |field| %>
+                <div class="form-check mb-3">
+                  <%= taskable_form.check_box field, class: "form-check-input" %>
+                  <%= taskable_form.label field, field.to_s.humanize, class: "form-check-label" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%# Additional Information %>
+      <div class="mb-4">
+        <h5 class="mb-4 text-primary"><i class="fas fa-info-circle me-2"></i>Additional Information</h5>
+        <div class="form">
+          <%= taskable_form.label :other_task, "Other Requirements", class: "form-label" %>
+          <%= taskable_form.text_area :other_task, class: "form-control", rows: 4 %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
