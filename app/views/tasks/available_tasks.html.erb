@@ -1,0 +1,53 @@
+<%# app/views/tasks/available_tasks.html.erb %>
+<div class="container mt-4">
+  <h2><%= t("task.available_tasks") %></h2>
+  <% if @tasks.any? %>
+    <div class="row">
+      <% @tasks.each do |task| %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <%= link_to task_path(task), class: "text-decoration-none" do %>
+              <div class="card-body">
+                <div>
+                  <%= image_tag(task.contractor.logo.attached? ? task.contractor.logo : "default_logo.png", alt: "#{task.contractor.company_name}'s profile picture", class: "rounded-circle",style:"width: 100px; height: 100px; object-fit: cover;" ) %>
+                </div>
+                <h5 class="card-title"><%= task.site_name %></h5>
+                <p class="card-text">
+                  <strong><%= t("task.location") %>:</strong>
+                  <%= "#{task.street}, #{task.city}" %>
+                </p>
+                <p class="card-text">
+                  <strong><%= t("task.proposed_price") %>:</strong>
+                  <%= number_to_currency(task.proposed_price, unit: "€") %>
+                </p>
+                <% if task.start_date && task.end_date %>
+                  <p class="card-text">
+                    <strong>Date:</strong>
+                    <%= "#{l(task.start_date)} - #{l(task.end_date)}" %>
+                  </p>
+                <% end %>
+                <% if user_signed_in? && current_user.subcontractor? %>
+                  <%= button_to t("task.express_interest"), 
+                    express_interest_task_path(task), 
+                    method: :post,
+                    class: "btn btn-primary #{'disabled' if task.sub_contractor_list&.include?(current_user.id)}" %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info mt-3">
+      <%= t("task.no_available_tasks") %>
+    </div>
+  <% end %>
+  <%# Debug information in development %>
+  <% if Rails.env.development? %>
+    <div class="mt-4">
+      <p>Debug Info:</p>
+      <pre><%= @tasks.inspect %></pre>
+    </div>
+  <% end %>
+</div>

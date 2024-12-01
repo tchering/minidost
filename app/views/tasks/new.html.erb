@@ -119,6 +119,7 @@
                     <%= f.select :status, 
                         options_for_select([
                           [t("task.status_pending"), "pending"],
+                          [t("task.status_active"), "active"],
                           [t("task.status_in_progress"), "in progress"],
                           [t("task.status_completed"), "completed"]
                         ], selected: @task.status), 

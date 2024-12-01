@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy]
+  before_action :set_task, only: %i[show edit update destroy express_interest delete_interest]
   helper_method :group_attributes
   include TasksHelper
 
@@ -118,6 +118,35 @@ class TasksController < ApplicationController
                layout: false
       end
     end
+  end
+
+  def available_tasks
+    # @tasks = Task.active.where.not(contractor_id: current_user.id)
+    @tasks = Task.where("LOWER(status) = ?", "active".downcase).includes(:contractor)
+    # @tasks = Task.where(status: "active").where.not(contractor_id: current_user.id)
+    Rails.logger.debug("Available tasks: #{@tasks}- #{@tasks.count}")
+    Rails.logger.debug("Current user: #{current_user}")
+    Rails.logger.debug "Tasks: #{@tasks.inspect}"
+  end
+
+  def express_interest
+    # @task = Task.find(params[:id]) # This is already done in before_action
+    unless @task.sub_contractor_list.include?(current_user.id)
+      @task.add_interested_subcontractor(current_user.id)
+      flash[:notice] = t("task.interested_message")
+    else
+      flash[:alert] = t("task.already_interested_message")
+    end
+    redirect_to task_path(@task)
+  end
+
+  def delete_interest
+    # @task = Task.find(params[:id]) # This is already done in before_action
+    if @task.sub_contractor_list.include?(current_user.id)
+      @task.delete_interested_subcontractor(current_user.id)
+      flash[:notice] = t("task.not_interested_message")
+    end
+    redirect_to task_path(@task)
   end
 
   private

@@ -19,8 +19,21 @@ en:
     status: "Status"
     enter_price: "Enter price"
     status_pending: "Pending"
+    status_active: "Active"
     status_in_progress: "In Progress"
     status_completed: "Completed"
+    available_tasks: "Available Tasks"
+    no_available_tasks: "No available tasks"
+    interested_message: "Notification has been sent to the employer"
+    not_interested_message: "You have removed your candidacy for this project"
+    already_interested_message: "You have already expressed interest in this project"
+    delete_turbo_confirm: "Are you sure you want to withdraw your candidacy for this project?"
+    buttons:
+      create: "Create"
+      update: "Update"
+      delete: "Delete"
+      send_interest: "Send Interest"
+      delete_interest: "Delete Interest"
   activerecord:
     errors:
       models:
