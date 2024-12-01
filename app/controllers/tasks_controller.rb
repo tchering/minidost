@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy ]
+  before_action :set_task, only: %i[show edit update destroy]
   helper_method :group_attributes
   include TasksHelper
 
@@ -129,16 +129,14 @@ class TasksController < ApplicationController
     Rails.logger.debug "Tasks: #{@tasks.inspect}"
   end
 
-  # def express_interest
-  #   # @task = Task.find(params[:id]) # This is already done in before_action
-  #   unless @task.sub_contractor_list.include?(current_user.id)
-  #     @task.add_interested_subcontractor(current_user.id)
-  #     flash[:notice] = t("task.interested_message")
-  #   else
-  #     flash[:alert] = t("task.already_interested_message")
-  #   end
-  #   redirect_to task_path(@task)
-  # end
+  def express_interest
+    # @task = Task.find(params[:id]) # This is already done in before_action
+    if @task.task_applications.exists?(sub_contractor: current_user)
+      flash[:notice] = t("task.already_interested_message")
+    else
+      application = @task.task_applications.build(application_params)
+    end
+  end
 
   # def delete_interest
   #   # @task = Task.find(params[:id]) # This is already done in before_action

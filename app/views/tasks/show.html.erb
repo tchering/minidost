@@ -20,7 +20,8 @@
               <% end %>
             </div>
           <% else %>
-            <%#! dynamic button rendered according to already sent interest %>
+            <%#! dynamic button rendering + form to apply for the task %>
+            <%= render 'task_applications/application_form', task: @task %>
             <%#! ---------------------------------------- %>
           <% end %>
         </div>

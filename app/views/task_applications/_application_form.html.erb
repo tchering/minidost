@@ -1,0 +1,5 @@
+<% if current_user.subcontractor? && task.task_applications.exists?(sub_contractor: current_user) %>
+  <button>cancel</button>
+<% else %>
+  <button>Apply</button>
+<% end %>
