@@ -1,5 +1,5 @@
 class TaskApplicationsController < ApplicationController
-  before_action :set_task, only: [:create]
+  before_action :set_task, only: [:create, :destroy]
   # before_action :set_application, only: [:approve, :reject]
 
   def index
@@ -17,6 +17,15 @@ class TaskApplicationsController < ApplicationController
       redirect_to @task, notice: t("task.interested_message")
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @application = @task.task_applications.find_by(subcontractor: current_user)
+    if @application&.destroy
+      redirect_to @task, notice: t("task.not_interested_message")
+    else
+      redirect_to @task, alert: t("task.not_interested_error_message")
     end
   end
 

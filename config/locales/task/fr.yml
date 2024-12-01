@@ -35,6 +35,7 @@ fr:
     interested_message: "Le notification a été envoyée à l'employeur"
     not_interested_message: "Vous avez retiré votre candidature pour cette projet" 
     already_interested_message: "Vous avez déjà exprimé votre intérêt pour cette projet"
+    not_interested_error_message: "Vous ne pouvez pas retirer votre candidature pour ce projet actuellement. Veuillez réessayer plus tard."
     delete_turbo_confirm: "Voulez-vous vraiment retirer votre candidature pour ce projet ?"
     buttons: 
       create: "Créer"
