@@ -21,17 +21,6 @@
             </div>
           <% else %>
             <%#! dynamic button rendered according to already sent interest %>
-            <% if @task.sub_contractor_list&.include?(current_user.id) %>
-              <%= button_to t('task.buttons.delete_interest'),
-                  delete_interest_task_path(@task),
-                  data: { turbo_method: :post, turbo_confirm: t('task.delete_turbo_confirm') },
-                  class: "btn btn-danger  btn-rounded" %>
-            <% else %>
-              <%= button_to t("task.buttons.send_interest"), 
-                express_interest_task_path(@task), 
-                method: :post, 
-                class: "btn btn-success btn-rounded" %>
-            <% end %>
             <%#! ---------------------------------------- %>
           <% end %>
         </div>

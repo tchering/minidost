@@ -9,8 +9,8 @@ class User < ApplicationRecord
   geocoded_by :full_address
   # Automatically geocode when address fields change
   after_validation :geocode, if: lambda { |obj|
-    obj.street_changed? || obj.area_code_changed? || obj.city_changed? || obj.country_changed?
-  }
+              obj.street_changed? || obj.area_code_changed? || obj.city_changed? || obj.country_changed?
+            }
 
   # Combines address fields into full address string
   def full_address
@@ -22,9 +22,19 @@ class User < ApplicationRecord
   end
 
   # ------------------------------------------------------------------->
-  # Associations with Task model
-  has_many :created_tasks, class_name: 'Task', foreign_key: 'contractor_id'
-  has_many :accepted_tasks, class_name: 'Task', foreign_key: 'sub_contractor_id'
+  #! Associations with Task model
+  # For contractors to see tasks they created
+  has_many :created_tasks, class_name: "Task", foreign_key: "contractor_id"
+  # For subcontractors to see tasks they were selected for
+  has_many :accepted_tasks, class_name: "Task", foreign_key: "sub_contractor_id"
+
+  #! Associations with TaskApplication model
+  # For subcontractors to see their applications
+  has_many :task_applications, foreign_key: "subcontractor_id"
+  # For subcontractors to see tasks they applied to
+  has_many :applied_tasks, through: :task_applications, source: :task
+  #Here source: :task is referencing belongs_to :task from TaskApplication model
+
   # before_create :build_default_company
   # before_create :set_default_admin
   # Include default devise modules. Others available are:
@@ -55,8 +65,8 @@ class User < ApplicationRecord
   # logo validation
   has_one_attached :logo
 
-  validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
-                   size: { less_than: 4.megabytes, message: 'is too big' }
+  validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"],
+                   size: { less_than: 4.megabytes, message: "is too big" }
 
   # Position validations and helper methods
   validates :position, presence: true, inclusion: { in: %w[contractor sub-contractor] }
@@ -65,11 +75,11 @@ class User < ApplicationRecord
   has_one :bio, dependent: :destroy
   # helper methods for position checks
   def contractor?
-    position == 'contractor'
+    position == "contractor"
   end
 
   def subcontractor?
-    position == 'sub-contractor'
+    position == "sub-contractor"
   end
 
   def thumbnail_logo
@@ -87,6 +97,6 @@ class User < ApplicationRecord
   end
 
   def set_default_country
-    self.country ||= 'France'
+    self.country ||= "France"
   end
 end

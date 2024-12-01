@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_01_091210) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_01_185215) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -117,6 +117,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_091210) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "task_applications", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "subcontractor_id", null: false
+    t.decimal "proposed_price"
+    t.text "cover_letter"
+    t.string "application_status"
+    t.integer "experience"
+    t.string "completion_timeframe"
+    t.text "references"
+    t.string "insurance_status"
+    t.string "payment_terms"
+    t.boolean "negotiable"
+    t.string "skills"
+    t.text "equipement_owned"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subcontractor_id"], name: "index_task_applications_on_subcontractor_id"
+    t.index ["task_id"], name: "index_task_applications_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "taskable_type", null: false
     t.bigint "taskable_id", null: false
@@ -135,7 +155,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_091210) do
     t.string "billing_process"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sub_contractor_list", default: [], array: true
     t.index ["contractor_id"], name: "index_tasks_on_contractor_id"
     t.index ["status"], name: "index_tasks_on_status"
     t.index ["sub_contractor_id"], name: "index_tasks_on_sub_contractor_id"
@@ -179,6 +198,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_091210) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bios", "users"
+  add_foreign_key "task_applications", "tasks"
+  add_foreign_key "task_applications", "users", column: "subcontractor_id"
   add_foreign_key "tasks", "users", column: "contractor_id"
   add_foreign_key "tasks", "users", column: "sub_contractor_id"
 end

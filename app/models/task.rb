@@ -3,8 +3,16 @@
 class Task < ApplicationRecord
   before_save :normalize_status
   belongs_to :taskable, polymorphic: true
+  #! Associations with User model
   belongs_to :contractor, class_name: "User", foreign_key: "contractor_id"
   belongs_to :sub_contractor, class_name: "User", foreign_key: "sub_contractor_id", optional: true
+
+  #! Associations with TaskApplication model
+  #track all applications for a task
+  has_many :task_applications, dependent: :destroy
+  #track all subcontractors who applied to a task
+  has_many :interested_sub_contractors, through: :task_applications, source: :subcontractor
+  #here source is referencing  { belongs_to :subcontractor} from TaskApplication model
 
   validates :taskable_type, presence: true
   validates :site_name, :street, :city, :status, presence: true

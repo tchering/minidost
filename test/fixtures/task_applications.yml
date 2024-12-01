@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task: one
+  subcontractor: one
+  proposed_price: 9.99
+  cover_letter: MyText
+  application_status: MyString
+  experience: 1
+  completion_timeframe: MyString
+  references: MyText
+  insurance_status: MyString
+  payment_terms: MyString
+  negotiable: false
+  skills: MyString
+  equipement_owned: MyText
+
+two:
+  task: two
+  subcontractor: two
+  proposed_price: 9.99
+  cover_letter: MyText
+  application_status: MyString
+  experience: 1
+  completion_timeframe: MyString
+  references: MyText
+  insurance_status: MyString
+  payment_terms: MyString
+  negotiable: false
+  skills: MyString
+  equipement_owned: MyText
