@@ -33,7 +33,7 @@ Rails.application.routes.draw do
         get :load_taskable_fields
         get :available_tasks
       end
-      resources :task_applications, only: [:index, :new, :create, :destroy] do
+      resources :task_applications, only: [:index, :create, :destroy] do
         member do
           get :review
           post :approve

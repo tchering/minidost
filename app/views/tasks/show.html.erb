@@ -21,7 +21,21 @@
             </div>
           <% else %>
             <%#! dynamic button rendering + form to apply for the task %>
-            <%= render 'task_applications/application_form', task: @task %>
+            <% if current_user.subcontractor? && task.task_applications.exists?(sub_contractor: current_user) %>
+              <button>cancel</button>
+            <% else %>
+              <div data-controller="dialog" data-action="click->dialog#backdropClose">
+                <dialog data-dialog-target="dialog">
+                  <%#!Form goes here %>
+                  <%= render 'task_applications/application_form', task: @task %>
+                  <%#!------------- %>
+                  <div>
+                  </div>
+                  <button type="button" data-action="dialog#close" autofocus>Cancel</button>
+                </dialog>
+                <button type="button" data-action="dialog#open" class="btn btn-success btn-rounded"><%= t('task.buttons.send_interest') %></button>
+              </div>
+            <% end %>
             <%#! ---------------------------------------- %>
           <% end %>
         </div>

@@ -1,5 +1,72 @@
-<% if current_user.subcontractor? && task.task_applications.exists?(sub_contractor: current_user) %>
-  <button>cancel</button>
-<% else %>
-  <button>Apply</button>
-<% end %>
+<%# app/views/task_applications/_application_form.html.erb %>
+<div class="task-application">
+  <%= form_with(model: [@task, TaskApplication.new], 
+                local: true, 
+                class: "task-application__form") do |f| %>
+    <h3 class="task-application__title">Submit Your Application</h3>
+    <div class="task-application__grid">
+      <div class="task-application__field">
+        <div class="task-application__input-group">
+          <%= f.label :proposed_price, class: "task-application__label" %>
+          <%= f.number_field :proposed_price, 
+                           step: "0.01", 
+                           class: "task-application__input",
+                           required: true %>
+          <span class="task-application__currency">€</span>
+        </div>
+      </div>
+      <div class="task-application__field">
+        <%= f.label :experience, "Years of Experience", class: "task-application__label" %>
+        <%= f.number_field :experience, class: "task-application__input" %>
+      </div>
+      <div class="task-application__field task-application__field--full">
+        <%= f.label :cover_letter, class: "task-application__label" %>
+        <%= f.text_area :cover_letter, 
+                       rows: 3, 
+                       class: "task-application__input task-application__input--textarea" %>
+      </div>
+      <div class="task-application__field">
+        <%= f.label :completion_timeframe, class: "task-application__label" %>
+        <%= f.text_field :completion_timeframe, class: "task-application__input" %>
+      </div>
+      <div class="task-application__field">
+        <%= f.label :insurance_status, class: "task-application__label" %>
+        <%= f.select :insurance_status, 
+            ['Fully Insured', 'Partially Insured', 'Not Insured'],
+            { prompt: 'Select Insurance Status' },
+            { class: "task-application__select" } %>
+      </div>
+      <div class="task-application__field task-application__field--full">
+        <%= f.label :skills, class: "task-application__label" %>
+        <%= f.text_field :skills, class: "task-application__input" %>
+      </div>
+      <div class="task-application__field task-application__field--full">
+        <%= f.label :equipement_owned, "Equipment Owned", class: "task-application__label" %>
+        <%= f.text_area :equipement_owned, 
+                       rows: 2, 
+                       class: "task-application__input task-application__input--textarea" %>
+      </div>
+      <div class="task-application__field">
+        <%= f.label :payment_terms, class: "task-application__label" %>
+        <%= f.text_field :payment_terms, class: "task-application__input" %>
+      </div>
+      <div class="task-application__field">
+        <%= f.label :references, class: "task-application__label" %>
+        <%= f.text_field :references, class: "task-application__input" %>
+      </div>
+      <div class="task-application__field task-application__field--full">
+        <div class="task-application__checkbox-group">
+          <%= f.check_box :negotiable, 
+                         class: "task-application__checkbox" %>
+          <%= f.label :negotiable, 
+                     "Price is negotiable", 
+                     class: "task-application__checkbox-label" %>
+        </div>
+      </div>
+      <div class="task-application__field task-application__field--full">
+        <%= f.submit t("task.buttons.send_interest"), 
+                    class: "task-application__submit" %>
+      </div>
+    </div>
+  <% end %>
+</div>

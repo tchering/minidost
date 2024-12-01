@@ -1,0 +1,131 @@
+/* Plan:
+Use BEM (Block Element Modifier) naming convention
+Create specific namespaces for each form type
+Move common styles to application.css
+Create scoped styles for the application form */
+/* app/assets/stylesheets/components/task_application_form.css */
+body:has(dialog[data-dialog-target="dialog"][open]) {
+  overflow: hidden;
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+.task-application {
+  --form-radius: 0.75rem;
+  --transition: 0.2s ease-in-out;
+  padding: 2rem;
+  background: var(--color-50);
+  border-radius: var(--form-radius);
+}
+
+.task-application__form {
+  width: 100%;
+}
+
+.task-application__title {
+  color: var(--color-900);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.task-application__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.task-application__field {
+  position: relative;
+}
+
+.task-application__field--full {
+  grid-column: 1 / -1;
+}
+
+.task-application__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-800);
+  margin-bottom: 0.5rem;
+}
+
+.task-application__input-group {
+  position: relative;
+}
+
+.task-application__input,
+.task-application__select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-100);
+  border-radius: var(--form-radius);
+  background: white;
+  transition: var(--transition);
+  font-size: 1rem;
+}
+
+.task-application__input:focus,
+.task-application__select:focus {
+  outline: none;
+  border-color: var(--color-500);
+  box-shadow: 0 0 0 4px var(--color-100);
+}
+
+.task-application__input--textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.task-application__currency {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-700);
+  font-weight: 500;
+}
+
+.task-application__checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-application__checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 2px solid var(--color-300);
+  cursor: pointer;
+}
+
+.task-application__checkbox:checked {
+  background-color: var(--color-600);
+  border-color: var(--color-600);
+}
+
+.task-application__checkbox-label {
+  font-size: 0.875rem;
+  color: var(--color-800);
+  cursor: pointer;
+}
+
+.task-application__submit {
+  width: 100%;
+  padding: 0.875rem;
+  background: var(--color-600);
+  color: white;
+  border: none;
+  border-radius: var(--form-radius);
+  font-weight: 600;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.task-application__submit:hover {
+  background: var(--color-700);
+  transform: translateY(-1px);
+}
