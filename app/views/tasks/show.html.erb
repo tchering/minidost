@@ -21,19 +21,43 @@
             </div>
           <% else %>
             <%#! dynamic button rendering + form to apply for the task %>
-            <% if current_user.subcontractor? && task.task_applications.exists?(sub_contractor: current_user) %>
-              <button>cancel</button>
+            <% if @task.task_applications.exists?(subcontractor: current_user) %>
+              <%= button_to task_task_application_path(@task, @task.task_applications.find_by(subcontractor: current_user)),
+              method: :delete,
+              data: { turbo_confirm: t('task.delete_turbo_confirm') },
+              class: "btn btn-danger btn-rounded" do %>
+                <i class="fas fa-times me-2"></i><%= t('task.buttons.delete_interest') %>
+              <% end %>
             <% else %>
               <div data-controller="dialog" data-action="click->dialog#backdropClose">
-                <dialog data-dialog-target="dialog">
-                  <%#!Form goes here %>
-                  <%= render 'task_applications/application_form', task: @task %>
-                  <%#!------------- %>
-                  <div>
+                <dialog data-dialog-target="dialog" class="rounded-4 border-0 shadow-lg p-0">
+                  <div class="modal-header bg-primary text-white p-4">
+                    <h5 class="modal-title mb-0">Apply for Task</h5>
+                    <button type="button" 
+                        data-action="dialog#close" 
+                        class="btn-close btn-close-white"
+                        aria-label="Close"></button>
                   </div>
-                  <button type="button" data-action="dialog#close" autofocus>Cancel</button>
+                  <%#? Form is rendered inside the dialog %>
+                  <div class="modal-body p-4">
+                    <%= render 'task_applications/application_form', task: @task %>
+                  </div>
+                  <%#?--------------------------------------> %>
+                  <div class="modal-footer">
+                    <button type="button" 
+                        data-action="dialog#close" 
+                        class="btn btn-secondary btn-rounded"
+                        autofocus>
+                      Cancel
+                    </button>
+                  </div>
                 </dialog>
-                <button type="button" data-action="dialog#open" class="btn btn-success btn-rounded"><%= t('task.buttons.send_interest') %></button>
+                <button type="button" 
+                    data-action="dialog#open" 
+                    class="btn btn-success btn-rounded">
+                  <i class="fas fa-hand-paper me-2"></i>
+                  <%= t('task.buttons.send_interest') %>
+                </button>
               </div>
             <% end %>
             <%#! ---------------------------------------- %>
