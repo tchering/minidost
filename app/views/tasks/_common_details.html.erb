@@ -40,16 +40,22 @@
   <div class="col-12 mb-4">
     <h5 class="text-primary border-bottom pb-2 mb-3">Schedule</h5>
     <div class="row g-3">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="attribute-group">
           <label>Start Date</label>
           <p class="text-dark"><%= task.start_date&.strftime("%B %d, %Y") %></p>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="attribute-group">
           <label>End Date</label>
           <p class="text-dark"><%= task.end_date&.strftime("%B %d, %Y") %></p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="attribute-group">
+          <label>Sub Contractor</label>
+          <p class="text-dark"><%= task.sub_contractor.company_name %></p>
         </div>
       </div>
     </div>
