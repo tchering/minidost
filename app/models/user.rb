@@ -17,6 +17,10 @@ class User < ApplicationRecord
     "#{street}, #{area_code} #{city}, #{country}"
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def address
     "#{street}, #{area_code} #{city}"
   end
@@ -89,6 +93,8 @@ class User < ApplicationRecord
       DEFAULT_LOGO
     end
   end
+
+  # For contractors to see applications count for their active tasks
 
   private
 

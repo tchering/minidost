@@ -1,0 +1,193 @@
+<%# app/views/task_applications/review_application.html.erb %>
+<div class="container-fluid px-4 py-5">
+  <div class="row">
+    <div class="col-lg-9 mx-auto">
+      <div class="card border-0 shadow-lg overflow-hidden">
+        <div class="card-header bg-primary text-white p-4 position-relative">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <div class="me-3 d-flex align-items-center">
+                <i class="fas fa-file-alt fa-2x text-white-50"></i>
+              </div>
+              <h2 class="mb-0 fw-bold ls-tight">
+                Application Review
+                <small class="d-block text-white-50 mt-1 fs-6 fw-normal">
+                  Detailed Subcontractor Application Assessment
+                </small>
+              </h2>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-white text-primary fs-6 px-3 py-2 rounded-pill">
+                Your Proposed Budget: <%= number_to_currency(@task.proposed_price, unit: "€") %>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-5">
+          <%# Subcontractor Info Section %>
+          <section class="mb-5">
+            <h4 class="border-bottom pb-3 mb-4 text-primary d-flex align-items-center">
+              <i class="fas fa-user-circle me-3"></i>
+              Subcontractor Profile
+            </h4>
+            <div class="row g-4">
+              <div class="col-md-4 text-center">
+                <%= image_tag(
+                  @subcontractor.logo.attached? ? @subcontractor.logo : "default_logo.png",
+                  class: "rounded-circle mb-3 shadow-sm",
+                  style: "width: 120px; height: 120px; object-fit: cover;"
+                ) %>
+                <h5 class="mb-1 fw-bold"><%= @subcontractor.full_name %></h5>
+                <p class="text-muted mb-2"><%= @subcontractor.legal_status %></p>
+                <p class="text-muted mb-2"><%= @subcontractor.company_name %></p>
+                <p class="text-muted mb-2"><%= @subcontractor.siret_number%></p>
+                <p class="text-muted mb-2"><%= @subcontractor.email %></p>
+                <p class="text-muted mb-2"><%= @subcontractor.phone_number %></p>
+                <p class="text-muted mb-2"><%= @subcontractor.address %></p>
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="text-muted text-uppercase small mb-2 d-block">Professional Experience</label>
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-briefcase me-2 text-primary"></i>
+                        <span class="fw-medium"><%= @application.experience %> years</span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="text-muted text-uppercase small mb-2 d-block">Insurance Status</label>
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-alt me-2 text-primary"></i>
+                        <span class="fw-medium"><%= @application.insurance_status %></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="text-muted text-uppercase small mb-2 d-block">Core Skills</label>
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-tools me-2 text-primary"></i>
+                        <span class="fw-medium"><%= @application.skills %></span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="text-muted text-uppercase small mb-2 d-block">Equipment</i></label>
+                    <div class="d-flex align-items-center">
+                      <span class="fw-medium"><%= @application.equipement_owned %></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <%# Application Details Section %>
+        <section class="mb-5">
+          <h4 class="border-bottom pb-3 mb-4 text-primary d-flex align-items-center">
+            <i class="fas fa-clipboard-list me-3"></i>
+            Application Details
+          </h4>
+          <div class="row g-4">
+            <div class="col-md-4">
+              <h5 class="text-primary mb-3">Cover Letter</h5>
+              <p class="text-muted"><%= @application.cover_letter.presence || 'No cover letter provided' %></p>
+            </div>
+            <div class="col-md-4">
+              <h5 class="text-primary mb-3">References</h5>
+              <p class="text-muted"><%= @application.references.presence || 'No references provided' %></p>
+            </div>
+            <div class="col-md-4">
+              <h5 class="text-primary mb-3">Project Timeline</h5>
+              <p class="text-muted"><%= @application.completion_timeframe %></p>
+            </div>
+          </div>
+        </section>
+        <%# Payment & Terms Section %>
+        <section class="mb-5">
+          <h4 class="border-bottom pb-3 mb-4 text-primary d-flex align-items-center">
+            <i class="fas fa-money-check-alt me-3"></i>
+            Financial Details
+          </h4>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="text-muted text-uppercase small mb-2 d-block">Client proposed Budget</label>
+                <h3 class="text-primary"><%= number_to_currency(@application.proposed_price, unit: "€") %></h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="text-muted text-uppercase small mb-2 d-block">Negotiable</label>
+                <h3 class="text-primary"><%= @application.negotiable ? 'Yes' : 'No' %></h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="text-muted text-uppercase small mb-2 d-block">Payment Terms</label>
+                <p class="fw-medium"><%= @application.payment_terms %></p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <%# Action Buttons %>
+        <div class="d-flex justify-content-between align-items-center border-top pt-4 mt-4">
+          <%= link_to application_list_task_path(@task), 
+                        class: "btn btn-outline-secondary btn-lg" do %>
+            <i class="fas fa-arrow-left me-2"></i>Back to Applications
+          <% end %>
+          <div class="btn-group">
+            <%= button_to reject_application_task_task_application_path(@task, @application),
+                          method: :post,
+                          class: "btn btn-danger btn-lg me-3",
+                          data: { turbo_confirm: "Are you sure you want to reject this application?" } do %>
+              <i class="fas fa-times me-2"></i>Reject Application
+            <% end %>
+            <%= form_with(model: [@task, @application], url: approve_application_task_task_application_path(@task, @application), method: :post, local: true) do |f| %>
+              <div class="input-group">
+                <%= f.label :accepted_price, "Accepted Price", class: "form-label" %>
+                <%= f.number_field :accepted_price, value: @application.proposed_price, step: "0.01", class: "form-control" %>
+                <span class="input-group-text">€</span>
+              </div>
+              <%= f.submit "Approve Application", class: "btn btn-success btn-lg mt-3", data: { turbo_confirm: "Are you sure you want to approve this application?" } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<style>
+  body {
+    background-color: #f4f6f9;
+    font-family: 'Inter', 'Roboto', sans-serif;
+  }
+
+  .card {
+    border-radius: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .card-header {
+    background: linear-gradient(45deg, #3f51b5, #2196f3) !important;
+  }
+
+  .ls-tight {
+    letter-spacing: -0.05em;
+  }
+
+  .text-muted.small {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+</style>

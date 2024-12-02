@@ -1,5 +1,6 @@
 en:
   task:
+    candidate: "Candidate"
     title: "Create New Task"
     task_type: "Task Type"
     select_activity: "Select Activity"
@@ -26,9 +27,13 @@ en:
     no_available_tasks: "No available tasks"
     interested_message: "Notification has been sent to the employer"
     not_interested_message: "You have removed your candidacy for this project"
-    not_interested_error_message: "You cannot currently withdraw your candidacy for this project.Please try again later."
     already_interested_message: "You have already expressed interest in this project"
     delete_turbo_confirm: "Are you sure you want to withdraw your candidacy for this project?"
+
+    error:
+      not_contractor_message: "You must be a Contractor to access this page"
+      not_interested_error_message: "You cannot withdraw your candidacy for this project at this time. Please try again later."
+
     buttons:
       create: "Create"
       update: "Update"

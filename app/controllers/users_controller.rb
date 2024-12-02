@@ -5,6 +5,14 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    # @active_tasks_applications_count is passed to view _task_status.html.erb
+    @active_tasks_applications_count = TaskApplication
+      .joins(:task)
+      .where(tasks: {
+               contractor_id: @user.id,
+               status: "active",
+             })
+      .count
   end
 
   def show_map

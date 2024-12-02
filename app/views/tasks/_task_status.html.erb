@@ -1,104 +1,188 @@
-<%# app/views/shared/_construction_stats.html.erb %>
 <div class="construction-stats container-fluid px-3">
   <div class="row g-3">
-    <% [
-      { status: "pending", icon: "clock", color_class: "pending" },
-      { status: "active", icon: "tools", color_class: "active" },
-      { status: "in progress", icon: "hammer", color_class: "in-progress" },
-      { status: "completed", icon: "check-circle", color_class: "completed" }
-    ].each do |card| %>
-      <div class="col-md-3">
-        <%= link_to tasks_path(status: card[:status]), 
-                    class: "stat-card #{card[:color_class]}", 
-                    data: { turbo_frame: "map_frame" } do %>
-          <div class="stat-content">
-            <div class="stat-icon">
-              <i class="fas fa-<%= card[:icon] %>"></i>
-            </div>
-            <div class="stat-info">
-              <h6><%= t("task.status_#{card[:status].gsub(' ', '_')}") %></h6>
-              <h2><%= @user.created_tasks.where(status: card[:status]).count %></h2>
-            </div>
+    <!-- Pending Tasks -->
+    <div class="col-md-3">
+      <%= link_to tasks_path(status: "pending"), 
+                  class: "stat-card pending", 
+                  data: { turbo_frame: "map_frame" } do %>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
           </div>
-        <% end %>
-      </div>
-    <% end %>
+          <div class="stat-info">
+            <h6><%= t("task.status_pending") %></h6>
+            <h2>
+              <%= @user.created_tasks.where(status: "pending").count %>
+            </h2>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <!-- Active Tasks -->
+    <div class="col-md-3">
+      <%= link_to tasks_path(status: "active"), 
+                  class: "stat-card active", 
+                  data: { turbo_frame: "map_frame" } do %>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="fas fa-tools"></i>
+          </div>
+          <div class="stat-info">
+            <h6><%= t("task.status_active") %></h6>
+            <h2><%= @user.created_tasks.where(status: "active").count %>
+              <%#to Passed from UsersController -> show -> _user.html.erb -> partial: "tasks/task_status" %>
+              <span class="notification-badge">   <%= active_tasks_applications_count %></span>
+            </h2>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <!-- In Progress Tasks -->
+    <div class="col-md-3">
+      <%= link_to tasks_path(status: "in progress"), 
+                  class: "stat-card in-progress", 
+                  data: { turbo_frame: "map_frame" } do %>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="fas fa-hammer"></i>
+          </div>
+          <div class="stat-info">
+            <h6><%= t("task.status_in_progress") %></h6>
+            <h2><%= @user.created_tasks.where(status: "in progress").count %></h2>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <!-- Completed Tasks -->
+    <div class="col-md-3">
+      <%= link_to tasks_path(status: "completed"), 
+                  class: "stat-card completed", 
+                  data: { turbo_frame: "map_frame" } do %>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+            <% if @completed_notifications&.positive? %>
+            <% end %>
+          </div>
+          <div class="stat-info">
+            <h6><%= t("task.status_completed") %></h6>
+            <h2><%= @user.created_tasks.where(status: "completed").count %></h2>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 <style>
-  .construction-stats {
-    padding: 0.5rem 0;
+  .stat-info{
+    position: relative;
   }
-
-  .stat-card {
-    display: block;
-    text-decoration: none;
-    background: white;
-    border-radius: 6px;
-    transition: transform 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    border: 1px solid #e9ecef;
-  }
-
-  .stat-content {
-    padding: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .stat-icon {
-    padding: 0.5rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-  }
-
-  .stat-info h6 {
-    color: #6c757d;
+  .notification-badge {
+    position: absolute;
+    top: -20px;
+    right: -60px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 0.25rem;
+    min-width: 1.5rem;
+    text-align: center;
   }
 
-  .stat-info h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0;
-  }
-
-  /* Color classes remain the same */
-  .pending .stat-icon {
-    background: rgba(255, 193, 7, 0.1);
-    color: #ffc107;
-  }
-
-  .active .stat-icon {
-    background: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
-  }
-
-  .in-progress .stat-icon {
-    background: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
-  }
-
-  .completed .stat-icon {
-    background: rgba(25, 135, 84, 0.1);
-    color: #198754;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-2px);
-  }
-
+  /* Adjust positioning for smaller screens */
   @media (max-width: 768px) {
+  .notification-badge {
+    top: -30px; /* Adjust the top position */
+    right: -200px; /* Adjust the right position */
+    font-size: 0.65rem; /* Scale down the font size */
+    min-width: 1.25rem; /* Adjust badge size */
+  }
+  }
+
+  @media (max-width: 480px) {
+  .notification-badge {
+    top: -20px; /* Further adjust for very small screens */
+    right: -180px;
+    font-size: 0.6rem;
+    min-width: 1rem;
+  }
+  }
+
+
+    .construction-stats {
+      padding: 0.5rem 0;
+    }
+
+    .stat-card {
+      display: block;
+      text-decoration: none;
+      background: white;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
+    }
+
     .stat-content {
-      padding: 0.5rem;
-      gap: 0.5rem;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
     .stat-icon {
-      padding: 0.4rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
     }
-  }
+
+    .stat-info h6 {
+      color: #6c757d;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-info h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0;
+    }
+
+    /* Color classes remain the same */
+    .pending .stat-icon {
+      background: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+    }
+
+    .active .stat-icon {
+      background: rgba(13, 110, 253, 0.1);
+      color: #0d6efd;
+    }
+
+    .in-progress .stat-icon {
+      background: rgba(13, 110, 253, 0.1);
+      color: #0d6efd;
+    }
+
+    .completed .stat-icon {
+      background: rgba(25, 135, 84, 0.1);
+      color: #198754;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .stat-content {
+        padding: 0.5rem;
+        gap: 0.5rem;
+      }
+
+      .stat-icon {
+        padding: 0.4rem;
+      }
+    }
 </style>

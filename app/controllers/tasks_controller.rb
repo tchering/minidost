@@ -15,11 +15,27 @@ class TasksController < ApplicationController
       end
     # Filter by status if provided
     @tasks = @tasks.where(status: params[:status]) if params[:status].present?
+
+    #preload task applications to avoid N+1 queries
+    # @tasks = @tasks.includes(:task_applications)
+    # Create a hash mapping task_id to application count and passed to index.html.erb
+    @task_application_counts = TaskApplication
+      .where(task_id: @tasks.pluck(:id))
+      .group(:task_id)
+      .count || {}
+
     respond_to do |format|
       format.html { }
       format.turbo_stream do
       end
     end
+  end
+
+  def application_list
+    @task = Task.find(params[:id])
+    @applications = @task.task_applications
+      .includes(subcontractor: { logo_attachment: :blob })
+      .order(created_at: :desc)
   end
 
   def show; end

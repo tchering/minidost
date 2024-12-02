@@ -1,0 +1,105 @@
+<%# app/views/task_applications/index.html.erb %>
+<div class="container-fluid px-4 py-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white p-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-clipboard-list me-3 fa-2x"></i>
+          <h3 class="mb-0 fw-bold">Applications for <%= @task.site_name %></h3>
+        </div>
+        <span class="badge bg-light text-primary d-flex align-items-center">
+          <i class="fas fa-tasks me-2"></i>
+          Total Applications: <%= @applications.count %>
+        </span>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="list-group list-group-flush">
+        <% @applications.each do |application| %>
+          <div class="list-group-item list-group-item-action p-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center flex-grow-1">
+                <div class="me-4">
+                  <div class="avatar-wrapper">
+                    <% if application.subcontractor.logo.attached? %>
+                        <%= image_tag(application.subcontractor.logo.variant(resize_to_fill: [80, 80]), class: "rounded-circle", alt: application.subcontractor.full_name) %>
+                    <% else %>
+                        <%= image_tag("default_logo.png", class: "rounded-circle", alt: application.subcontractor.full_name) %>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-2 fw-bold text-primary">
+                    <%= application.subcontractor.full_name %>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <span class="badge bg-success me-2">
+                      <i class="fas fa-briefcase me-1"></i>
+                      <%= application.experience %> Years
+                    </span>
+                    <span class="text-muted">
+                      <i class="fas fa-money-bill-wave me-1"></i>
+                      Proposed: <%= number_to_currency(application.proposed_price, unit: "€") %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="ms-4">
+                <%= link_to review_application_task_task_application_path(@task, application),
+                    class: "btn btn-outline-primary btn-rounded waves-effect" do %>
+                  <i class="fas fa-eye me-2"></i>Review Application
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% if @applications.empty? %>
+      <div class="card-body text-center py-5">
+        <i class="fas fa-inbox fa-3x text-muted mb-4"></i>
+        <h4 class="text-muted">No Applications Received</h4>
+        <p class="text-muted">Applications for this task will appear here.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+<style>
+  body {
+    background-color: #f4f6f9;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .list-group-item {
+    transition: all 0.3s ease;
+  }
+
+  .list-group-item:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .avatar-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #e9ecef;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card {
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(45deg, #3f51b5, #2196f3) !important;
+  }
+</style>

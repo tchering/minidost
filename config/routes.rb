@@ -29,14 +29,18 @@ Rails.application.routes.draw do
 
     resources :bios, only: %i[show new create edit update]
     resources :tasks do
+      member do
+        get :application_list
+      end
       collection do
         get :load_taskable_fields
         get :available_tasks
       end
       resources :task_applications, only: [:index, :create, :destroy] do
         member do
-          get :review
-          post :approve
+          get :review_application
+          post :approve_application
+          post :reject_application
         end
       end
     end

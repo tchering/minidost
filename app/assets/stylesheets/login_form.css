@@ -1,0 +1,201 @@
+/* app/assets/stylesheets/components/login_form.css */
+
+:root {
+  --color-50: #eff8ff;
+  --color-100: #dbeefe;
+  --color-200: #c0e2fd;
+  --color-300: #94d1fc;
+  --color-400: #61b7f9;
+  --color-500: #3d98f4;
+  --color-600: #277be9;
+  --color-700: #2069df;
+  --color-800: #1f52ae;
+  --color-900: #1f4789;
+  --color-950: #182c53;
+}
+
+.login-form {
+  background-color: var(--color-50);
+  min-height: 100vh;
+}
+
+.login-form__card {
+  background: white;
+  transition: transform 0.2s ease;
+}
+
+.login-form__card:hover {
+  transform: translateY(-5px);
+}
+
+.login-form__header {
+  background: linear-gradient(135deg, var(--color-600), var(--color-800));
+}
+
+.login-form__title {
+  font-size: 1.5rem;
+}
+
+.login-form__input {
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-100);
+}
+
+.login-form__input:focus {
+  border-color: var(--color-400);
+  box-shadow: 0 0 0 0.2rem rgba(61, 152, 244, 0.25);
+}
+
+.login-form__label {
+  color: var(--color-900);
+}
+
+.login-form__checkbox {
+  cursor: pointer;
+}
+
+.login-form__checkbox:checked {
+  background-color: var(--color-600);
+  border-color: var(--color-600);
+}
+
+.login-form__submit {
+  background: var(--color-600);
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.login-form__submit:hover {
+  background: var(--color-700);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(39, 123, 233, 0.2);
+}
+
+.login-form__footer {
+  border-top: 1px solid var(--color-100);
+}
+
+.login-form__footer a {
+  color: var(--color-600);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.login-form__footer a:hover {
+  color: var(--color-800);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-form__card {
+    margin: 1rem;
+  }
+
+  .login-form__title {
+    font-size: 1.25rem;
+  }
+} /* app/assets/stylesheets/components/login_form.css */
+
+:root {
+  --color-50: #eff8ff;
+  --color-100: #dbeefe;
+  --color-200: #c0e2fd;
+  --color-300: #94d1fc;
+  --color-400: #61b7f9;
+  --color-500: #3d98f4;
+  --color-600: #277be9;
+  --color-700: #2069df;
+  --color-800: #1f52ae;
+  --color-900: #1f4789;
+  --color-950: #182c53;
+}
+
+.login-form {
+  background-color: var(--color-50);
+  min-height: 100vh;
+}
+
+.login-form__card {
+  background: white;
+  transition: transform 0.2s ease;
+}
+
+.login-form__card:hover {
+  transform: translateY(-5px);
+}
+
+.login-form__header {
+  background: linear-gradient(135deg, var(--color-600), var(--color-800));
+}
+
+.login-form__title {
+  font-size: 1.5rem;
+}
+
+.login-form__input {
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-100);
+}
+
+.login-form__input:focus {
+  border-color: var(--color-400);
+  box-shadow: 0 0 0 0.2rem rgba(61, 152, 244, 0.25);
+}
+
+.login-form__label {
+  color: var(--color-900);
+}
+
+.login-form__checkbox {
+  cursor: pointer;
+}
+
+.login-form__checkbox:checked {
+  background-color: var(--color-600);
+  border-color: var(--color-600);
+}
+
+.login-form__submit {
+  background: var(--color-600);
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.login-form__submit:hover {
+  background: var(--color-700);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(39, 123, 233, 0.2);
+}
+
+.login-form__footer {
+  border-top: 1px solid var(--color-100);
+}
+
+.login-form__footer a {
+  color: var(--color-600);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.login-form__footer a:hover {
+  color: var(--color-800);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-form__card {
+    margin: 1rem;
+  }
+
+  .login-form__title {
+    font-size: 1.25rem;
+  }
+}
