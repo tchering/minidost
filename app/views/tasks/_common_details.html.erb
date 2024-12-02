@@ -55,7 +55,11 @@
       <div class="col-md-4">
         <div class="attribute-group">
           <label>Sub Contractor</label>
-          <p class="text-dark"><%= task.sub_contractor.company_name %></p>
+          <% if task.sub_contractor.present? %>
+            <p class="text-dark"><%= task.sub_contractor.company_name %></p>
+          <% else %>
+            <p class="text-dark">N/A</p>
+          <% end %>
         </div>
       </div>
     </div>
