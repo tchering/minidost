@@ -1,20 +1,20 @@
 <%# list of task that will be rendered in turbo frame map_frame %>
 <%= turbo_frame_tag "map_frame" do %>
   <div class="list-group list-group-flush">
-    <% @tasks.each do |task| %>
+    <% @applications.each do |application| %>
       <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
         <div class="d-flex align-items-center w-100">
           <%# Clickable area for task details %>
-          <%= link_to task_path(task), 
-              class: "d-flex align-items-center text-decoration-none text-dark flex-grow-1", 
-              data: { turbo_frame: "_top" } do %>
+          <%= link_to review_application_task_task_application_path(task, application), 
+                         class: "d-flex align-items-center text-decoration-none text-dark flex-grow-1", 
+                         data: { turbo_frame: "_top" } do %>
             <div class="me-3">
-              <span class="badge bg-<%= status_color(task.status) %> me-2">
-                <%= task.status %>
+              <span class="badge bg-<%= status_color(application.task.status) %> me-2">
+                <%= application.task.status %>
               </span>
-              <%= task.site_name %>
+              <%= application.task.site_name %>
             </div>
-            <small class="text-muted ms-2">(<%= task.street %>)</small>
+            <small class="text-muted ms-2">(<%= application.task.street %>)</small>
           <% end %>
           <%# Notification Badge %>
           <% if task.status == "active" && @task_application_counts[task.id].to_i > 0 %>

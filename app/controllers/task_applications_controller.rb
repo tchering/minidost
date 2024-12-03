@@ -1,5 +1,5 @@
 class TaskApplicationsController < ApplicationController
-  before_action :set_task, only: [:create, :destroy, :review_application, :approve_application, :reject_application]
+  before_action :set_task, only: [:index, :create, :destroy, :review_application, :approve_application, :reject_application]
   before_action :set_application, only: [:review_application, :approve_application, :reject_application]
   before_action :ensure_contractor, only: [:index, :review_application, :approve_application, :reject_application]
 

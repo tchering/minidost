@@ -1,0 +1,36 @@
+<div class="container dashboard-container">
+  <div class="row g-4">
+    <%#! <!-- User Info Column --> %>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <%= render "shared/user_info", user: user %>
+        </div>
+      </div>
+      <%#!-- Bio Section --> %>
+      <div class="card">
+        <div class="card-body">
+          <%= turbo_frame_tag "bio_form_frame" do  %>
+            <%= render "bios/bio", user: user %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <%#! <!-- Task Status Column --> %>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <%= render partial: "tasks/task_status_contractor",locals:{active_tasks_applications_count: active_tasks_applications_count} %>
+          <%#! <!-- Map Section + Button Collection --> %>
+          <%= render "shared/button_collection", user: user %>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-body">
+          <%= turbo_frame_tag "map_frame" do %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

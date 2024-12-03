@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_01_185215) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_03_152043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -122,7 +122,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_185215) do
     t.bigint "subcontractor_id", null: false
     t.decimal "proposed_price"
     t.text "cover_letter"
-    t.string "application_status"
+    t.string "application_status", default: "pending"
     t.integer "experience"
     t.string "completion_timeframe"
     t.text "references"

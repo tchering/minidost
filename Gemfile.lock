@@ -99,6 +99,7 @@ GEM
     bullet (8.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
+    byebug (11.1.3)
     capybara (3.40.0)
       addressable
       matrix
@@ -389,6 +390,7 @@ DEPENDENCIES
   active_storage_validations (~> 1.3)
   bootsnap
   bullet
+  byebug
   capybara
   debug
   devise (~> 4.9)

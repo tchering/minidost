@@ -1,18 +1,28 @@
 # frozen_string_literal: true
+require "pry"
 
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
   def show
+    # you can get task IDs for a user through their associations.
+    # We need to get task becuase we are using route task_task_applications GET  (/:locale)/tasks/:task_id/task_applications(.:format)
+    # we will pass @task to show.html.erb and then to _task_status_subcontractor.html.erb
+    @tasks = @user.applied_tasks
+    # Use find instead of each to get the first task with a pending application
+    @task = @tasks.find do |task|
+      task.task_applications.find_by(subcontractor: current_user)
+    end
+
     @user = User.find(params[:id])
     # @active_tasks_applications_count is passed to view _task_status.html.erb
     @active_tasks_applications_count = TaskApplication
-      .joins(:task)
-      .where(tasks: {
-               contractor_id: @user.id,
-               status: "active",
+      .joins(:task) # Joins TaskApplication with Task table
+      .where(tasks: { # Filters tasks where:
+               contractor_id: @user.id,               # - Task belongs to current contractor
+               status: "active",                       # - Task status is active
              })
-      .count
+      .count                                   # Counts total applications
   end
 
   def show_map

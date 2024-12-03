@@ -20,7 +20,7 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-body">
-          <%= render partial: "tasks/task_status",locals:{active_tasks_applications_count: active_tasks_applications_count} %>
+          <%= render partial: "tasks/task_status_subcontractor",locals:{active_tasks_applications_count: active_tasks_applications_count,task: task} %>
           <%#! <!-- Map Section + Button Collection --> %>
           <%= render "shared/button_collection", user: user %>
         </div>

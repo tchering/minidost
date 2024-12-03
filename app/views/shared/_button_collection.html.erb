@@ -13,10 +13,14 @@
     <%= link_to "Search",available_tasks_tasks_path,class: "btn btn-primary btn-custom" %>
   </div>
   <div>
-    <%= link_to  new_task_path, class: "btn btn-primary btn-custom" do %>
-      <i class="fas fa-tasks"></i>
-      New Task
+    <%# shows new task creation button only for contractor %>
+    <% if current_user.contractor? %>
+      <%= link_to  new_task_path, class: "btn btn-primary btn-custom" do %>
+        <i class="fas fa-tasks"></i>
+        New Task
+      <% end %>
     <% end %>
+    <%# ---------------------------------------------------- %>
   </div>
 </div>
 <style>
