@@ -1,36 +1,117 @@
-<div class="container dashboard-container">
-  <div class="row g-4">
-    <%#! <!-- User Info Column --> %>
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
+<div class="container-fluid dashboard-container px-0 py-2">
+  <div class="row g-3">
+    <%# Sidebar Column %>
+    <div class="col-lg-4 col-md-4">
+      <div class="card profile-card mb-4 border-0 shadow-sm">
+        <div class="card-body text-center">
           <%= render "shared/user_info", user: user %>
         </div>
       </div>
-      <%#!-- Bio Section --> %>
-      <div class="card">
+      <div class="card professional-details-card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 pt-3 pb-0">
+          <h5 class="card-title text-primary mb-0">Professional Profile</h5>
+        </div>
+        <%#! <!-- User Info Column --> %>
         <div class="card-body">
-          <%= turbo_frame_tag "bio_form_frame" do  %>
+          <%= turbo_frame_tag "bio_form_frame" do %>
             <%= render "bios/bio", user: user %>
           <% end %>
         </div>
       </div>
     </div>
-    <%#! <!-- Task Status Column --> %>
-    <div class="col-md-8">
-      <div class="card">
+    <%# Main Content Column %>
+    <div class="col-lg-8 col-md-8">
+      <%#! Task Status and Actions Card %>
+      <div class="card task-management-card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 pt-3 pb-0">
+          <h4 class="card-title text-primary mb-0">Task Management</h4>
+        </div>
         <div class="card-body">
-          <%= render partial: "tasks/task_status_contractor",locals:{active_tasks_applications_count: active_tasks_applications_count} %>
-          <%#! <!-- Map Section + Button Collection --> %>
-          <%= render "shared/button_collection", user: user %>
+          <%= render partial: "tasks/task_status_contractor", 
+                     locals: { active_tasks_applications_count: active_tasks_applications_count } %>
+          <div class="mt-3">
+            <%= render "shared/button_collection", user: user %>
+          </div>
         </div>
       </div>
-      <div class="card mt-3">
+      <%#! Interactive Map Card %>
+      <div class="card map-section-card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 pt-3 pb-0">
+          <h4 class="card-title text-primary mb-0">Project Locations</h4>
+        </div>
         <div class="card-body">
           <%= turbo_frame_tag "map_frame" do %>
+            <%# Map content will be dynamically loaded %>
           <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
+<style>
+  body {
+    background-color: #f4f7fa;
+    font-family: 'Roboto', 'Arial', sans-serif;
+  }
+
+  .dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    <%# transform: translateY(-5px); %>
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+  }
+
+  .card-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .text-primary {
+    color: #1a5f7a !important;
+  }
+
+  .profile-card .card-body {
+    padding: 1.5rem;
+  }
+
+  .professional-details-card,
+  .task-management-card,
+  .map-section-card {
+    background-color: white;
+  }
+
+  @media (max-width: 992px) {
+    .dashboard-container {
+      padding: 1rem;
+    }
+
+    .card {
+      margin-bottom: 1rem;
+    }
+  }
+
+  <%# Additional responsive adjustments %>
+  @media (max-width: 768px) {
+    .dashboard-container {
+      padding: 0.5rem;
+    }
+
+    .card-header {
+      padding: 0.75rem 1rem;
+    }
+  }
+</style>

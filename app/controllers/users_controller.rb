@@ -9,25 +9,13 @@ class UsersController < ApplicationController
     # We need to get task becuase we are using route task_task_applications GET  (/:locale)/tasks/:task_id/task_applications(.:format)
     # we will pass @task to show.html.erb and then to _task_status_subcontractor.html.erb
     #! Option 1: If you want tasks from pending applications
-    @task = current_user.task_applications
+    # Get first pending application's task
+    @task = @user.task_applications
       .includes(:task)
       .find_by(application_status: "pending")
       &.task
 
-    #! Option 2: If you want to join tasks table and filter pending applications
-    # @tasks = current_user.task_applications
-    #   .joins(:task)
-    #   .where(application_status: "pending")
-
-    #! Use find instead of each to get the first task with a pending application
-    # @task = @tasks.find do |task|
-    #   task.task_applications.find_by(subcontractor: current_user)
-    # end
-
-    # binding.pry
-
-    @user = User.find(params[:id])
-    # @active_tasks_applications_count is passed to view _task_status.html.erb
+    #! @active_tasks_applications_count is passed to view _task_status.html.erb
     @active_tasks_applications_count = TaskApplication
       .joins(:task) # Joins TaskApplication with Task table
       .where(tasks: { # Filters tasks where:

@@ -74,13 +74,43 @@ class TaskApplicationsController < ApplicationController
     redirect_to @task, notice: "Subcontractor approved successfully"
   end
 
+  # def reject_application
+  #   @application.update(application_status: "rejected")
+  #   redirect_to @task, notice: "Subcontractor rejected successfully"
+  #   @task.update(status: "active")
+  # end
+
   def reject_application
+    ActiveRecord::Base.transaction do
+      begin
+        # Only update application status to rejected
+        @application.update!(application_status: "rejected")
+
+        # Only update task status if it was pending
+        if @task.status == "pending"
+          @task.update!(status: "active")
+        end
+
+        redirect_to @task, notice: "Application rejected successfully"
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to @task, alert: "Could not reject application: #{e.message}"
+      end
+    end
   end
 
   private
+  # def set_task
+  #   @task = Task.find(params[:task_id])
+  # end
 
   def set_task
-    @task = Task.find(params[:task_id])
+    if params[:task_id].present? && params[:task_id] != '0'
+      @task = Task.find(params[:task_id])
+    else
+      # Handle applications without a specific task
+      @applications = TaskApplication.where(subcontractor: current_user)
+      return
+    end
   end
 
   def set_application
