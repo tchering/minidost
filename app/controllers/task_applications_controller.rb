@@ -1,11 +1,21 @@
 class TaskApplicationsController < ApplicationController
   before_action :set_task, only: [:index, :create, :destroy, :review_application, :approve_application, :reject_application]
   before_action :set_application, only: [:review_application, :approve_application, :reject_application]
-  before_action :ensure_contractor, only: [:index, :review_application, :approve_application, :reject_application]
+  before_action :ensure_contractor, only: [:approve_application, :reject_application]
 
   #Contractor can view all applications for a task
   def index
-    @applications = @task.task_applications.includes(:sub_contractor)
+    # Instead of filtering by single task
+    if params[:application_status].present?
+      @applications = TaskApplication
+        .includes(:task)
+        .where(application_status: params[:application_status],
+               subcontractor: current_user)
+    else
+      @applications = TaskApplication
+        .includes(:task)
+        .where(subcontractor: current_user)
+    end
   end
 
   #Sub contractor can apply for a task

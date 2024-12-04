@@ -22,6 +22,8 @@ module TasksHelper
     when "pending" then "warning"
     when "in progress" then "info"
     when "completed" then "success"
+    when "rejected" then "danger"
+    when 'approved' then "success"
     else "secondary"
     end
   end
