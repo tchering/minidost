@@ -91,13 +91,29 @@ export default class extends Controller {
     this.markersValue.forEach((marker) => {
       // Custom marker element बनाउनुहोस्
       const customMarker = document.createElement("div");
-      customMarker.className = "custom-marker";
-      // User को logo वा default image बाट marker image set गर्नुहोस्
+      customMarker.className = `custom-marker ${marker.status}`;
       customMarker.style.backgroundImage = `url('${marker.image_url}')`;
       customMarker.style.width = "30px";
       customMarker.style.height = "30px";
       customMarker.style.backgroundSize = "cover";
       customMarker.style.borderRadius = "50%";
+      customMarker.style.border = "2px solid #fff";
+      customMarker.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+
+      // Add status-specific styling
+      switch(marker.status) {
+        case 'active':
+          customMarker.style.borderColor = '#28a745';
+          break;
+        case 'in progress':
+          customMarker.style.borderColor = '#ffc107';
+          break;
+        case 'completed':
+          customMarker.style.borderColor = '#17a2b8';
+          break;
+        default:
+          customMarker.style.borderColor = '#6c757d';
+      }
 
       // Mapbox marker create गर्नुहोस् र popup add गर्नुहोस्
       new window.mapboxgl.Marker(customMarker)

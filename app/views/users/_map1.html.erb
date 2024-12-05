@@ -1,0 +1,42 @@
+<!-- 
+  This file is used for rendering the map in the user interface. 
+  It initializes a Mapbox map and connects it to the Stimulus `map` controller.
+  The map:
+  1. Displays markers for users (contractors or subcontractors) based on the position of the logged-in user.
+  2. Shows a popup for each marker using the data passed from the Rails controller.
+  3. Uses the Mapbox API key for map rendering and interactions.
+-->
+<%= turbo_frame_tag "map_frame" do  %>
+  <% if user.position = "contractor" || user.position = "sub-contractor" %>
+    <div class="map-card">
+      <div class="map-header">
+        <h5 class="mb-0">
+          <%= user.position == "contractor" ?  t("users.map.contractor") : t("users.map.subcontractor") %>
+        </h5>
+      </div>
+      <div class="map-content">
+        <% if @markers.present? %>
+          <%#! Mapbox map %>
+          <div id="map" 
+                  class="mapboxgl-map"
+                  style="width: 100%; height: 500px;" 
+                  data-controller="map" <%# Stimulus map controller connected to this div %>
+                  data-map-markers-value="<%= @markers.to_json %>" <%# Rails usrs_controller->_user. बाट प्राप्त markers JSON format मा पठाइन्छ %>
+                  data-map-api-key-value="<%= Rails.application.credentials.mapbox[:api_key] %>"> <%# Mapbox rendering को लागि API key पास गरिन्छ %>
+          </div>
+          <%#! -------- %>
+        <% else %>
+          <div class="empty-state">
+            <div>
+              <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
+              <p class="mb-0">
+                No <%= user.position == "Donneur-d'ordre" ? "sous-traitants" : "donneurs-d'ordre" %>
+                available to display on the map.
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

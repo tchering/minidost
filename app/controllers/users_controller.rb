@@ -27,25 +27,19 @@ class UsersController < ApplicationController
 
   def show_map
     @user = User.find(params[:id])
-    @markers = case @user.position
-      when "contractor"
-        # 4a. यदि contractor ले आफ्नो profile हेर्दै छ भने:
-        # - Database का सबै subcontractors खोज्नुहोस्
-        # - .geocoded ले सुनिश्चित गर्छ valid lat/long भएका users मात्रै आउँछ
-        # - .map ले प्रत्येक subcontractor लाई marker मा बदल्छ
-        User.where(position: "sub-contractor").geocoded.map do |user|
-          create_marker(user)
-        end
-      when "sub-contractor"
-        # 4b. यदि subcontractor ले आफ्नो profile हेर्दै छ भने:
-        # - सबै contractors खोज्नुहोस्
-        # - उस्तै process: geocoded users पाउनुहोस् र markers बनाउनुहोस्
-        User.where(position: "contractor").includes(:logo_attachment).geocoded.map do |user|
-          create_marker(user)
-        end
+    @markers = if @user.contractor?
+        # Get all tasks created by the contractor that have coordinates
+        @user.created_tasks
+             .includes(:sub_contractor)
+             .where.not(latitude: nil, longitude: nil)
+             .map { |task| create_task_marker(task) }
+      elsif @user.subcontractor?
+        # Get all tasks accepted by the subcontractor that have coordinates
+        @user.accepted_tasks
+          .where.not(latitude: nil, longitude: nil)
+          .map { |task| create_task_marker(task) }
       else
-        # ! 4c. यदि position invalid छ भने, खाली array फिर्ता गर्नुहोस् (कुनै marker हुँदैन)
-        []
+        [] # Empty for non-contractors
       end
     render partial: "users/map", locals: { markers: @markers, user: @user }
   end
@@ -56,6 +50,26 @@ class UsersController < ApplicationController
     # यो method before_action ले show भन्दा अगाडि call गर्छ
     # सुनिश्चित गर्छ कि @user set गरिएको छ कुनै action को लागि जसलाई यसको आवश्यकता छ
     @user = User.find(params[:id])
+  end
+
+  def create_task_marker(task)
+    {
+      lat: task.latitude,
+      lng: task.longitude,
+      status: task.status,
+      info_window_html: render_to_string(
+        partial: "tasks/task_popup",
+        locals: {
+          task: task,
+          subcontractor: task.sub_contractor,
+        },
+      ),
+      image_url: if task.contractor.logo.attached?
+        rails_blob_url(task.contractor.logo)
+      else
+        helpers.asset_url("default_logo.png")
+      end,
+    }
   end
 
   def create_marker(user)

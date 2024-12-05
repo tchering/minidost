@@ -27,6 +27,10 @@ class Task < ApplicationRecord
     completed: "completed",
   }
 
+  # Add geocoding functionality
+  geocoded_by :full_address
+  after_validation :geocode, if: :address_changed?
+
   def add_interested_subcontractor(subcontractor_id)
     self.sub_contractor_list = [] if sub_contractor_list.nil?
     self.sub_contractor_list << subcontractor_id unless sub_contractor_list.include?(subcontractor_id)
@@ -51,5 +55,13 @@ class Task < ApplicationRecord
 
   def normalize_status
     self.status = status.downcase
+  end
+
+  def full_address
+    [street, city, area_code].compact.join(', ')
+  end
+
+  def address_changed?
+    street_changed? || city_changed? || area_code_changed?
   end
 end

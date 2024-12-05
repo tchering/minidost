@@ -1,0 +1,28 @@
+# app/views/tasks/_available_task_popup.html.erb
+<div class="map-popup">
+  <div class="popup-header d-flex align-items-center p-2 bg-primary text-white">
+    <%= image_tag(
+      task.contractor.logo.attached? ? task.contractor.logo : "default_logo.png",
+      class: "rounded-circle me-2",
+      style: "width: 30px; height: 30px; object-fit: cover;"
+    ) %>
+    <h6 class="mb-0"><%= task.contractor.company_name %></h6>
+  </div>
+  <div class="popup-body p-3">
+    <h6 class="text-primary mb-3"><%= task.site_name %></h6>
+    <div class="mb-2">
+      <i class="fas fa-map-marker-alt text-primary me-2"></i>
+      <%= "#{task.street}, #{task.city}" %>
+    </div>
+    <div class="mb-2">
+      <i class="fas fa-euro-sign text-primary me-2"></i>
+      <%= number_to_currency(task.proposed_price, unit: "€") %>
+    </div>
+    <div>
+      <i class="fas fa-calendar text-primary me-2"></i>
+      <%= "#{l(task.start_date)} - #{l(task.end_date)}" %>
+    </div>
+  </div>
+  <%# <%= link_to "Apply Now", new_task_task_application_path(task), 
+              class: "btn btn-primary btn-sm w-100 mt-2" %>
+</div>

@@ -1,0 +1,55 @@
+# app/views/tasks/_map.html.erb
+<div class="map-card">
+  <div class="map-content">
+    <% if tasks.any? %>
+      <div id="map" 
+           class="mapboxgl-map"
+           style="width: 100%; height: 500px;" 
+           data-controller="map"
+           data-map-markers-value="<%= tasks.map { |task| 
+             {
+               type: 'task',
+               lat: task.latitude,
+               lng: task.longitude,
+               status: task.status,
+               contractor_logo: task.contractor.logo.attached? ? 
+                 rails_blob_url(task.contractor.logo) : nil,
+               info_window_html: render_to_string(
+                 partial: "tasks/available_task_popup",
+                 locals: { task: task }
+               )
+             }
+           }.to_json %>"
+           data-map-api-key-value="<%= Rails.application.credentials.mapbox[:api_key] %>">
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <div>
+          <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
+          <p class="mb-0"><%= t("task.no_available_tasks") %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<style>
+  .task-marker {
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  .task-marker.active {
+    background-color: #28a745;
+  }
+
+  .contractor-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    border: 2px solid #fff;
+  }
+</style>
