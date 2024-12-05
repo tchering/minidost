@@ -54,29 +54,31 @@ class TaskApplicationsController < ApplicationController
   end
 
   def approve_application
-    # Convert accepted_price to decimal if it's present
-    accepted_price = params[:accepted_price].presence&.to_d
+    # Update task with approved subcontractor and price
+    @task.update(
+      sub_contractor_id: @application.subcontractor_id,
+      accepted_price: params[:accepted_price],
+      status: "in_progress",
+    )
+    # Update current application status
+    @application.update(
+      application_status: "approved",
+    )
 
-    ActiveRecord::Base.transaction do
-      begin
-        @task.update!(
-          sub_contractor_id: @application.subcontractor_id,
-          accepted_price: accepted_price,
-          status: "in_progress"
-        )
+    # Reject other applications once one is approved
+    @task.task_applications
+         .where.not(id: @application.id)
+         .update_all(application_status: "rejected")
+    #once rejected, the application will be marked closed and the subcontractor will be notified
 
-        @application.update!(application_status: "approved")
-
-        @task.task_applications
-             .where.not(id: @application.id)
-             .update_all(application_status: "rejected")
-
-        redirect_to @task, notice: "Subcontractor approved successfully"
-      rescue ActiveRecord::RecordInvalid => e
-        redirect_to @task, alert: "Could not approve application: #{e.message}"
-      end
-    end
+    redirect_to @task, notice: "Subcontractor approved successfully"
   end
+
+  # def reject_application
+  #   @application.update(application_status: "rejected")
+  #   redirect_to @task, notice: "Subcontractor rejected successfully"
+  #   @task.update(status: "active")
+  # end
 
   def reject_application
     ActiveRecord::Base.transaction do
@@ -97,6 +99,10 @@ class TaskApplicationsController < ApplicationController
   end
 
   private
+
+  # def set_task
+  #   @task = Task.find(params[:task_id])
+  # end
 
   def set_task
     if params[:task_id].present? && params[:task_id] != "0"
