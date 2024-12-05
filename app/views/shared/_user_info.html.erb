@@ -9,15 +9,13 @@
       title: user.company_name
     ) %>
   </div>
-
   <div class="card-body">
     <div class="text-center mb-3">
       <h3 class="card-title mb-2 text-dark"><%= user.first_name %></h3>
       <span class="badge bg-primary text-white px-3 py-1">
-        <%= user.position %>
+        <%= t("users.profile.#{user.position.downcase}") %>
       </span>
     </div>
-
     <div class="row g-3">
       <div class="col-12">
         <div class="list-group list-group-flush">
@@ -33,20 +31,7 @@
               <span class="fw-bold"><%= user.first_name %></span>
             </div>
           </div>
-
           <%# Position %>
-          <div class="list-group-item d-flex align-items-center px-0">
-            <div class="me-3 text-primary">
-              <i class="fas fa-user-tie fa-lg"></i>
-            </div>
-            <div class="flex-grow-1">
-              <small class="text-muted text-uppercase d-block mb-1">
-                <%= t('users.profile.position') %>
-              </small>
-              <span class="fw-bold"><%= user.position %></span>
-            </div>
-          </div>
-
           <%# Email %>
           <div class="list-group-item d-flex align-items-center px-0">
             <div class="me-3 text-primary">
@@ -63,7 +48,6 @@
               %>
             </div>
           </div>
-
           <%# Membership Date %>
           <div class="list-group-item d-flex align-items-center px-0">
             <div class="me-3 text-primary">
@@ -78,7 +62,6 @@
               </span>
             </div>
           </div>
-
           <%# Address %>
           <div class="list-group-item d-flex align-items-center px-0">
             <div class="me-3 text-primary">
@@ -95,10 +78,8 @@
       </div>
     </div>
   </div>
-
   <%# Optional: Profile Action Buttons %>
   <div class="card-footer bg-light text-center">
-
     <%= link_to user_path(user), 
         class: "btn btn-outline-secondary btn-sm", 
         data: { bs_toggle: "tooltip" }, 
@@ -107,7 +88,6 @@
     <% end %>
   </div>
 </div>
-
 <%# Inline CSS for additional styling %>
 <style>
   .construction-profile-card {
