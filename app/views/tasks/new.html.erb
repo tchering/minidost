@@ -140,11 +140,12 @@
               <%= f.submit t("task.create_button"), 
                   class: "btn btn-primary btn-lg px-5" %>
             </div>
+            <div>
+              <%= link_to "Back",user_path(current_user) %>
+            </div>
           <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
-<%# Add required Font Awesome CSS in your layout %>
-<%# <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" /> %>

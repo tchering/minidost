@@ -7,7 +7,7 @@
   3. Uses the Mapbox API key for map rendering and interactions.
 -->
 <%= turbo_frame_tag "map_frame" do  %>
-  <% if user.position = "Donneur-d'ordre" || user.position = "Sous-traitant" %>
+  <% if user.position = "contractor" || user.position = "sub-contractor" %>
     <div class="map-card">
       <div class="map-header">
         <h5 class="mb-0">

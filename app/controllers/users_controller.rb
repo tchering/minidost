@@ -28,19 +28,19 @@ class UsersController < ApplicationController
   def show_map
     @user = User.find(params[:id])
     @markers = case @user.position
-      when "Donneur-d'ordre"
+      when "contractor"
         # 4a. यदि contractor ले आफ्नो profile हेर्दै छ भने:
         # - Database का सबै subcontractors खोज्नुहोस्
         # - .geocoded ले सुनिश्चित गर्छ valid lat/long भएका users मात्रै आउँछ
         # - .map ले प्रत्येक subcontractor लाई marker मा बदल्छ
-        User.where(position: "Sous-traitant").geocoded.map do |user|
+        User.where(position: "sub-contractor").geocoded.map do |user|
           create_marker(user)
         end
-      when "Sous-traitant"
+      when "sub-contractor"
         # 4b. यदि subcontractor ले आफ्नो profile हेर्दै छ भने:
         # - सबै contractors खोज्नुहोस्
         # - उस्तै process: geocoded users पाउनुहोस् र markers बनाउनुहोस्
-        User.where(position: "Donneur-d'ordre").includes(:logo_attachment).geocoded.map do |user|
+        User.where(position: "contractor").includes(:logo_attachment).geocoded.map do |user|
           create_marker(user)
         end
       else

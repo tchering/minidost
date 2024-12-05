@@ -27,6 +27,8 @@
                     <div class="text-danger"><%= f.object.errors[:company_name].join(", ") %></div>
                   </div>
                   <div class="col-md-4">
+                    <%#to First element (t('positions.contractor')) - what users see in the dropdown %>
+                    <%#to Second element ("contractor") - the actual value that gets stored in database %>
                     <%= f.label :position, class: "form-label" %>
                     <%= f.select :position, 
                                 [
