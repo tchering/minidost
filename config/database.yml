@@ -78,7 +78,11 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: minidost_production
-  username: minidost
-  password: <%= ENV["MINIDOST_DATABASE_PASSWORD"] %>
+  adapter: postgresql
+  url: <%= ENV['DATABASE_URL'] %>
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  prepared_statements: false
+  advisory_locks: false
+  pool: 5
+
