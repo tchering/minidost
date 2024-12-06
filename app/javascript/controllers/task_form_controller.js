@@ -1,27 +1,35 @@
 // app/javascript/controllers/task_form_controller.js
-import { Controller } from "@hotwired/stimulus";
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["taskableFields", "activitySelect"];
+  static targets = ["taskableFields", "activitySelect"]
 
   connect() {
+    console.log("TaskForm controller connected")
+    // Load fields if activity is pre-selected
     if (this.activitySelectTarget.value) {
-      this.updateTaskableFields();
+      this.updateTaskableFields()
     }
   }
 
   updateTaskableFields() {
-    const selectedActivity = this.activitySelectTarget.value; // Gets the *Task format directly
-    if (selectedActivity) {
-      fetch(`/tasks/load_taskable_fields?taskable_type=${selectedActivity}`)
-        .then((response) => response.text())
-        .then((html) => {
-          this.taskableFieldsTarget.innerHTML = html;
-        });
-    } else {
-      //When no activity is selected, clear fields
-      this.taskableFieldsTarget.innerHTML = ""; // Clear fields if no selection
+    const selectedActivity = this.activitySelectTarget.value
+    if (!selectedActivity) {
+      this.taskableFieldsTarget.innerHTML = ""
+      return
     }
+
+    fetch(`/tasks/load_taskable_fields?taskable_type=${selectedActivity}`)
+      .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok")
+        return response.text()
+      })
+      .then(html => {
+        this.taskableFieldsTarget.innerHTML = html
+      })
+      .catch(error => {
+        console.error("Error loading taskable fields:", error)
+      })
   }
 }
 
