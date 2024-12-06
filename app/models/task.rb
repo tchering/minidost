@@ -14,6 +14,9 @@ class Task < ApplicationRecord
   has_many :interested_sub_contractors, through: :task_applications, source: :subcontractor
   #here source is referencing  { belongs_to :subcontractor} from TaskApplication model
 
+  #! Associations with contract model
+  has_one :contract, dependent: :destroy
+  
   validates :taskable_type, presence: true
   validates :site_name, :street, :city, :status, presence: true
 
@@ -58,7 +61,7 @@ class Task < ApplicationRecord
   end
 
   def full_address
-    [street, city, area_code].compact.join(', ')
+    [street, city, area_code].compact.join(", ")
   end
 
   def address_changed?

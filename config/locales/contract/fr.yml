@@ -1,0 +1,5 @@
+fr:
+  contracts:
+    create:
+      success: "Le contrat a été généré avec succès"
+  unauthorized: "Vous n'êtes pas autorisé à effectuer cette action"

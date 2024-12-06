@@ -1,0 +1,80 @@
+<%# app/views/contracts/new.html.erb %>
+<div class="container py-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0"><i class="fas fa-file-contract me-2"></i>Generate Contract</h4>
+    </div>
+    <div class="card-body p-4">
+      <%= form_with(model: [@task, @contract], class: "needs-validation") do |f| %>
+        <% if @contract.errors.any? %>
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              <% @contract.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%# Task Details Summary %>
+        <div class="mb-4">
+          <h5 class="border-bottom pb-2">Task Details</h5>
+          <%# Common Task Details %>
+          <section class="mb-4">
+            <div class="card bg-light">
+              <div class="card-body">
+                <%= render 'tasks/common_details', task: @task %>
+              </div>
+            </div>
+          </section>
+
+          <%# Taskable Details %>
+          <section class="mb-4">
+            <div class="card bg-light">
+              <div class="card-header">
+                <h6 class="mb-0"><%= @task.taskable_type.underscore.humanize %> Details</h6>
+              </div>
+              <div class="card-body">
+                <%= render_taskable_attributes(@task.taskable) %>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <%# Contract Details %>
+        <div class="mb-4">
+          <h5 class="border-bottom pb-2">Contract Details</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <%= f.label :contract_date, class: "form-label" %>
+              <%= f.date_field :contract_date, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+
+        <%# Terms and Conditions %>
+        <div class="mb-4">
+          <h5 class="border-bottom pb-2">Terms & Conditions</h5>
+          <div class="mb-3">
+            <%= f.label :terms_and_conditions, class: "form-label" %>
+            <%= f.text_area :terms_and_conditions, rows: 5, class: "form-control" %>
+          </div>
+        </div>
+
+        <%# Payment Terms %>
+        <div class="mb-4">
+          <h5 class="border-bottom pb-2">Payment Terms</h5>
+          <div class="mb-3">
+            <%= f.label :payment_terms, class: "form-label" %>
+            <%= f.text_area :payment_terms, rows: 3, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <%= f.submit "Generate Contract", class: "btn btn-primary btn-lg px-4" %>
+          <%= link_to "Cancel", task_path(@task), class: "btn btn-secondary btn-lg px-4 ms-2" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

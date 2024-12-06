@@ -38,7 +38,9 @@ class User < ApplicationRecord
   # For subcontractors to see tasks they applied to
   has_many :applied_tasks, through: :task_applications, source: :task
   #Here source: :task is referencing belongs_to :task from TaskApplication model
-
+  #! Associations with Contract model
+  has_many :contracts_as_contractor, class_name: "Contract", foreign_key: "contractor_id"
+  has_many :contracts_as_subcontractor, class_name: "Contract", foreign_key: "subcontractor_id"
   # before_create :build_default_company
   # before_create :set_default_admin
   # Include default devise modules. Others available are:

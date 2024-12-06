@@ -1,0 +1,5 @@
+en:
+  contracts:
+    create:
+      success: "Contract was successfully generated"
+  unauthorized: "You are not authorized to perform this action"

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get "bios/show"
-  get "bios/new"
-  get "bios/create"
-  get "bios/edit"
-  get "bios/update"
+  # get "bios/show"
+  # get "bios/new"
+  # get "bios/create"
+  # get "bios/edit"
+  # get "bios/update"
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     devise_for :users, controllers: {}, sign_out_via: %i[get delete] # Add this option
 
@@ -29,6 +29,12 @@ Rails.application.routes.draw do
 
     resources :bios, only: %i[show new create edit update]
     resources :tasks do
+      resources :contracts, only: [:new, :create, :show] do
+        member do
+          get :download
+          post :sign_contract
+        end
+      end
       member do
         get :application_list
       end

@@ -89,3 +89,8 @@ gem "active_storage_validations", "~> 1.3"
 gem "mapbox-gl-rails", "~> 3.7"
 
 gem "erb-formatter", "~> 0.7.3"
+
+gem "prawn", "~> 2.5"
+
+
+gem "prawn-table", "~> 0.2.2"
