@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_03_152043) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_06_133219) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_03_152043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_bios_on_user_id"
+  end
+
+  create_table "contracts", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "contractor_id", null: false
+    t.bigint "subcontractor_id", null: false
+    t.string "contract_number"
+    t.string "status"
+    t.date "contract_date"
+    t.text "terms_and_conditions"
+    t.text "payment_terms"
+    t.boolean "signed_by_contractor"
+    t.boolean "signed_by_subcontractor"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_number"], name: "index_contracts_on_contract_number", unique: true
+    t.index ["contractor_id"], name: "index_contracts_on_contractor_id"
+    t.index ["subcontractor_id"], name: "index_contracts_on_subcontractor_id"
+    t.index ["task_id"], name: "index_contracts_on_task_id"
   end
 
   create_table "electricien_tasks", force: :cascade do |t|
@@ -155,6 +174,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_03_152043) do
     t.string "billing_process"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
     t.index ["contractor_id"], name: "index_tasks_on_contractor_id"
     t.index ["status"], name: "index_tasks_on_status"
     t.index ["sub_contractor_id"], name: "index_tasks_on_sub_contractor_id"
@@ -198,6 +219,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_03_152043) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bios", "users"
+  add_foreign_key "contracts", "tasks"
+  add_foreign_key "contracts", "users", column: "contractor_id"
+  add_foreign_key "contracts", "users", column: "subcontractor_id"
   add_foreign_key "task_applications", "tasks"
   add_foreign_key "task_applications", "users", column: "subcontractor_id"
   add_foreign_key "tasks", "users", column: "contractor_id"
