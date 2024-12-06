@@ -90,5 +90,4 @@ production:
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   prepared_statements: false
   advisory_locks: false
-  pool: 5
 
