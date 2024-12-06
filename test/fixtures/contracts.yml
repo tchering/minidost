@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task: one
+  contractor: one
+  subcontractor: one
+   contract_number: MyString
+  status: MyString
+  contract_date: 2024-12-06
+   terms_and_conditions: MyText
+  payment_terms: MyText
+  signed_by_contractor: false
+   signed_by_subcontractor: false
+
+two:
+  task: two
+  contractor: two
+  subcontractor: two
+   contract_number: MyString
+  status: MyString
+  contract_date: 2024-12-06
+   terms_and_conditions: MyText
+  payment_terms: MyText
+  signed_by_contractor: false
+   signed_by_subcontractor: false
