@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
@@ -30,7 +29,7 @@ class UsersController < ApplicationController
     @markers = if @user.contractor?
         # Get all tasks created by the contractor that have coordinates
         @user.created_tasks
-             .includes(:sub_contractor)
+             .includes(:sub_contractor, :contractor, :task_applications)
              .where.not(latitude: nil, longitude: nil)
              .map { |task| create_task_marker(task) }
       elsif @user.subcontractor?
