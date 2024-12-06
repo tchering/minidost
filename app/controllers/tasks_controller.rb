@@ -138,7 +138,7 @@ class TasksController < ApplicationController
 
   def available_tasks
     # @tasks = Task.active.where.not(contractor_id: current_user.id)
-    @tasks = Task.where("LOWER(status) = ?", "active".downcase).includes(:contractor)
+    @tasks = Task.where("LOWER(status) = ?", "active".downcase).includes(contractor: { logo_attachment: :blob })
     # @tasks = Task.where(status: "active").where.not(contractor_id: current_user.id)
     Rails.logger.debug("Available tasks: #{@tasks}- #{@tasks.count}")
     Rails.logger.debug("Current user: #{current_user}")
