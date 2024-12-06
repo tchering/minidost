@@ -51,6 +51,7 @@ group :development, :test do
   gem "bullet"
   gem "byebug"
   gem "pg", "~> 1.1"
+  gem "erb-formatter", "~> 0.7.3"
 end
 
 group :development do
@@ -88,4 +89,3 @@ gem "active_storage_validations", "~> 1.3"
 
 gem "mapbox-gl-rails", "~> 3.7"
 
-gem "erb-formatter", "~> 0.7.3"
