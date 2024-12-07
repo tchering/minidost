@@ -57,7 +57,10 @@
           <h5 class="border-bottom pb-2">Terms & Conditions</h5>
           <div class="mb-3">
             <%= f.label :terms_and_conditions, class: "form-label" %>
-            <%= f.text_area :terms_and_conditions, rows: 5, class: "form-control" %>
+            <%= f.text_area :terms_and_conditions, 
+                            value: DefaultContractTerms::STANDARD_TERMS,
+                            rows: 5, 
+                            class: "form-control" %>
           </div>
         </div>
 
@@ -66,7 +69,10 @@
           <h5 class="border-bottom pb-2">Payment Terms</h5>
           <div class="mb-3">
             <%= f.label :payment_terms, class: "form-label" %>
-            <%= f.text_area :payment_terms, rows: 3, class: "form-control" %>
+            <%= f.text_area :payment_terms, 
+                            value: DefaultContractTerms::STANDARD_PAYMENT_TERMS,
+                            rows: 3, 
+                            class: "form-control" %>
           </div>
         </div>
 

@@ -167,6 +167,14 @@
                       <th>Contact</th>
                       <td><%= @contract.contractor.full_name %></td>
                     </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td><%= @contract.contractor.email %></td>
+                    </tr>
+                    <tr>
+                      <th>Phone</th>
+                      <td><%= @contract.contractor.phone_number %></td>
+                    </tr>
                   </table>
                 </div>
               </div>
@@ -191,6 +199,14 @@
                     <tr>
                       <th>Contact</th>
                       <td><%= @contract.subcontractor.full_name %></td>
+                    </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td><%= @contract.subcontractor.email %></td>
+                    </tr>
+                    <tr>
+                      <th>Phone</th>
+                      <td><%= @contract.subcontractor.phone_number %></td>
                     </tr>
                   </table>
                 </div>

@@ -8,10 +8,8 @@ class Contract < ApplicationRecord
   belongs_to :subcontractor, class_name: "User"
   has_one_attached :pdf_file
 
-  validates :contract_date, :terms_and_conditions,
-            :payment_terms, presence: true
-  validates :contract_number, uniqueness: true,
-                              allow_nil: true
+  validates :contract_date, :terms_and_conditions, :payment_terms, presence: true
+  validates :contract_number, uniqueness: true, allow_nil: true
 
   enum status: {
     pending: "pending",
@@ -48,7 +46,7 @@ class Contract < ApplicationRecord
   end
 
   def set_default_terms
-    self.terms_and_conditions ||= STANDARD_TERMS
-    self.payment_terms ||= STANDARD_PAYMENT_TERMS
+    self.terms_and_conditions ||= DefaultContractTerms::STANDARD_TERMS
+    self.payment_terms ||= DefaultContractTerms::STANDARD_PAYMENT_TERMS
   end
 end

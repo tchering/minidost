@@ -253,4 +253,32 @@ class TaskPdfDecorator
       @pdf.text "No specific details available.", size: 10, color: NEUTRAL_GRAY
     end
   end
+
+  def generate_legal_terms
+    @pdf.start_new_page
+    @pdf.font("Helvetica", style: :bold) do
+      @pdf.fill_color COLORS[:secondary]
+      @pdf.text "Terms & Conditions", size: 18
+    end
+
+    @pdf.font("Helvetica") do
+      @pdf.text @task.contract.terms_and_conditions || DefaultContractTerms::STANDARD_TERMS,
+        size: 10,
+        align: :justify
+    end
+  end
+
+  def generate_financial_terms
+    @pdf.move_down 30
+    @pdf.font("Helvetica", style: :bold) do
+      @pdf.fill_color COLORS[:secondary]
+      @pdf.text "Financial Terms", size: 16
+    end
+
+    @pdf.font("Helvetica") do
+      @pdf.text @task.contract.payment_terms || DefaultContractTerms::STANDARD_PAYMENT_TERMS,
+        size: 10,
+        align: :justify
+    end
+  end
 end

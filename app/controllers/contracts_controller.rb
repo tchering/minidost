@@ -7,7 +7,9 @@ class ContractsController < ApplicationController
     @contract = @task.build_contract(
       contractor: @task.contractor,
       subcontractor: @task.sub_contractor,
-      contract_date: Date.current
+      contract_date: Date.current,
+      terms_and_conditions: DefaultContractTerms::STANDARD_TERMS,
+      payment_terms: DefaultContractTerms::STANDARD_PAYMENT_TERMS
     )
   end
 
