@@ -238,11 +238,11 @@ class TaskPdfDecorator
         [@task.contractor.company_name, @task.sub_contractor.company_name],
         [
           { content: "Authorized Signature: ____________________",
-           font_style: :italic,
-           size: 10 },
+            font_style: :italic,
+            size: 10 },
           { content: "Authorized Signature: ____________________",
-           font_style: :italic,
-           size: 10 },
+            font_style: :italic,
+            size: 10 },
         ],
         [
           { content: "Date: ____________________", size: 10 },

@@ -71,7 +71,7 @@ class User < ApplicationRecord
   # logo validation
   has_one_attached :logo
 
-  validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"],
+  validates :logo, content_type: ["image/png", "image/jpeg"],
                    size: { less_than: 4.megabytes, message: "is too big" }
 
   # Position validations and helper methods
