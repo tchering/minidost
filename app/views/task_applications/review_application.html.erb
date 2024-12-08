@@ -197,12 +197,10 @@
                           </div>
                         </div>
                       </div>
-                      
                       <div class="col-12 d-flex gap-2 justify-content-end mt-4">
                         <%= link_to :back, class: "btn btn-light" do %>
                           <i class="fas fa-arrow-left me-2"></i>Back
                         <% end %>
-                        
                         <%= button_to reject_application_task_task_application_path(@task, @application),
                             method: :post,
                             class: "btn btn-outline-danger",
@@ -210,21 +208,29 @@
                             form: { data: { turbo_confirm: "Are you sure you want to reject this application?" }} do %>
                           <i class="fas fa-times me-2"></i>Reject
                         <% end %>
-
                         <%= button_tag type: :submit, class: "btn btn-success" do %>
                           <i class="fas fa-check me-2"></i>Approve
                         <% end %>
                       </div>
                     <% end %>
                   <% else %>
-                    <%= button_to task_task_application_path(@task, @application),
+                    <% if @application.application_status == 'approved' || @application.application_status == 'rejected' %>
+                      <%= button_to task_task_application_path(@task, @application),
+                                  method: :delete,
+                                  data: { turbo_confirm: t('task.delete_turbo_confirm') },
+                                  class: "btn btn-danger btn-rounded",
+                                  disabled: true do %>
+                        <i class="fas fa-times me-2"></i><%= t('task.buttons.delete_interest') %>
+                      <% end %>
+                    <% else %>
+                      <%= button_to task_task_application_path(@task, @application),
                                   method: :delete,
                                   data: { turbo_confirm: t('task.delete_turbo_confirm') },
                                   class: "btn btn-danger btn-rounded" do %>
-                      <i class="fas fa-times me-2"></i><%= t('task.buttons.delete_interest') %>
+                        <i class="fas fa-times me-2"></i><%= t('task.buttons.delete_interest') %>
+                      <% end %>
                     <% end %>
                   <% end %>
-                  </div>
                 </div>
               </div>
             </div>
@@ -233,67 +239,68 @@
       </div>
     </div>
   </div>
-  <style>
+</div>
+<style>
+  .badge {
+    max-width: 100%;
+    white-space: normal; /* Allow text to wrap */
+    word-break: break-word;
+    margin: 2px;
+  }
+
+  .detail-item {
+    padding: 10px;
+    overflow-wrap: break-word;
+  }
+
+  @media (max-width: 768px) {
     .badge {
-      max-width: 100%;
-      white-space: normal; /* Allow text to wrap */
-      word-break: break-word;
-      margin: 2px;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.5rem;
+    }
+  }
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #3f51b5, #2196f3);
+    }
+
+    .card {
+      border-radius: 0.75rem;
+    }
+
+    .card-header {
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
     .detail-item {
-      padding: 10px;
-      overflow-wrap: break-word;
+      margin-bottom: 1rem;
     }
 
-    @media (max-width: 768px) {
-      .badge {
-        font-size: 0.8rem;
-        padding: 0.25rem 0.5rem;
-      }
+    .detail-item label {
+      display: block;
+      margin-bottom: 0.25rem;
     }
-      body {
-        background-color: #f8f9fa;
-        font-family: 'Inter', system-ui, sans-serif;
-      }
 
-      .gradient-primary {
-        background: linear-gradient(135deg, #3f51b5, #2196f3);
-      }
+    .contact-details i {
+      width: 20px;
+      margin-right: 8px;
+    }
 
-      .card {
-        border-radius: 0.75rem;
-      }
+    .btn {
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      border-radius: 0.5rem;
+    }
 
-      .card-header {
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-      }
+    .form-control {
+      border-radius: 0.5rem;
+    }
 
-      .detail-item {
-        margin-bottom: 1rem;
-      }
-
-      .detail-item label {
-        display: block;
-        margin-bottom: 0.25rem;
-      }
-
-      .contact-details i {
-        width: 20px;
-        margin-right: 8px;
-      }
-
-      .btn {
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-        border-radius: 0.5rem;
-      }
-
-      .form-control {
-        border-radius: 0.5rem;
-      }
-
-      .input-group-text {
-        border-radius: 0 0.5rem 0.5rem 0;
-      }
-  </style>
+    .input-group-text {
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+</style>
