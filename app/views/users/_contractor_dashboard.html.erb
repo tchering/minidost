@@ -28,7 +28,7 @@
         </div>
         <div class="card-body">
           <%= render partial: "tasks/task_status_contractor", 
-                     locals: { active_tasks_applications_count: active_tasks_applications_count } %>
+                     locals: { active_tasks_applications_count: active_tasks_applications_count , task: task } %>
           <div class="mt-3">
             <%= render "shared/button_collection", user: user %>
           </div>

@@ -28,10 +28,16 @@
               <% application = @task.task_applications.find_by(subcontractor: current_user) %>
               <% if application.application_status == "approved" %>
                 <% if @task.contract.present? %>
-                  <%= link_to task_contract_path(@task, @task.contract), 
-                      class: "btn btn-primary btn-rounded",
-                      data: { turbo_frame: "_top" } do %>
-                    <i class="fas fa-file-contract me-2"></i>View Contract
+                  <% if @task.contract.signed_by_contractor? %>
+                    <%= link_to task_contract_path(@task, @task.contract), 
+                        class: "btn btn-primary btn-rounded",
+                        data: { turbo_frame: "_top" } do %>
+                      <i class="fas fa-file-contract me-2"></i>View Contract
+                    <% end %>
+                  <% else %>
+                    <div class="alert alert-info mb-0">
+                      <i class="fas fa-clock me-2"></i>Waiting for contractor to sign the contract
+                    </div>
                   <% end %>
                 <% else %>
                   <div class="alert alert-info mb-0">

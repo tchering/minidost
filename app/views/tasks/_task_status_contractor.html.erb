@@ -37,18 +37,22 @@
         </div>
       <% end %>
     </div>
-    <div class="col-md-3">
-      <%= link_to tasks_path(status: "approved"), 
-                  class: "stat-card pending", 
-                  data: { turbo_frame: "map_frame" } do %>
+    <%# Approved Applications %>
+    <div class="col-md-4 col-lg-3">
+      <%= link_to tasks_path(application_status: "approved"), 
+              class: "stat-card stat-card-approved", 
+              data: { turbo_frame: "map_frame" } do %>
         <div class="stat-content">
           <div class="stat-icon">
-            <i class="fas fa-clock"></i>
+            <i class="fas fa-check"></i>
           </div>
           <div class="stat-info">
-            <h6><%= t("task.status_approved") %></h6>
-            <h2>
-              <%= @user.created_tasks.where(status: "approved").count %>
+            <h6 class="stat-title"><%= t("task.applications_approved") %></h6>
+            <h2 class="stat-number">
+              <%= TaskApplication.joins(:task)
+                           .where(tasks: { contractor_id: @user.id }, 
+                                  application_status: "approved")
+                           .count %>
             </h2>
           </div>
         </div>
