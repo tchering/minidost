@@ -200,7 +200,6 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
-    mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.25.4)
     msgpack (1.7.5)
@@ -413,7 +412,6 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   mapbox-gl-rails (~> 3.7)
-  mini_magick (~> 4.11)
   pg (~> 1.1)
   prawn (~> 2.5)
   prawn-table (~> 0.2.2)
