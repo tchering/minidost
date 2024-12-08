@@ -33,16 +33,23 @@
               <span>Application</span>
             <% end %>
             <%= link_to task_path(application.task),
-              class: "btn btn-sm btn-outline-primary d-flex align-items-center gap-2",
-              data: { turbo_frame: "_top" } do %>
+            class: "btn btn-sm btn-outline-primary d-flex align-items-center gap-2 position-relative",
+            data: { turbo_frame: "_top" } do %>
               <i class="fas fa-folder"></i>
               <span>Project</span>
+              <% if application.approved? && 
+                  application.task.contract&.present? && 
+                  !application.task.contract.signed_by_subcontractor? %>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <i class="fas fa-exclamation-circle"></i>
+              </span>
             <% end %>
-          </div>
+          <% end %>
         </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+</div>
 <% end %>
 <style>
   .list-group-item {

@@ -16,15 +16,24 @@
         </div>
       <% end %>
     </div>
-
     <%# Approved Applications %>
     <div class="col-md-4 col-lg-3">
       <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "approved"), 
-                  class: "stat-card stat-card-approved", 
-                  data: { turbo_frame: "map_frame" } do %>
+              class: "stat-card stat-card-approved", 
+              data: { turbo_frame: "map_frame" } do %>
         <div class="stat-content">
           <div class="stat-icon">
             <i class="fas fa-check"></i>
+            <%# Add notification badge for contracts needing signature %>
+            <% unsigned_contracts_count = @user.task_applications
+             .approved
+             .joins(task: :contract)
+             .where.not(tasks: { contract: nil })
+             .where("contracts.signed_by_subcontractor IS NULL OR contracts.signed_by_subcontractor = ?", false)
+             .count %>
+            <% if unsigned_contracts_count > 0 %>
+              <span class="notification-badge"><%= unsigned_contracts_count %></span>
+            <% end %>
           </div>
           <div class="stat-info">
             <h6 class="stat-title"><%= t("task.applications_approved") %></h6>
@@ -33,7 +42,6 @@
         </div>
       <% end %>
     </div>
-
     <%# Rejected Applications %>
     <div class="col-md-4 col-lg-3">
       <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "rejected"), 
@@ -50,7 +58,6 @@
         </div>
       <% end %>
     </div>
-
     <%# In Progress Tasks %>
     <div class="col-md-4 col-lg-3">
       <%= link_to tasks_path( status: "in progress"), 
@@ -67,7 +74,6 @@
         </div>
       <% end %>
     </div>
-
     <%# Completed Tasks %>
     <div class="col-md-4 col-lg-3">
       <%= link_to tasks_path(status: "completed"), 
@@ -86,7 +92,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .task-statistics {
     font-family: 'Inter', sans-serif;
@@ -123,6 +128,24 @@
     height: 48px;
     border-radius: 8px;
     opacity: 0.9;
+    position: relative;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
 
   .stat-card-pending .stat-icon {
