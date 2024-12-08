@@ -16,31 +16,43 @@ class ElectricienTaskPdfDecorator < TaskPdfDecorator
     # General Information
     pdf.text "General Details:", style: :bold
     pdf.text "- Type de Travaux: #{taskable.type_de_travaux}"
-    pdf.text "- Nombre de Logements: #{taskable.nombre_de_logements}"
+    pdf.text "- Type de batiment: #{taskable.type_de_batiment}"
     pdf.text "- Nombre de Pièces: #{taskable.nombre_de_pieces}"
+
+    # Technical Information
+    pdf.move_down 10
+    pdf.text "Technical Details:", style: :bold
+    pdf.text "- Ampérage Principal: #{taskable.amperage_principal}"
+    pdf.text "- Tension Requise: #{taskable.tension_requise}"
+    pdf.text "- Type de Phase: #{taskable.phase_type}"
 
     pdf.move_down 10
     pdf.text "Required Services:", style: :bold
 
     services = [
-      ["Installation Tableau Principal", :installation_tableau_principal],
-      ["Installation Tableau Divisionnaire", :installation_tableau_divisionnaire],
-      ["Mise aux Normes Installation", :mise_aux_normes_installation],
-      ["Installation Prises de Courant", :installation_prises_courant],
-      ["Installation Points Lumineux", :installation_points_lumineux],
-      ["Installation Interrupteurs", :installation_interrupteurs],
-      ["Installation VMC", :installation_vmc],
-      ["Installation Chauffage Electrique", :installation_chauffage_electrique],
-      ["Installation Radiateurs", :installation_radiateurs],
-      ["Installation Convecteurs", :installation_convecteurs],
-      ["Installation Climatisation", :installation_climatisation],
-      ["Installation Prise Force", :installation_prise_force],
-      ["Installation Prise Triphasée", :installation_prise_triphasee],
-      ["Installation Bandeau LED", :installation_bandeau_led],
-      ["Installation Spot LED", :installation_spot_led],
-      ["Installation Détecteur Présence", :installation_detecteur_presence],
+      ["Installation Tableau Électrique", :installation_tableau_electrique],
+      ["Mise aux Normes Tableau", :mise_aux_normes_tableau],
+      ["Pose Prises Électriques", :pose_prises_electriques],
+      ["Pose Interrupteurs", :pose_interrupteurs],
+      ["Installation Éclairage", :installation_eclairage],
+      ["Pose Luminaires", :pose_luminaires],
+      ["Installation Cuisine", :installation_cuisine],
+      ["Installation Salle de Bain", :installation_salle_de_bain],
+      ["Installation Extérieure", :installation_exterieure],
+      ["Installation Cave/Garage", :installation_cave_garage],
+      ["Mise à la Terre", :mise_a_la_terre],
+      ["Installation Différentiel", :installation_differentiel],
+      ["Installation Parafoudre", :installation_parafoudre],
+      ["Vérification Conformité", :verification_conformite],
+      ["Installation Domotique", :installation_domotique],
       ["Installation Vidéophone", :installation_videophone],
-      ["Installation Portail Electrique", :installation_portail_electrique],
+      ["Installation Alarme", :installation_alarme],
+      ["Installation Ventilation", :installation_ventilation],
+      ["Dépannage Urgent", :depannage_urgent],
+      ["Recherche Panne", :recherche_panne],
+      ["Modification Existant", :modification_existant],
+      ["Passage Câbles", :passage_cables],
+      ["Saignée Murs", :saignee_murs],
     ]
 
     services.each do |label, attribute|
