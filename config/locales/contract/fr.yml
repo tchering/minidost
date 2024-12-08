@@ -2,4 +2,7 @@ fr:
   contracts:
     create:
       success: "Le contrat a été généré avec succès"
-  unauthorized: "Vous n'êtes pas autorisé à effectuer cette action"
+    sign:
+      success: "Le contrat a été signé avec succès"
+    error:
+      unauthorized: "Vous n'êtes pas autorisé à effectuer cette action"

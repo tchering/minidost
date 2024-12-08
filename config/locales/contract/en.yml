@@ -2,4 +2,7 @@ en:
   contracts:
     create:
       success: "Contract was successfully generated"
-  unauthorized: "You are not authorized to perform this action"
+    sign:
+      success: "Contract was successfully signed"
+    error:
+      unauthorized: "You are not authorized to perform this action"

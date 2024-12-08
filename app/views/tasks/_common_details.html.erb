@@ -1,5 +1,48 @@
 <%# app/views/tasks/_common_details.html.erb %>
 <div class="row">
+  <%# contractor and subcontractor logo %>
+  <div class="col-12 mb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="attribute-group">
+          <label>Contractor</label>
+          <div class="d-flex align-items-center gap-2">
+            <% if task.contractor.present? %>
+              <div class="contractor-logo">
+                <% if task.contractor.logo.attached? %>
+                  <%= image_tag task.contractor.logo, class: "rounded-circle", size: "40x40" %>
+                <% else %>
+                  <%= image_tag "default_logo.png", class: "rounded-circle", size: "40x40" %>
+                <% end %>
+              </div>
+              <p class="text-dark mb-0"><%= task.contractor.company_name %></p>
+            <% else %>
+              <p class="text-dark mb-0">N/A</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="attribute-group">
+          <label>Sub Contractor</label>
+          <div class="d-flex align-items-center gap-2">
+            <% if task.sub_contractor.present? %>
+              <div class="contractor-logo">
+                <% if task.sub_contractor.logo.attached? %>
+                  <%= image_tag task.sub_contractor.logo, class: "rounded-circle", size: "40x40" %>
+                <% else %>
+                  <%= image_tag "default_logo.png", class: "rounded-circle", size: "40x40" %>
+                <% end %>
+              </div>
+              <p class="text-dark mb-0"><%= task.sub_contractor.company_name %></p>
+            <% else %>
+              <p class="text-dark mb-0">N/A</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <%# Site Information %>
   <div class="col-12 mb-4">
     <h5 class="text-primary border-bottom pb-2 mb-3">Site Information</h5>
@@ -40,35 +83,16 @@
   <div class="col-12 mb-4">
     <h5 class="text-primary border-bottom pb-2 mb-3">Schedule</h5>
     <div class="row g-3">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="attribute-group">
           <label>Start Date</label>
           <p class="text-dark"><%= task.start_date&.strftime("%B %d, %Y") %></p>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="attribute-group">
           <label>End Date</label>
           <p class="text-dark"><%= task.end_date&.strftime("%B %d, %Y") %></p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="attribute-group">
-          <label>Sub Contractor</label>
-          <div class="d-flex align-items-center gap-2">
-            <% if task.sub_contractor.present? %>
-              <div class="contractor-logo">
-                <% if task.sub_contractor.logo.attached? %>
-                  <%= image_tag task.sub_contractor.logo, class: "rounded-circle", size: "40x40" %>
-                <% else %>
-                  <%= image_tag "default_logo.png", class: "rounded-circle", size: "40x40" %>
-                <% end %>
-              </div>
-              <p class="text-dark mb-0"><%= task.sub_contractor.company_name %></p>
-            <% else %>
-              <p class="text-dark mb-0">N/A</p>
-            <% end %>
-          </div>
         </div>
       </div>
     </div>

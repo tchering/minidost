@@ -14,9 +14,20 @@
               </span>
               <%= task.site_name %>
             </div>
-            <small class="text-muted ms-2">(<%= task.street %>)</small>
+            <small class="text-muted ms-2">
+              (<%= task.street %>) • 
+              <span class="text-primary">
+                <%= task.contractor.company_name %>
+              </span>
+            </small>
           <% end %>
-          <%# Notification Badge %>
+          <%#! Contract if task has contract %>
+          <% if task.contract.present? %>
+            <%= link_to task_contract_path(task, task.contract), data: { turbo_frame: "_top" } do %>
+              <span class="badge bg-info ms-2">Contract</span>
+            <% end %>
+          <% end %>
+          <%#! Notification Badge %>
           <% if task.status == "active" && @task_application_counts[task.id].to_i > 0 %>
             <div class="ms-auto">
               <%= link_to application_list_task_path(task),data:{turbo_frame: "_top"} do %>
