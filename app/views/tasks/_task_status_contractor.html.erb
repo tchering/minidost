@@ -37,6 +37,23 @@
         </div>
       <% end %>
     </div>
+    <div class="col-md-3">
+      <%= link_to tasks_path(status: "approved"), 
+                  class: "stat-card pending", 
+                  data: { turbo_frame: "map_frame" } do %>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-info">
+            <h6><%= t("task.status_approved") %></h6>
+            <h2>
+              <%= @user.created_tasks.where(status: "approved").count %>
+            </h2>
+          </div>
+        </div>
+      <% end %>
+    </div>
     <!-- In Progress Tasks -->
     <div class="col-md-3">
       <%= link_to tasks_path(status: "in progress"), 

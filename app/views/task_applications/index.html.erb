@@ -29,13 +29,13 @@
             <%= link_to review_application_task_task_application_path(application.task, application),
               class: "btn btn-sm btn-primary d-flex align-items-center gap-2",
               data: { turbo_frame: "_top" } do %>
-              <i class="bi bi-file-text"></i>
+              <i class="fas fa-file-text"></i>
               <span>Application</span>
             <% end %>
             <%= link_to task_path(application.task),
               class: "btn btn-sm btn-outline-primary d-flex align-items-center gap-2",
               data: { turbo_frame: "_top" } do %>
-              <i class="bi bi-folder"></i>
+              <i class="fas fa-folder"></i>
               <span>Project</span>
             <% end %>
           </div>

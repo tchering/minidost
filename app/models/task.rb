@@ -16,7 +16,7 @@ class Task < ApplicationRecord
 
   #! Associations with contract model
   has_one :contract, dependent: :destroy
-  
+
   validates :taskable_type, presence: true
   validates :site_name, :street, :city, :status, presence: true
 
@@ -26,6 +26,7 @@ class Task < ApplicationRecord
   enum status: {
     pending: "pending",
     active: "active",
+    approved: "approved",
     in_progress: "in progress",
     completed: "completed",
   }

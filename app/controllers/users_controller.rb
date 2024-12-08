@@ -3,6 +3,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
+  def index
+    @users = User.all.includes(logo_attachment: :blob)
+  end
+
   def show
     # you can get task IDs for a user through their associations.
     # We need to get task becuase we are using route task_task_applications GET  (/:locale)/tasks/:task_id/task_applications(.:format)

@@ -25,11 +25,26 @@
           <% else %>
             <%#! dynamic button rendering + form to apply for the task %>
             <% if @task.task_applications.exists?(subcontractor: current_user) %>
-              <%= button_to task_task_application_path(@task, @task.task_applications.find_by(subcontractor: current_user)),
-              method: :delete,
-              data: { turbo_confirm: t('task.delete_turbo_confirm') },
-              class: "btn btn-danger btn-rounded" do %>
-                <i class="fas fa-times me-2"></i><%= t('task.buttons.delete_interest') %>
+              <% application = @task.task_applications.find_by(subcontractor: current_user) %>
+              <% if application.application_status == "approved" %>
+                <% if @task.contract.present? %>
+                  <%= link_to task_contract_path(@task, @task.contract), 
+                      class: "btn btn-primary btn-rounded",
+                      data: { turbo_frame: "_top" } do %>
+                    <i class="fas fa-file-contract me-2"></i>View Contract
+                  <% end %>
+                <% else %>
+                  <div class="alert alert-info mb-0">
+                    <i class="fas fa-clock me-2"></i>Waiting for contract generation
+                  </div>
+                <% end %>
+              <% else %>
+                <%= button_to task_task_application_path(@task, application),
+                    method: :delete,
+                    data: { turbo_confirm: t('task.delete_turbo_confirm') },
+                    class: "btn btn-danger btn-rounded" do %>
+                  <i class="fas fa-times me-2"></i><%= t('task.buttons.delete_interest') %>
+                <% end %>
               <% end %>
             <% else %>
               <div data-controller="dialog" data-action="click->dialog#backdropClose">

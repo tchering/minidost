@@ -109,17 +109,19 @@
           </span>
         </div>
       </div>
+      <%#! Form for sub contractor to update work progress %>
       <div class="col-md-4">
         <div class="attribute-group">
           <label>Work Progress</label>
           <p class="text-dark"><%= task.work_progress %></p>
-          <% if task.sub_contractor.present? && task.sub_contractor_id == current_user.id %>
+          <% if task.sub_contractor.present? && task.sub_contractor_id == current_user.id && task.status == "In Progress" %>
             <%= form_with(model: @task, class: "needs-validation") do |f| %>
               <%= f.text_area :work_progress, class: "form-control", rows: 3 %>
             <% end %>
           <% end %>
         </div>
       </div>
+      <%#! ----------------------------------------------- %>
       <div class="col-md-4">
         <div class="attribute-group">
           <label>Billing Process</label>

@@ -54,6 +54,9 @@ class ContractsController < ApplicationController
 
     if @contract.signed_by_contractor && @contract.signed_by_subcontractor
       @contract.update(status: "completed")
+      if @task.status == "approved"
+        @task.update(status: "in progress")
+      end
     end
 
     redirect_to task_contract_path(@task, @contract),

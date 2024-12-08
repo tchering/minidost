@@ -58,12 +58,14 @@ class TaskApplicationsController < ApplicationController
     @task.update(
       sub_contractor_id: @application.subcontractor_id,
       accepted_price: params[:accepted_price],
-      status: "in_progress",
     )
     # Update current application status
     @application.update(
       application_status: "approved",
     )
+    if @task.status == "active"
+      @task.update(status: "approved")
+    end
 
     # Reject other applications once one is approved
     @task.task_applications
