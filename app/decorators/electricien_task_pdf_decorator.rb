@@ -1,8 +1,13 @@
 #! -->2 app/decorators/electricien_task_pdf_decorator.rb
 class ElectricienTaskPdfDecorator < TaskPdfDecorator
-  def decorate_pdf(pdf)
-    super
-    generate_electricien_details(pdf)
+  # def decorate_pdf(pdf)
+  #   super
+  #   generate_electricien_details(pdf)
+  # end
+  protected
+
+  def generate_specific_details
+    generate_electricien_details(@pdf)
   end
 
   private

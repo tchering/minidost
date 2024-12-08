@@ -23,8 +23,8 @@ class TaskPdfDecorator
         Author: @task.contractor.company_name,
         Subject: "Contract #{@task.contract.contract_number}",
         Creator: "MiniDost System",
-        CreationDate: Time.current
-      }
+        CreationDate: Time.current,
+      },
     )
     setup_fonts
   end
@@ -35,28 +35,45 @@ class TaskPdfDecorator
     @pdf
   end
 
-  private
-
-  def setup_fonts
-    @pdf.font "Helvetica"
-    @pdf.default_leading 5
-  end
-
   def decorate_pdf(pdf)
     @pdf = pdf
     add_watermark unless @task.contract.completed?
 
+    #!First page
     generate_header_with_logos
     generate_contract_info
     generate_parties_section
-    generate_project_details
+    #!Second page
+    generate_project_details #has its onw start_new_page
+    #!Third page
     generate_specific_details
+    #!Fourth page
     generate_terms_section
+    #!Fifth page
+    @pdf.start_new_page
     generate_signature_section
 
     add_footer
     add_page_numbers
     @pdf
+  end
+
+  protected
+
+  def generate_specific_details
+    @pdf.start_new_page
+    @pdf.font("Helvetica") do
+      @pdf.text "Task-Specific Details", style: :bold, size: 16, color: SECONDARY_COLOR
+      @pdf.move_down 10
+      @pdf.text "No specific details available.", size: 10, color: NEUTRAL_GRAY
+    end
+  end
+
+  private
+
+  def setup_fonts
+    @pdf.font "Helvetica"
+    @pdf.default_leading 5
   end
 
   def add_watermark
@@ -148,42 +165,33 @@ class TaskPdfDecorator
       [@task.contractor.address, @task.sub_contractor.address],
       [@task.contractor.full_name, @task.sub_contractor.full_name],
       [@task.contractor.email, @task.sub_contractor.email],
-      [@task.contractor.phone_number, @task.sub_contractor.phone_number]
+      [@task.contractor.phone_number, @task.sub_contractor.phone_number],
     ]
 
     create_comparison_table(parties_data)
   end
 
   def generate_project_details
+    @pdf.start_new_page
     create_section_title("PROJECT SPECIFICATIONS")
-
     details_data = {
       "Site Information" => {
         "Site Name" => @task.site_name,
         "Address" => @task.street,
         "City" => @task.city,
-        "Area Code" => @task.area_code
+        "Area Code" => @task.area_code,
       },
       "Timeline" => {
         "Start Date" => @task.start_date&.strftime("%B %d, %Y"),
-        "End Date" => @task.end_date&.strftime("%B %d, %Y")
+        "End Date" => @task.end_date&.strftime("%B %d, %Y"),
       },
       "Financial Details" => {
         "Proposed Price" => number_to_currency(@task.proposed_price),
-        "Accepted Price" => number_to_currency(@task.accepted_price)
-      }
+        "Accepted Price" => number_to_currency(@task.accepted_price),
+      },
     }
 
     create_details_tables(details_data)
-  end
-
-  def generate_specific_details
-    @pdf.move_down 20
-    @pdf.font("Helvetica") do
-      @pdf.text "Task-Specific Details", style: :bold, size: 16, color: SECONDARY_COLOR
-      @pdf.move_down 10
-      @pdf.text "No specific details available.", size: 10, color: NEUTRAL_GRAY
-    end
   end
 
   def generate_terms_section
@@ -203,25 +211,70 @@ class TaskPdfDecorator
 
   def generate_signature_section
     @pdf.start_new_page
-    @pdf.font("Helvetica") do
-      @pdf.text "Signatures", style: :bold, size: 16, color: SECONDARY_COLOR
-      @pdf.move_down 30
 
+    # Set up professional color scheme
+    header_color = "333333"  # Dark gray for professional look
+    line_color = "CCCCCC"    # Light gray for divider lines
+
+    # Page header with company branding
+    @pdf.font("Helvetica") do
+      @pdf.text "Agreement Signatures",
+                style: :bold,
+                size: 18,
+                color: header_color,
+                align: :center
+
+      @pdf.move_down 20
+      @pdf.stroke_horizontal_rule
+      @pdf.move_down 20
+
+      # Prepare signature table with enhanced formatting
       signature_table = [
-        ["For the Contractor", "For the Subcontractor"],
+        [
+          { content: "Contractor Signature", font_style: :bold },
+          { content: "Subcontractor Signature", font_style: :bold },
+        ],
         [@task.contractor.full_name, @task.sub_contractor.full_name],
         [@task.contractor.company_name, @task.sub_contractor.company_name],
-        ["Signature: _______________", "Signature: _______________"],
-        ["Date: _______________", "Date: _______________"],
+        [
+          { content: "Authorized Signature: ____________________",
+           font_style: :italic,
+           size: 10 },
+          { content: "Authorized Signature: ____________________",
+           font_style: :italic,
+           size: 10 },
+        ],
+        [
+          { content: "Date: ____________________", size: 10 },
+          { content: "Date: ____________________", size: 10 },
+        ],
       ]
 
       @pdf.table(signature_table,
                  width: @pdf.bounds.width,
                  cell_style: {
                    align: :center,
-                   padding: [10, 10],
-                   border_color: "FFFFFF",
-                 })
+                   padding: [12, 15],
+                   border_color: line_color,
+                   size: 11,
+                   font_style: :normal,
+                 },
+                 column_widths: {
+                   0 => @pdf.bounds.width / 2,
+                   1 => @pdf.bounds.width / 2,
+                 }) do
+        # Add some styling to make it look more professional
+        cells.borders = [:bottom]
+        row(0).font_style = :bold
+        row(0).background_color = "F0F0F0"  # Light gray background for header row
+      end
+
+      # Footer note for legal clarity
+      @pdf.move_down 20
+      @pdf.text "By signing below, both parties acknowledge and agree to the terms outlined in this document.",
+                size: 9,
+                color: "666666",
+                align: :center
     end
   end
 

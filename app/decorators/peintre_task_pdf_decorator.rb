@@ -1,8 +1,12 @@
 #! -->2 app/decorators/peintre_task_pdf_decorator.rb
 class PeintreTaskPdfDecorator < TaskPdfDecorator
-  def decorate_pdf(pdf)
-    super
-    generate_peintre_details(pdf)
+  # def decorate_pdf(pdf)
+  #   super
+  #   generate_peintre_details(pdf)
+  # end
+
+  def generate_specific_details
+    generate_peintre_details(@pdf)
   end
 
   private
