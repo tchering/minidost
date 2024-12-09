@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  #test commit 
   include SelectOption
   before_create :set_default_country
   after_initialize :set_default_admin, if: :new_record?
