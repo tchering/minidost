@@ -23,6 +23,7 @@ class Task < ApplicationRecord
   # This allows nested attributes for the associated taskable model
   accepts_nested_attributes_for :taskable, allow_destroy: true
 
+  #! enum is a Rails feature that maps integer values in database to string statuses in code.
   enum status: {
     pending: "pending",
     active: "active",

@@ -10,7 +10,7 @@ class Contract < ApplicationRecord
 
   validates :contract_date, :terms_and_conditions, :payment_terms, presence: true
   validates :contract_number, uniqueness: true, allow_nil: true
-
+  #! enum is a Rails feature that maps integer values in database to string statuses in code.
   enum status: {
     pending: "pending",
     contractor_signed: "contractor_signed",
