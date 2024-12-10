@@ -29,6 +29,7 @@ fr:
     enter_price: "Entrez le prix"
     status_pending: "En attente"
     status_active: "Actif"
+    tasks_approved: "Travaux Approuvé"
     status_in_progress: "Travaux en cours"
     status_completed: "Travaux Terminé"
     available_tasks: "Tâches disponibles"

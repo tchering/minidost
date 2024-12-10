@@ -24,7 +24,7 @@
       <%#! Task Status and Actions Card %>
       <div class="card task-management-card border-0 shadow-sm mb-4">
         <div class="card-header bg-white border-0 pt-3 pb-0">
-          <h4 class="card-title text-primary mb-0">Task Management</h4>
+          <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.title') %></h4>
         </div>
         <div class="card-body">
           <%= render partial: "tasks/task_status_contractor", 
@@ -37,7 +37,7 @@
       <%#! Interactive Map Card %>
       <div class="card map-section-card border-0 shadow-sm">
         <div class="card-header bg-white border-0 pt-3 pb-0">
-          <h4 class="card-title text-primary mb-0">Project Locations</h4>
+          <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.location') %></h4>
         </div>
         <div class="card-body">
           <%= turbo_frame_tag "map_frame" do %>

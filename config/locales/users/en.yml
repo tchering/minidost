@@ -7,7 +7,16 @@ en:
       name: "Name"
       position: "Position"
       member: "Member since"
+      contractor: "Contractor"
+      sub-contractor: "Sub-contractor"
+
+    dashboard_contractor:
+      title: "Dashboard"
+      location: "Project Location"
+
+    dashboard_subcontractor:
+      title: "Dashboard"
+      location: "Project Location"
 
     map:
-      contractor: "Find Contractor from the Map"
-      subcontractor: "Find Subcontractor from the Map"
+      projects: "Your projects on the map"

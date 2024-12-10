@@ -10,7 +10,7 @@
   <% if user.contractor?  || user.subcontractor? %>
     <div class="map-card">
       <div class="map-header">
-        <h5 class="mb-0"><%= t("task.your_tasks") %></h5>
+        <h5 class="mb-0"><%= t("users.map.projects") %></h5>
       </div>
       <div class="map-content">
         <% if @markers.present? %>
@@ -25,7 +25,7 @@
           <div class="empty-state">
             <div>
               <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
-              <p class="mb-0"><%= t("task.no_tasks") %></p>
+              <p class="mb-0"><%= t("task.no_available_tasks") %></p>
             </div>
           </div>
         <% end %>

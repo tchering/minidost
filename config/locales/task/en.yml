@@ -21,6 +21,7 @@ en:
     enter_price: "Enter price"
     status_pending: "Pending"
     status_active: "Active"
+    tasks_approved: "Approved Project"
     status_in_progress: "In Progress"
     status_completed: "Completed"
     available_tasks: "Available Tasks"

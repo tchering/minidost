@@ -10,6 +10,13 @@ fr:
       contractor: "Donneur d'ordre"
       sub-contractor: "Sous-traitant"
 
+    dashboard_contractor:
+      title: "Tableau de bord"
+      location: "Emplacement du projet"
+
+    dashboard_subcontractor:
+      title: "Tableau de bord"
+      location: "Emplacement du projet"
+
     map:
-      contractor: "Trouver un Donneur d'ordre sur la carte"
-      subcontractor: "Trouver un Sous-traitant sur la carte"
+      projects: "Vos projets sur la carte"

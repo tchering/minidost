@@ -1,0 +1,10 @@
+en:
+  buttons:
+    load_map: "Load Map"
+    search: "Search"
+    new_task: "New Task"
+    edit_task: "Edit Task"
+
+    new_task: 
+      create_button: "Create Project"
+      back: "Back"

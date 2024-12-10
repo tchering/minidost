@@ -1,0 +1,10 @@
+fr:
+  buttons:
+    load_map: "Charger la carte"
+    search: "Rechercher"
+    create_task: "Nouvelle tâche"
+    edit_task: "Modifier la tâche"
+
+    new_task: 
+      create_button: "Créer le projet"
+      back: "Retour"
