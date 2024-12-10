@@ -97,7 +97,7 @@ export default class extends Controller {
       customMarker.style.height = "30px";
       customMarker.style.backgroundSize = "cover";
       customMarker.style.borderRadius = "50%";
-      customMarker.style.border = "2px solid #fff";
+      customMarker.style.border = "5px solid #fff";
       customMarker.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
 
       // Add status-specific styling
