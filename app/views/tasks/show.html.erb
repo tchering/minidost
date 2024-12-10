@@ -11,10 +11,12 @@
           <% if @task.contractor_id == current_user.id %>
             <div class="btn-group" role="group" aria-label="Task Actions">
               <%#! if task has already contract will show contract else will show generate contract %>
-              <% if @task.contract.blank? %>
+              <% if @task.contract.blank? && @task.sub_contractor_id.present? %>
                 <%= link_to new_task_contract_path(@task), class: "btn btn-outline-light btn-rounded me-2" do %>
                   <i class="fas fa-file-contract me-2"></i>Generate Contract
                 <% end %>
+              <% elsif @task.contract.blank? && @task.sub_contractor_id.nil? %>
+                <%# Display nothing until task has subcontractor or contract %>
               <% else %>
                 <%= link_to task_contract_path(@task), class: "btn btn-outline-light btn-rounded me-2" do %>
                   <i class="fas fa-file-contract me-2"></i>Contract
