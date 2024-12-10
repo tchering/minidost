@@ -1,6 +1,22 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  #! PgSearch is a gem that allows for full-text search in PostgreSQL
+  include PgSearch::Model
+
+  pg_search_scope :search_by_term,
+    against: {
+      taskable_type: "A",
+      city: "B",
+    },
+    using: {
+      tsearch: {
+        prefix: true,
+        dictionary: "french",
+        any_word: true,
+      },
+    }
+
   before_save :normalize_status
   belongs_to :taskable, polymorphic: true
   #! Associations with User model

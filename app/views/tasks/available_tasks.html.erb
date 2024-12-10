@@ -1,110 +1,32 @@
-<%# app/views/tasks/available_tasks.html.erb %>
-<div class="container-fluid px-4 py-5">
-  <div class="row g-4">
-    <div class="col-12">
-      <div class="card shadow-lg border-0 rounded-4 mb-4">
-        <div class="card-header bg-primary text-white p-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-              <i class="fas fa-tasks me-3 fa-2x"></i>
-              <h3 class="mb-0 fw-bold"><%= t("task.available_tasks") %></h3>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card-body p-5">
-          <% if @tasks.any? %>
-            <div class="row g-4">
-              <% @tasks.each do |task| %>
-                <div class="col-md-4 mb-4">
-                  <%= link_to task_path(task), class: "text-decoration-none" do %>
-                    <div class="card shadow-sm h-100 border-0 rounded-4 overflow-hidden">
-                      <div class="card-body">
-                        <div class="text-center mb-4">
-                          <%= image_tag(
-                            task.contractor.logo.attached? ? task.contractor.logo : "default_logo.png", 
-                            alt: "#{task.contractor.company_name}'s profile picture", 
-                            class: "rounded-circle mb-3",
-                            style: "width: 100px; height: 100px; object-fit: cover;"
-                          ) %>
-                          <h5 class="card-title text-primary mb-2"><%= task.site_name %></h5>
-                        </div>
-                        
-                        <div class="border-top pt-3">
-                          <div class="mb-3">
-                            <label class="text-muted small text-uppercase mb-2">Location</label>
-                            <p class="h6"><%= "#{task.street}, #{task.city}" %></p>
-                          </div>
-                          
-                          <div class="mb-3">
-                            <label class="text-muted small text-uppercase mb-2">Proposed Price</label>
-                            <p class="h6">
-                              <span class="badge bg-primary rounded-pill">
-                                <%= number_to_currency(task.proposed_price, unit: "€") %>
-                              </span>
-                            </p>
-                          </div>
-                          
-                          <% if task.start_date && task.end_date %>
-                            <div class="mb-3">
-                              <label class="text-muted small text-uppercase mb-2">Date Range</label>
-                              <p class="h6"><%= "#{l(task.start_date)} - #{l(task.end_date)}" %></p>
-                            </div>
-                          <% end %>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          <% else %>
-            <div class="alert alert-info text-center" role="alert">
-              <i class="fas fa-info-circle me-2"></i>
-              <%= t("task.no_available_tasks") %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+# app/views/tasks/available_tasks.html.erb
+<div class="card-header bg-primary text-white p-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-tasks me-3 fa-2x"></i>
+      <h3 class="mb-0 fw-bold"><%= t("task.available_tasks") %></h3>
     </div>
+    <%= form_with(
+      url: available_tasks_tasks_path,
+      method: :get,
+      data: { 
+        local: false,
+        controller: "search",
+        turbo_frame: "tasks-list",
+        turbo_action: "advance"  # Optional: Action to replace the frame with the response
+      }
+    ) do |f| %>
+      <div class="input-group">
+        <%= f.text_field :query,
+            class: "form-control",
+            placeholder: "Search by City or Task",
+            data: { 
+              search_target: "input",
+              action: "input->search#search" 
+            } %>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<style>
-  body {
-    background-color: #f4f6f9;
-    font-family: 'Roboto', sans-serif;
-  }
-
-  .card {
-    overflow: hidden;
-  }
-
-  .card-header {
-    background: linear-gradient(45deg, #3f51b5, #2196f3) !important;
-  }
-
-  .text-muted.small {
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .card-body .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    transition: all 0.3s ease;
-  }
-</style>
-
-<%# Debug information in development %>
-<% if Rails.env.development? %>
-  <div class="container-fluid px-4 mt-4">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Debug Information</h5>
-        <pre><%= @tasks.inspect %></pre>
-      </div>
-    </div>
-  </div>
+<%= turbo_frame_tag "tasks-list" do %>
+  <%= render "tasks_list", tasks: @tasks %>
 <% end %>

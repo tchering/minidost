@@ -238,6 +238,9 @@ GEM
       racc
     pdf-core (0.10.0)
     pg (1.5.9)
+    pg_search (2.3.7)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     prawn (2.5.0)
       matrix (~> 0.4)
       pdf-core (~> 0.10.0)
@@ -413,6 +416,7 @@ DEPENDENCIES
   jbuilder
   mapbox-gl-rails (~> 3.7)
   pg (~> 1.1)
+  pg_search
   prawn (~> 2.5)
   prawn-table (~> 0.2.2)
   puma (>= 5.0)

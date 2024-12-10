@@ -137,12 +137,21 @@ class TasksController < ApplicationController
   end
 
   def available_tasks
-    # @tasks = Task.active.where.not(contractor_id: current_user.id)
-    @tasks = Task.where("LOWER(status) = ?", "active".downcase).includes(contractor: { logo_attachment: :blob })
-    # @tasks = Task.where(status: "active").where.not(contractor_id: current_user.id)
-    Rails.logger.debug("Available tasks: #{@tasks}- #{@tasks.count}")
-    Rails.logger.debug("Current user: #{current_user}")
-    Rails.logger.debug "Tasks: #{@tasks.inspect}"
+    @tasks = Task.where("LOWER(status) = ?", "active".downcase)
+                 .includes(contractor: { logo_attachment: :blob })
+
+    if params[:query].present?
+      @tasks = @tasks.search_by_term(params[:query])
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.update("tasks-list",
+                                                 partial: "tasks/tasks_list",
+                                                 locals: { tasks: @tasks })
+      }
+    end
   end
 
   def express_interest

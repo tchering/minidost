@@ -1,0 +1,58 @@
+<%# app/views/tasks/_tasks_list.html.erb %>
+<div class="card-body p-5">
+  <% if tasks.any? %>
+    <div class="row g-4">
+      <% tasks.each do |task| %>
+        <div class="col-md-4 mb-4">
+          <%= link_to task_path(task), class: "text-decoration-none" do %>
+            <div class="card shadow-sm h-100 border-0 rounded-4 overflow-hidden">
+              <div class="card-body">
+                <div class="text-center mb-3">
+                  <%= image_tag(
+                    task.contractor.logo.attached? ? task.contractor.logo : "default_logo.png", 
+                    class: "rounded-circle mb-3",
+                    style: "width: 80px; height: 80px; object-fit: cover;"
+                  ) %>
+                  <h5 class="card-title text-primary mb-2"><%= task.site_name %></h5>
+                  <p class="text-muted small mb-0">
+                    <i class="fas fa-building me-1"></i>
+                    <%= task.contractor.company_name %>
+                  </p>
+                </div>
+                <div class="border-top pt-3">
+                  <p class="mb-2">
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    <%= "#{task.street}, #{task.city}" %>
+                  </p>
+                  <p class="mb-2">
+                    <i class="fas fa-tools text-primary me-2"></i>
+                    <%= task.taskable_type.remove("Task") %>
+                  </p>
+                  <p class="mb-0">
+                    <i class="fas fa-euro-sign text-success me-2"></i>
+                    <%= number_to_currency(task.proposed_price, unit: "€", format: "%n %u") %>
+                  </p>
+                </div>
+                <div class="mt-3">
+                  <span class="badge bg-primary">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    <%= l(task.start_date, format: :short) %>
+                  </span>
+                  <span class="badge bg-info">
+                    <i class="fas fa-hourglass-end me-1"></i>
+                    <%= l(task.end_date, format: :short) %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info text-center">
+      <i class="fas fa-info-circle me-2"></i>
+      No tasks found matching "<%= params[:query] %>"
+    </div>
+  <% end %>
+</div>
