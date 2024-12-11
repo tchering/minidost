@@ -24,14 +24,31 @@
       <%#! Task Status and Actions Card %>
       <div class="card task-management-card border-0 shadow-sm mb-4">
         <div class="card-header bg-white border-0 pt-3 pb-0">
-          <div class="d-flex align-items-center">
-            <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.title') %></h4>
-            <div class="ms-auto">
-              <button class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                <i class="fas fa-bell me-2"></i>
-                Notifications
-              </button>
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title text-primary mb-0 fw-semibold">
+              <%= t('users.dashboard_contractor.title') %>
+            </h4>
+            <%# Notification Badge %>
+            <div class="notification-wrapper position-relative">
+              <%= link_to tasks_path(status: "active", has_applications: true), 
+              class: "btn btn-outline-primary btn-sm rounded-3 d-inline-flex align-items-center",
+              data: { turbo_frame: "map_frame" } do %>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-bell opacity-75 me-2"></i>
+                </div>
+                <% active_tasks_with_applications = @user.created_tasks
+          .where(status: "active")
+          .joins(:task_applications)
+          .distinct
+          .count %>
+                <% if active_tasks_with_applications.positive? %>
+                  <span class="notification-badge">
+                    <%= active_tasks_applications_count %>
+                  </span>
+                <% end %>
+              <% end %>
             </div>
+            <%# -----------------------> %>
           </div>
         </div>
         <div class="card-body">
@@ -57,69 +74,96 @@
   </div>
 </div>
 <style>
-  body {
-    background-color: #f4f7fa;
-    font-family: 'Roboto', 'Arial', sans-serif;
-  }
-
-  .dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .card {
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .card:hover {
-    <%# transform: translateY(-5px); %>
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
-  }
-
-  .card-header {
-    padding: 1rem 1.5rem;
-  }
-
-  .card-title {
-    color: #2c3e50;
+  .notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #dc3545; /* Changed to Bootstrap danger red */
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 2px 8px;
+    font-size: 0.675rem;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     font-weight: 600;
-    letter-spacing: -0.5px;
+    box-shadow: 0 3px 6px rgba(220, 53, 69, 0.2); /* Updated shadow to match red */
+    border: 2px solid #ffffff;
+    transform: translate(25%, -25%);
+    transition: all 0.2s ease-in-out;
   }
 
-  .text-primary {
-    color: #1a5f7a !important;
+  .notification-badge:hover {
+    background-color: #0056b3; /* Slightly darker blue on hover */
+    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+    transform: translate(25%, -25%) scale(1.05);
   }
+      body {
+        background-color: #f4f7fa;
+        font-family: 'Roboto', 'Arial', sans-serif;
+      }
 
-  .profile-card .card-body {
-    padding: 1.5rem;
-  }
+      .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
 
-  .professional-details-card,
-  .task-management-card,
-  .map-section-card {
-    background-color: white;
-  }
+      .card {
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
 
-  @media (max-width: 992px) {
-    .dashboard-container {
-      padding: 1rem;
-    }
+      .card:hover {
+        <%# transform: translateY(-5px); %>
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+      }
 
-    .card {
-      margin-bottom: 1rem;
-    }
-  }
+      .card-header {
+        padding: 1rem 1.5rem;
+      }
 
-  <%# Additional responsive adjustments %>
-  @media (max-width: 768px) {
-    .dashboard-container {
-      padding: 0.5rem;
-    }
+      .card-title {
+        color: #2c3e50;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
 
-    .card-header {
-      padding: 0.75rem 1rem;
-    }
-  }
+      .text-primary {
+        color: #1a5f7a !important;
+      }
+
+      .profile-card .card-body {
+        padding: 1.5rem;
+      }
+
+      .professional-details-card,
+      .task-management-card,
+      .map-section-card {
+        background-color: white;
+      }
+
+      @media (max-width: 992px) {
+        .dashboard-container {
+          padding: 1rem;
+        }
+
+        .card {
+          margin-bottom: 1rem;
+        }
+      }
+
+      <%# Additional responsive adjustments %>
+      @media (max-width: 768px) {
+        .dashboard-container {
+          padding: 0.5rem;
+        }
+
+        .card-header {
+          padding: 0.75rem 1rem;
+        }
+      }
 </style>
