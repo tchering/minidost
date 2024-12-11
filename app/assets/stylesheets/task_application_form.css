@@ -7,6 +7,11 @@ Create scoped styles for the application form */
 body:has(dialog[data-dialog-target="dialog"][open]) {
   overflow: hidden;
 }
+dialog[data-dialog-target="dialog"].rounded-4 {
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+}
 dialog::backdrop {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
