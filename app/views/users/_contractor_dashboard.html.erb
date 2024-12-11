@@ -24,7 +24,15 @@
       <%#! Task Status and Actions Card %>
       <div class="card task-management-card border-0 shadow-sm mb-4">
         <div class="card-header bg-white border-0 pt-3 pb-0">
-          <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.title') %></h4>
+          <div class="d-flex align-items-center">
+            <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.title') %></h4>
+            <div class="ms-auto">
+              <button class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                <i class="fas fa-bell me-2"></i>
+                Notifications
+              </button>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <%= render partial: "tasks/task_status_contractor", 
