@@ -1,0 +1,28 @@
+# app/views/conversations/index.html.erb
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Conversations</h4>
+        </div>
+        <div class="card-body">
+          <% @conversations.each do |conversation| %>
+            <%= link_to conversation_path(conversation), class: "text-decoration-none" do %>
+              <div class="d-flex align-items-center p-3 border-bottom">
+                <div>
+                  <h5 class="mb-1">
+                    <%= conversation.participants.find { |p| p != current_user }.company_name %>
+                  </h5>
+                  <small class="text-muted">
+                    <%= conversation.messages.last&.content || "No messages yet" %>
+                  </small>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_06_151103) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_12_190502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_06_151103) do
     t.index ["task_id"], name: "index_contracts_on_task_id"
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "sender_id", null: false
+    t.bigint "recipient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
+    t.index ["sender_id", "recipient_id"], name: "index_conversations_on_sender_id_and_recipient_id", unique: true
+    t.index ["sender_id"], name: "index_conversations_on_sender_id"
+  end
+
   create_table "electricien_tasks", force: :cascade do |t|
     t.string "type_de_travaux"
     t.string "type_de_batiment"
@@ -103,6 +113,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_06_151103) do
     t.text "other_task"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.bigint "sender_id", null: false
+    t.text "content", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "peintre_tasks", force: :cascade do |t|
@@ -222,6 +243,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_06_151103) do
   add_foreign_key "contracts", "tasks"
   add_foreign_key "contracts", "users", column: "contractor_id"
   add_foreign_key "contracts", "users", column: "subcontractor_id"
+  add_foreign_key "conversations", "users", column: "recipient_id"
+  add_foreign_key "conversations", "users", column: "sender_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "task_applications", "tasks"
   add_foreign_key "task_applications", "users", column: "subcontractor_id"
   add_foreign_key "tasks", "users", column: "contractor_id"

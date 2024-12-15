@@ -1,0 +1,25 @@
+class MessagesController < ApplicationController
+  before_action :set_conversation, only: [:create]
+
+  def create
+    @message = @conversation.messages.build(message_params)
+    @message.sender = current_user
+    respond_to do |format|
+      if @message.save
+        format.html { redirect_to @conversation }
+      else
+        format.html { redirect_to @conversation, status: :unprocessable_entity, alert: "Message failed to sent" }
+      end
+    end
+  end
+
+  private
+
+  def set_conversation
+    @conversation = current_user.conversations.find(params[:conversation_id])
+  end
+
+  def message_params
+    params.require(:message).permit(:content)
+  end
+end
