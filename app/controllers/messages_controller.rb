@@ -13,6 +13,13 @@ class MessagesController < ApplicationController
     end
   end
 
+  def mark_as_read
+    @conversation = current_user.conversations.find(params[:conversation_id])
+    @unread_messages = @conversation.messages.where(read: false).where.not(sender_id: current_user.id)
+    @unread_messages.update_all(read: true) if @unread_messages.any?
+    head :ok
+  end
+
   private
 
   def set_conversation

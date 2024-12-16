@@ -35,6 +35,16 @@
     <% end %>
   </div>
 </div>
+<script>
+  document.addEventListener("turbo:load", function() {
+    fetch("<%= mark_as_read_conversation_messages_path(@conversation) %>", {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    });
+  });
+</script>
 <style>
   .chat-container {
       max-width: 900px;

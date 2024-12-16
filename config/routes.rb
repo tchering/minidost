@@ -29,7 +29,11 @@ Rails.application.routes.draw do
 
     resources :bios, only: %i[show new create edit update]
     resources :conversations, only: [:index, :create, :show, :destroy] do
-      resources :messages, only: [:create]
+      resources :messages, only: [:create] do
+        collection do
+          post :mark_as_read
+        end
+      end
     end
     resources :tasks do
       resources :contracts, only: [:new, :create, :show] do
