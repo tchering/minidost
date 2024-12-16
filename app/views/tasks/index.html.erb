@@ -17,7 +17,11 @@
             <small class="text-muted ms-2">
               (<%= task.street %>) • 
               <span class="text-primary">
-                <%= task.contractor.company_name %>
+                <% if current_user == task.contractor %>
+                  <%= task.sub_contractor.present? ? task.sub_contractor.company_name : "<span class='badge bg-secondary'>N/A</span>".html_safe %>
+                <% else %>
+                  <%= task.contractor.company_name %>
+                <% end %>
               </span>
             </small>
           <% end %>

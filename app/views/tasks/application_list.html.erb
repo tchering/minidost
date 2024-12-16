@@ -28,9 +28,12 @@
                   </div>
                 </div>
                 <div class="flex-grow-1">
-                  <h5 class="mb-2 fw-bold text-primary">
-                    <%= application.subcontractor.full_name %>
-                  </h5>
+                  <div class="d-flex align-items-center gap-3">
+                    <h5 class="mb-2 fw-bold text-primary">
+                      <%= application.subcontractor.full_name %>
+                    </h5>
+                    <%= link_to "Visit the Profile", user_path(application.subcontractor), class: "btn btn-sm btn-primary text-light" %>
+                  </div>
                   <div class="d-flex align-items-center">
                     <span class="badge bg-success me-2">
                       <i class="fas fa-briefcase me-1"></i>

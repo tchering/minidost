@@ -1,4 +1,4 @@
-# app/views/conversations/index.html.erb
+<%# # app/views/conversations/index.html.erb %>
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -7,18 +7,25 @@
           <h4 class="mb-0">Conversations</h4>
         </div>
         <div class="card-body">
-          <% @conversations.each do |conversation| %>
-            <%= link_to conversation_path(conversation), class: "text-decoration-none" do %>
-              <div class="d-flex align-items-center p-3 border-bottom">
-                <div>
-                  <h5 class="mb-1">
-                    <%= conversation.participants.find { |p| p != current_user }.company_name %>
-                  </h5>
-                  <small class="text-muted">
-                    <%= conversation.messages.last&.content || "No messages yet" %>
-                  </small>
+          <% if @conversations.empty? %>
+            <div class="text-center">
+              <h5 class="text-muted">No conversations yet</h5>
+            </div>
+          <% else %>
+            <% @conversations.each do |conversation| %>
+              <%= link_to conversation_path(conversation), class: "text-decoration-none" do %>
+                <div class="d-flex align-items-center p-3 border-bottom">
+                  <div>
+                    <h5 class="mb-1">
+                      <%= conversation.participants.find { |p| p != current_user }.company_name %>
+                    </h5>
+                    <small class="text-muted">
+                      <%= conversation.messages.last&.content || "No messages yet" %>
+                    </small>
+                  </div>
+                  <%= link_to "Delete",conversation_path(conversation),data: {turbo_method: :delete,turbo_confirm: "Are you sure you want to delete this conversation?"} %>
                 </div>
-              </div>
+              <% end %>
             <% end %>
           <% end %>
         </div>

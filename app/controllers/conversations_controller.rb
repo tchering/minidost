@@ -1,15 +1,17 @@
 class ConversationsController < ApplicationController
+  # before_action :set_conversation, only: %i[show destroy]
+
   def index
-    @conversations = current_user.conversations.includes(:sender, :recipient)
+    @conversations = current_user.conversations.includes(:sender, :recipient).order(updated_at: :desc)
   end
 
   def create
     @recipient = User.find(params[:recipient_id])
-    @conversation = Conversation.between(current_user, @recipient).first_or_create!(
-      sender: current_user,
-      recipient: @recipient,
+    @conversation = Conversation.between(current_user.id, @recipient.id).first_or_create!(
+      sender_id: current_user.id,
+      recipient_id: @recipient.id,
     )
-    redirect_to @conversation
+    redirect_to conversation_path(@conversation)
   end
 
   #!without first_or_create we need to do this below
@@ -31,4 +33,19 @@ class ConversationsController < ApplicationController
     @message = @conversation.messages.build #more preferred becuase rails approach
     # @message = Message.new
   end
+
+  def destroy
+    @conversation = current_user.conversations.find(params[:id])
+    if @conversation.destroy
+      redirect_to conversations_path, notice: "Conversation was successfully deleted"
+    else
+      redirect_to conversations_path, alert: "Conversation could not be deleted"
+    end
+  end
+
+  private
+
+  # def set_conversation
+  #   @conversation = Conversation.find(params[:id])
+  # end
 end

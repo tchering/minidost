@@ -6,15 +6,19 @@ class Conversation < ApplicationRecord
   validates :sender_id, uniqueness: { scope: :recipient_id }
   # uniqueness: { scope: :recipient_id } ensures that a combination of sender_id and recipient_id can only exist once in the database.
 
-  scope :between, ->(user1, user2) {
-          where(sender: [user1, user2], recipient: [user1, user2])
-        }
-  # This scope helps find conversations between two users regardless of who started it. For example:
-  # conversation = Conversation.between(contractor, subcontractor).first
+  scope :between, ->(sender_id, recipient_id) do
+          where("(conversations.sender_id = ? AND conversations.recipient_id = ?) OR
+    (conversations.sender_id = ? AND conversations.recipient_id = ?)",
+                sender_id, recipient_id, recipient_id, sender_id)
+        end
   #! SQL it generates:
-  # SELECT * FROM conversations
-  # WHERE (sender_id IN (contractor.id, subcontractor.id)
-  # AND recipient_id IN (contractor.id, subcontractor.id))
+  # SELECT "conversations".*
+  # FROM "conversations"
+  # WHERE (
+  #   (conversations.sender_id = 1 AND conversations.recipient_id = 2)
+  #   OR
+  #   (conversations.sender_id = 2 AND conversations.recipient_id = 1)
+  # )
 
   def participants
     [sender, recipient]

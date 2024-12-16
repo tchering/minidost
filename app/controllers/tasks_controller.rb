@@ -7,16 +7,16 @@ class TasksController < ApplicationController
 
   def index
     @tasks = if current_user.position == "contractor"
-      tasks = current_user.created_tasks
-      if params[:has_applications] == "true"
-        tasks = tasks.joins(:task_applications).distinct
+        tasks = current_user.created_tasks
+        if params[:has_applications] == "true"
+          tasks = tasks.joins(:task_applications).distinct
+        end
+        tasks
+      elsif current_user.position == "sub-contractor"
+        current_user.accepted_tasks
+      else
+        Task.all
       end
-      tasks
-    elsif current_user.position == "subcontractor"
-      current_user.accepted_tasks
-    else
-      Task.all
-    end
     # Filter by status if provided
     @tasks = @tasks.where(status: params[:status]) if params[:status].present?
 

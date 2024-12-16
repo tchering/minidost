@@ -87,6 +87,13 @@
       <i class="fas fa-eye me-1"></i> View
     <% end %>
   </div>
+  <% unless current_user == user %>
+    <%= link_to conversations_path(recipient_id: user.id),
+    data: { turbo_method: :post },
+    class: "card-footer bg-light text-center" do %>
+      <i class="fas fa-comments me-1"></i> Message
+    <% end %>
+  <% end %>
 </div>
 <%# Inline CSS for additional styling %>
 <style>

@@ -90,6 +90,22 @@
         </div>
       <% end %>
     </div>
+    <%# Conversations %>
+    <% if current_user == @user %>
+      <div class="col-md-4 col-lg-3">
+        <%= link_to conversations_path, class: "stat-card stat-card-conversations" do %>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <i class="fas fa-comment"></i>
+            </div>
+            <div class="stat-info">
+              <h6 class="stat-title"><%= t("task.conversations") %></h6>
+              <h2 class="stat-number"><%= @user.conversations.count %></h2>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 <style>

@@ -1,4 +1,5 @@
 <%# app/views/task_applications/review_application.html.erb %>
+<%#! view for app/controllers/task_applications_controller.rb %>
 <div class="container-fluid py-4">
   <div class="row justify-content-center">
     <div class="col-xxl-9">
@@ -198,6 +199,11 @@
                         </div>
                       </div>
                       <div class="col-12 d-flex gap-2 justify-content-end mt-4">
+                        <%= link_to conversations_path(recipient_id: @subcontractor.id),
+                            data: { turbo_method: :post },
+                            class: "btn btn-outline-primary btn-rounded ms-3" do %>
+                          <i class="fas fa-comment me-2"></i>Sent Message
+                        <% end %>
                         <%= link_to :back, class: "btn btn-light" do %>
                           <i class="fas fa-arrow-left me-2"></i>Back
                         <% end %>
