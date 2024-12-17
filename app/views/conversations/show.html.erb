@@ -45,6 +45,20 @@
     });
   });
 </script>
+<script>
+document.addEventListener('turbo:load', function() {
+  const messageForm = document.querySelector('.message-form')
+  const messageInput = document.querySelector('.message-input')
+
+  messageInput.addEventListener('keydown', function(e) {
+    // Submit on Enter, but not on Shift+Enter
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault() // Prevent new line
+      messageForm.requestSubmit() // Submit form
+    }
+  })
+})
+</script>
 <style>
   .chat-container {
       max-width: 900px;
@@ -134,6 +148,10 @@
       resize: none;
   padding: 0.5rem 1rem;
       border: 1px solid #dee2e6;
+      resize: none; /* Prevents manual resizing */
+      overflow-y: auto; /* Allows scrolling for longer content */
+      min-height: 38px;
+      max-height: 100px;
     }
 
   .send-button {

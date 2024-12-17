@@ -2,7 +2,10 @@ class ConversationsController < ApplicationController
   # before_action :set_conversation, only: %i[show destroy]
 
   def index
-    @conversations = current_user.conversations.includes(:sender, :recipient).order(updated_at: :desc)
+    @conversations = current_user.conversations
+      .includes(:sender,
+                recipient: :logo_attachment)
+      .order(updated_at: :desc)
   end
 
   def create

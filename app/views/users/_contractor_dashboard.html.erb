@@ -62,12 +62,20 @@
       <%#! Interactive Map Card %>
       <div class="card map-section-card border-0 shadow-sm">
         <div class="card-header bg-white border-0 pt-3 pb-0">
-          <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.location') %></h4>
+          <h4 class="card-title text-primary mb-0">Vos Conversation</h4>
+          <div class="card-body">
+            <%= turbo_frame_tag "conversation_frame" do %>
+              <%# Map content will be dynamically loaded %>
+            <% end %>
+          </div>
         </div>
-        <div class="card-body">
-          <%= turbo_frame_tag "map_frame" do %>
-            <%# Map content will be dynamically loaded %>
-          <% end %>
+        <div class="card-header bg-white border-0 pt-3 pb-0">
+          <h4 class="card-title text-primary mb-0"><%= t('users.dashboard_contractor.location') %></h4>
+          <div class="card-body">
+            <%= turbo_frame_tag "map_frame" do %>
+              <%# Map content will be dynamically loaded %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

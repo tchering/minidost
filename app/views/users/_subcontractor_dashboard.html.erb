@@ -27,7 +27,9 @@
         <div class="card-body">
           <%= render partial: "tasks/task_status_subcontractor", locals: { task: task } %>
           <div class="mt-3">
-            <%= render "shared/button_collection", user: user %>
+            <% if current_user == user %>
+              <%= render "shared/button_collection", user: user %>
+            <% end %>
           </div>
         </div>
       </div>
