@@ -93,7 +93,7 @@
     <%# Conversations %>
     <% if current_user == @user %>
       <div class="col-md-4 col-lg-3">
-        <%= link_to conversations_path, class: "stat-card stat-card-conversations" do %>
+        <%= link_to conversations_path,data:{turbo_frame: "conversation_frame"} ,class: "stat-card stat-card-conversations" do %>
           <div class="stat-content">
             <div class="stat-icon">
               <i class="fas fa-comment"></i>

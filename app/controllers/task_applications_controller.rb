@@ -5,17 +5,17 @@ class TaskApplicationsController < ApplicationController
 
   #Contractor can view all applications for a task
   def index
-    # Instead of filtering by single task
-    if params[:application_status].present?
-      @applications = TaskApplication
-        .includes(:task)
-        .where(application_status: params[:application_status],
-               subcontractor: current_user)
-    else
-      @applications = TaskApplication
-        .includes(:task)
-        .where(subcontractor: current_user)
-    end
+    base_query = TaskApplication.includes(task: [:contractor])
+      .where(subcontractor: current_user)
+
+    @applications = if params[:application_status] == "approved"
+        # Include contract association only for approved applications
+        base_query.includes(task: [:contract])
+                  .where(application_status: "approved")
+      else
+        # Don't include contract for other statuses
+        base_query.where(application_status: params[:application_status])
+      end
   end
 
   #Sub contractor can apply for a task

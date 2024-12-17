@@ -3,8 +3,7 @@ class ConversationsController < ApplicationController
 
   def index
     @conversations = current_user.conversations
-      .includes(:sender,
-                recipient: :logo_attachment)
+      .includes(:sender, recipient: { logo_attachment: :blob })
       .order(updated_at: :desc)
   end
 
