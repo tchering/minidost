@@ -5,7 +5,7 @@
     </h5>
   </div>
   <div class="messages-container" id="message-display"
-   data-conversation-id="<%= @conversation.id %>"
+   data-conversation-id="<%= @conversation.id %>" 
    data-current-user-id="<%= current_user.id %>">
     <% @messages.each do |message| %>
       <div class="message-wrapper <%= message.sender == current_user ? 'sent' : 'received' %>">
@@ -49,31 +49,37 @@
 </script>
 <script>
   document.addEventListener('turbo:load', function() {
-    const messageForm = document.querySelector('.message-form')
-    const messageInput = document.querySelector('.message-input')
+    const messageForm = document.querySelector('.message-form');
+    const messageInput = document.querySelector('.message-input');
 
-    messageInput.addEventListener('keydown', function(e) {
-      // Submit on Enter, but not on Shift+Enter
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault() // Prevent new line
-        messageForm.requestSubmit() // Submit form
-      }
-    })
-  })
-</script>
-<script>
+    if (messageInput && messageForm) {
+      messageInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          messageForm.requestSubmit();
+        }
+      });
+    }
+  });
+
   function scrollToBottom() {
     const messageDisplay = document.getElementById('message-display');
-    messageDisplay.scrollTop = messageDisplay.scrollHeight;
+    if (messageDisplay) {
+      messageDisplay.scrollTop = messageDisplay.scrollHeight;
+    }
   }
 
   document.addEventListener('turbo:load', function() {
     scrollToBottom();
   });
 
-  // Scroll after sending a message
-  document.querySelector('.message-form').addEventListener('submit', function() {
-    setTimeout(scrollToBottom, 100);
+  document.addEventListener('turbo:load', function() {
+    const messageForm = document.querySelector('.message-form');
+    if (messageForm) {
+      messageForm.addEventListener('submit', function() {
+        setTimeout(scrollToBottom, 100);
+      });
+    }
   });
 </script>
 <style>

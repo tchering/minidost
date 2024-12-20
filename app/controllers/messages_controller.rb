@@ -6,6 +6,10 @@ class MessagesController < ApplicationController
     @message.sender = current_user
     respond_to do |format|
       if @message.save
+        ActionCable.server.broadcast(
+          "conversation_#{@conversation.id}",
+          @message.as_json(include: :sender)
+        )
         format.html { redirect_to chat_conversation_path(@conversation) }
       else
         format.html { redirect_to chat_conversation_path(@conversation), status: :unprocessable_entity, alert: "Message failed to sent" }
