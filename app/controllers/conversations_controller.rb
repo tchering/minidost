@@ -8,12 +8,12 @@ class ConversationsController < ApplicationController
   end
 
   def create
-    @recipient = User.find(params[:recipient_id])
+    @recipient = User.find(params[:recipient_id]) #recipient_id is received from view
     @conversation = Conversation.between(current_user.id, @recipient.id).first_or_create!(
       sender_id: current_user.id,
       recipient_id: @recipient.id,
     )
-    redirect_to conversation_path(@conversation)
+    redirect_to chat_conversation_path(@conversation)
   end
 
   #!without first_or_create we need to do this below
@@ -26,9 +26,9 @@ class ConversationsController < ApplicationController
   #   redirect_to conversation_messages_path(@conversation)
   # end
 
-  def show
+  def chat
     #find specific conversation between 2 users
-    @conversation = current_user.conversations.find(params[:id])
+    @conversation = Conversation.find(params[:id])
     #find all the messages in that conversation & includes(:sender) avoids N+1 query problem
     @messages = @conversation.messages.ordered.includes(:sender)
     #Since user need to able to sent the message so we need to build message instance aswell.

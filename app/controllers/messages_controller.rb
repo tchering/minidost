@@ -6,9 +6,9 @@ class MessagesController < ApplicationController
     @message.sender = current_user
     respond_to do |format|
       if @message.save
-        format.html { redirect_to @conversation }
+        format.html { redirect_to chat_conversation_path(@conversation) }
       else
-        format.html { redirect_to @conversation, status: :unprocessable_entity, alert: "Message failed to sent" }
+        format.html { redirect_to chat_conversation_path(@conversation), status: :unprocessable_entity, alert: "Message failed to sent" }
       end
     end
   end

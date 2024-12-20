@@ -1,10 +1,12 @@
 <div class="chat-container">
   <div class="chat-header">
     <h5 class="chat-title">
-      <%= @conversation.participants.find { |p| p != current_user }.first_name %>
+      <%= @conversation.recipient.first_name %>
     </h5>
   </div>
-  <div class="messages-container" id="messages">
+  <div class="messages-container" id="message-display"
+   data-conversation-id="<%= @conversation.id %>"
+   data-current-user-id="<%= current_user.id %>">
     <% @messages.each do |message| %>
       <div class="message-wrapper <%= message.sender == current_user ? 'sent' : 'received' %>">
         <div class="message">
@@ -46,18 +48,33 @@
   });
 </script>
 <script>
-document.addEventListener('turbo:load', function() {
-  const messageForm = document.querySelector('.message-form')
-  const messageInput = document.querySelector('.message-input')
+  document.addEventListener('turbo:load', function() {
+    const messageForm = document.querySelector('.message-form')
+    const messageInput = document.querySelector('.message-input')
 
-  messageInput.addEventListener('keydown', function(e) {
-    // Submit on Enter, but not on Shift+Enter
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault() // Prevent new line
-      messageForm.requestSubmit() // Submit form
-    }
+    messageInput.addEventListener('keydown', function(e) {
+      // Submit on Enter, but not on Shift+Enter
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault() // Prevent new line
+        messageForm.requestSubmit() // Submit form
+      }
+    })
   })
-})
+</script>
+<script>
+  function scrollToBottom() {
+    const messageDisplay = document.getElementById('message-display');
+    messageDisplay.scrollTop = messageDisplay.scrollHeight;
+  }
+
+  document.addEventListener('turbo:load', function() {
+    scrollToBottom();
+  });
+
+  // Scroll after sending a message
+  document.querySelector('.message-form').addEventListener('submit', function() {
+    setTimeout(scrollToBottom, 100);
+  });
 </script>
 <style>
   .chat-container {

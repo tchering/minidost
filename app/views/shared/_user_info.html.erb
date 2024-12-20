@@ -88,10 +88,11 @@
     <% end %>
   </div>
   <% unless current_user == user %>
-    <%= link_to conversations_path(recipient_id: user.id),
-    data: { turbo_method: :post },
-    class: "card-footer bg-light text-center" do %>
-      <i class="fas fa-comments me-1"></i> Message
+    <% conversation = Conversation.between(current_user.id,user.id).first %>
+    <% if conversation  %>
+      <%= link_to "Message", chat_conversation_path(conversation),class:"btn btn-primary" %>
+    <% else %>
+      <%= link_to "Start Conversation",conversations_path(recipient_id: user.id),data:{turbo_method: :post},class:"btn btn-secondary" %>
     <% end %>
   <% end %>
 </div>
