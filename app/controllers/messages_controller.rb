@@ -19,8 +19,26 @@ class MessagesController < ApplicationController
 
   def mark_as_read
     @conversation = current_user.conversations.find(params[:conversation_id])
+
+    # Mark messages as read
     @unread_messages = @conversation.messages.where(read: false).where.not(sender_id: current_user.id)
     @unread_messages.update_all(read: true) if @unread_messages.any?
+
+    # Mark notifications as read
+    notifications = Notification.where(
+      notifiable_type: "Message",
+      notifiable_id: @conversation.messages.pluck(:id),
+      recipient: current_user,
+      read_at: nil
+    )
+    notifications.update_all(read_at: Time.current) if notifications.any?
+
+    # Broadcast the updated unread count (0) to remove the badge
+    ActionCable.server.broadcast(
+      "notifications_#{current_user.id}",
+      { conversation_id: @conversation.id, unread_count: 0 }
+    )
+
     head :ok
   end
 
