@@ -16,6 +16,18 @@ class Message < ApplicationRecord
     # If current user is not the sender, notify the conversation sender
     recipient = conversation.sender == sender ? conversation.recipient : conversation.sender
     notification = notifications.create(recipient: recipient)
+
+    unread_count = Notification.where(
+      notifiable_type: "Message",
+      notifiable_id: conversation.messages.pluck(:id),
+      recipient: recipient,
+      read_at: nil,
+    ).count
+
+    ActionCable.server.broadcast(
+      "notifications_#{recipient.id}",
+      { conversation_id: conversation.id, unread_count: unread_count },
+    )
   end
 end
 

@@ -7,10 +7,10 @@
           <h5 class="text-muted fw-light">No conversations yet</h5>
         </div>
       <% else %>
-        <div class="conversation-wrapper d-flex">
+        <div class="conversation-wrapper d-flex" >
           <% @conversations.each do |conversation| %>
             <%= link_to chat_conversation_path(conversation),data:{turbo_frame: "_top"}, class: "text-decoration-none text-dark" do %>
-              <div class="conversation-card m-2">
+              <div class="conversation-card m-2" , data-conversation-id="<%= conversation.id %>">
                 <div class="conversation-content text-center">
                   <% other_participant = conversation.participants.find {|p| p != current_user} %>
                   <%= image_tag(conversation.participants.find {|p| p != current_user}.logo.attached? ? conversation.participants.find {|p| p != current_user}.logo : "default_logo.png",class:"rounded-circle img-thumbnail",size:"50") %>
