@@ -4,9 +4,11 @@
       <%= @conversation.recipient.first_name %>
     </h5>
   </div>
+  <%#  %>
   <div class="messages-container" id="message-display"
    data-conversation-id="<%= @conversation.id %>" 
    data-current-user-id="<%= current_user.id %>">
+    <%# conversation_id & current_user_id will be be captured by message_channel.js and will be sent to message_channel.rb %>
     <% @messages.each do |message| %>
       <div class="message-wrapper <%= message.sender == current_user ? 'sent' : 'received' %>">
         <div class="message">

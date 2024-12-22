@@ -3,8 +3,8 @@ import consumer from "channels/consumer";
 document.addEventListener("turbo:load", () => {
   const messagesContainer = document.getElementById("message-display");
   if (messagesContainer) {
-    const conversation_id = messagesContainer.dataset.conversationId;
-    const currentUserId = messagesContainer.dataset.currentUserId;
+    const conversation_id = messagesContainer.dataset.conversationId; //received from view chat.html.erb
+    const currentUserId = messagesContainer.dataset.currentUserId; //received from view chat.html.erb
 
     //! Clean up existing subscriptions
     // Iterate through all existing ActionCable subscriptions
@@ -52,8 +52,11 @@ document.addEventListener("turbo:load", () => {
           `;
           messagesContainer.insertAdjacentHTML("beforeend", messageHtml);
           messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          // Focus on the input field after sending a message
+          // document.querySelector(".message-input").focus();
         },
       }
     );
   }
 });
+
