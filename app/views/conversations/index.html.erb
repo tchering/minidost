@@ -14,8 +14,10 @@
                 <div class="conversation-content text-center">
                   <% other_participant = conversation.participants.find {|p| p != current_user} %>
                   <%= image_tag(conversation.participants.find {|p| p != current_user}.logo.attached? ? conversation.participants.find {|p| p != current_user}.logo : "default_logo.png",class:"rounded-circle img-thumbnail",size:"50") %>
-                  <%#!Notification %>
-                  <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                  <%#!Notification unread_notifications_count is defined in conversations_helper.rb %>
+                  <span class="badge rounded-pill badge-notification bg-danger">
+                    <%= unread_notifications_count(conversation,current_user) %>
+                  </span>
                   <%#!------------ %>
                   <h5 class="mb-1 fw-semibold">
                     <%= conversation.participants.find { |p| p != current_user }.company_name %>

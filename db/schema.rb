@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_12_190502) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_22_134742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -124,6 +124,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_12_190502) do
     t.datetime "updated_at", null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "recipient_id", null: false
+    t.string "notifiable_type", null: false
+    t.bigint "notifiable_id", null: false
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
   create_table "peintre_tasks", force: :cascade do |t|
@@ -247,6 +258,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_12_190502) do
   add_foreign_key "conversations", "users", column: "sender_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "task_applications", "tasks"
   add_foreign_key "task_applications", "users", column: "subcontractor_id"
   add_foreign_key "tasks", "users", column: "contractor_id"

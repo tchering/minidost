@@ -48,6 +48,9 @@ class User < ApplicationRecord
   has_many :conversations_as_recipient, class_name: "Conversation", foreign_key: "recipient_id"
   has_many :messages, class_name: "Message", foreign_key: "sender_id"
 
+  #! Associations with Notification model
+  has_many :received_notifications, class_name: "Notification", foreign_key: "recipient_id", dependent: :destroy
+
   #?Finds all conversations where the user is either sender OR recipient
   # The id refers to the current user's id automatically because:
   # The method is defined in the User model, so id refers to the instance variable of the current user object
