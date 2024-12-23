@@ -1,0 +1,31 @@
+<div class="flash-messages position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1050">
+  <% flash.each do |name, msg| %>
+    <div class="toast align-items-center border-0 fade show mb-2" role="alert">
+      <div class="d-flex">
+        <div class="toast-body d-flex align-items-center">
+          <% if name == "notice" %>
+            <i class="fas fa-check-circle text-success me-2"></i>
+          <% else %>
+            <i class="fas fa-exclamation-circle text-danger me-2"></i>
+          <% end %>
+          <%= msg %>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+.toast {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+[data-bs-theme="dark"] .toast {
+  background: rgba(30, 41, 59, 0.95);
+  color: #f8fafc;
+}
+</style>

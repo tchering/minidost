@@ -1,232 +1,363 @@
-<div class="construction-stats container-fluid px-3">
-  <div class="row g-3">
-    <!-- Pending Tasks -->
-    <div class="col-md-3">
-      <%= link_to tasks_path(status: "pending"), 
-                  class: "stat-card pending", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-clock"></i>
-          </div>
-          <div class="stat-info">
-            <h6><%= t("task.status_pending") %></h6>
-            <h2>
-              <%= @user.created_tasks.where(status: "pending").count %>
-            </h2>
+<div class="contractor-analytics">
+  <%# Overview Cards %>
+  <div class="analytics-grid">
+    <%# Total Projects Card %>
+    <div class="analytics-card primary">
+      <div class="card-content">
+        <div class="card-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <div class="metrics">
+          <div class="metric-value"><%= @user.created_tasks.count %></div>
+          <div class="metric-label">Total Projects</div>
+        </div>
+        <div class="trend">
+          <div class="trend-graph">
+            <div class="bar" style="height: 60%"></div>
+            <div class="bar" style="height: 80%"></div>
+            <div class="bar" style="height: 40%"></div>
+            <div class="bar" style="height: 100%"></div>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
-    <!-- Active Tasks -->
-    <div class="col-md-3">
-      <%= link_to tasks_path(status: "active"), 
-                  class: "stat-card active", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-tools"></i>
-          </div>
-          <div class="stat-info">
-            <h6><%= t("task.status_active") %></h6>
-            <h2><%= @user.created_tasks.where(status: "active").count %>
-              <%#to Passed from UsersController -> show -> _user.html.erb -> partial: "tasks/task_status" %>
-              <%# i have removed notification from here %>
-            </h2>
+
+    <%# Pending Projects Card - New %>
+    <%= link_to tasks_path(status: "pending"), data: { turbo_frame: "map_frame" }, class: "analytics-card pending" do %>
+      <div class="card-content">
+        <div class="card-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="metrics">
+          <div class="metric-value"><%= @user.created_tasks.where(status: "pending").count %></div>
+          <div class="metric-label">Pending Projects</div>
+          <div class="pending-status">
+            <span class="status-indicator"></span>
+            Awaiting Review
           </div>
         </div>
-      <% end %>
-    </div>
-    <%# Approved Applications %>
-    <div class="col-md-4 col-lg-3">
-      <%= link_to tasks_path(application_status: "approved"), 
-              class: "stat-card stat-card-approved", 
-              data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-check"></i>
-          </div>
-          <div class="stat-info">
-            <h6 class="stat-title"><%= t("task.tasks_approved") %></h6>
-            <h2 class="stat-number">
-              <%= TaskApplication.joins(:task)
-                           .where(tasks: { contractor_id: @user.id }, 
-                                  application_status: "approved")
-                           .count %>
-            </h2>
-          </div>
+      </div>
+    <% end %>
+
+    <%# Active Projects Card %>
+    <%= link_to tasks_path(status: "active"), data: { turbo_frame: "map_frame" }, class: "analytics-card warning" do %>
+      <div class="card-content">
+        <div class="card-icon">
+          <i class="fas fa-hammer"></i>
+          <% if active_tasks_applications_count.positive? %>
+            <span class="pulse-dot"></span>
+          <% end %>
         </div>
-      <% end %>
-    </div>
-    <!-- In Progress Tasks -->
-    <div class="col-md-3">
-      <%= link_to tasks_path(status: "in progress"), 
-                  class: "stat-card in-progress", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-hammer"></i>
-          </div>
-          <div class="stat-info">
-            <h6><%= t("task.status_in_progress") %></h6>
-            <h2><%= @user.created_tasks.where(status: "in progress").count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <!-- Completed Tasks -->
-    <div class="col-md-3">
-      <%= link_to tasks_path(status: "completed"), 
-                  class: "stat-card completed", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-check-circle"></i>
-            <% if @completed_notifications&.positive? %>
-            <% end %>
-          </div>
-          <div class="stat-info">
-            <h6><%= t("task.status_completed") %></h6>
-            <h2><%= @user.created_tasks.where(status: "completed").count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <% if current_user == @user %>
-      <%# Conversations %>
-      <div class="col-md-4 col-lg-3">
-        <%= link_to conversations_path, class: "stat-card stat-card-conversations", data:{turbo_frame: "conversation_frame"} do %>
-          <div class="stat-content">
-            <div class="stat-icon">
-              <i class="fas fa-comment"></i>
+        <div class="metrics">
+          <div class="metric-value"><%= @user.created_tasks.where(status: "active").count %></div>
+          <div class="metric-label">Active Projects</div>
+          <% if active_tasks_applications_count.positive? %>
+            <div class="applications-badge">
+              <%= active_tasks_applications_count %> new applications
             </div>
-            <div class="stat-info">
-              <h6 class="stat-title"><%= t("task.conversations") %></h6>
-              <h2 class="stat-number"><%= @user.conversations.count %></h2>
-            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%# In Progress Card %>
+    <%= link_to tasks_path(status: "in progress"), data: { turbo_frame: "map_frame" }, class: "analytics-card info" do %>
+      <div class="card-content">
+        <div class="card-icon">
+          <i class="fas fa-cog fa-spin"></i>
+        </div>
+        <div class="metrics">
+          <div class="metric-value"><%= @user.created_tasks.where(status: "in progress").count %></div>
+          <div class="metric-label">In Progress</div>
+          <div class="progress-ring">
+            <svg viewBox="0 0 36 36">
+              <path d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+                stroke-dasharray="75, 100"/>
+            </svg>
           </div>
-        <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Completed Card %>
+    <%= link_to tasks_path(status: "completed"), data: { turbo_frame: "map_frame" }, class: "analytics-card success" do %>
+      <div class="card-content">
+        <div class="card-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="metrics">
+          <div class="metric-value"><%= @user.created_tasks.where(status: "completed").count %></div>
+          <div class="metric-label">Completed</div>
+        </div>
       </div>
     <% end %>
   </div>
+
+  <%# Quick Actions Bar %>
+  <div class="quick-actions">
+    <%= link_to new_task_path, class: "action-button create" do %>
+      <i class="fas fa-plus"></i>
+      <span>New Project</span>
+    <% end %>
+
+    <%= link_to tasks_path(has_applications: true), class: "action-button applications" do %>
+      <i class="fas fa-users"></i>
+      <span>Applications</span>
+      <% if active_tasks_applications_count.positive? %>
+        <span class="count-badge"><%= active_tasks_applications_count %></span>
+      <% end %>
+    <% end %>
+
+    <%= link_to conversations_path, 
+                class: "action-button messages", 
+                data: { turbo_frame: "conversation_frame" } do %>
+      <i class="fas fa-comment-dots"></i>
+      <span>Messages</span>
+    <% end %>
+  </div>
 </div>
+
 <style>
-  .construction-stats {
-    font-family: 'Inter', sans-serif;
-    padding: 0.5rem 0;
-  }
+.contractor-analytics {
+  padding: 1.5rem;
+  background: #f8fafc;
+}
 
-  .stat-card {
-    display: block;
-    text-decoration: none;
-    background: white;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e9ecef;
-    margin-bottom: 1rem;
-    min-height: 96px; /* Ensures consistent height */
-  }
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 
-  .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  }
+.analytics-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
 
-  .stat-content {
-    display: flex;
-    align-items: center;
+.analytics-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.primary .card-icon { background: #e0f2fe; color: #0284c7; }
+.warning .card-icon { background: #fef3c7; color: #d97706; }
+.info .card-icon { background: #dbeafe; color: #2563eb; }
+.success .card-icon { background: #dcfce7; color: #16a34a; }
+.pending .card-icon { background: #f1f5f9; color: #64748b; }
+
+.metrics {
+  flex: 1;
+  position: relative;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #1e293b, #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.metric-label {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.pulse-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulse 2s infinite;
+}
+
+.applications-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #fee2e2;
+  color: #ef4444;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+}
+
+.progress-ring svg {
+  transform: rotate(-90deg);
+}
+
+.progress-ring path {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+}
+
+.trend {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+}
+
+.trend-graph {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+}
+
+.bar {
+  width: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+}
+
+.primary .bar { background: #bae6fd; }
+
+.pending-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  background: #64748b;
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.quick-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.action-button.create {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+}
+
+.action-button.applications {
+  background: linear-gradient(135deg, #c2410c, #ea580c);
+}
+
+.action-button.messages {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+.count-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ef4444;
+  color: white;
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid white;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .contractor-analytics {
     padding: 1rem;
+  }
+
+  .analytics-grid {
     gap: 1rem;
-    height: 100%; /* Fill the card height */
   }
 
-  .stat-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    opacity: 0.9;
+  .card-content {
+    padding: 1rem;
   }
 
-  .pending .stat-icon {
-    background-color: rgba(255, 193, 7, 0.15);
-    color: #ffc107;
-  }
-
-  .active .stat-icon {
-    background-color: rgba(13, 110, 253, 0.15);
-    color: #0d6efd;
-  }
-
-  .in-progress .stat-icon {
-    background-color: rgba(23, 162, 184, 0.15);
-    color: #17a2b8;
-  }
-
-  .completed .stat-icon {
-    background-color: rgba(40, 167, 69, 0.15);
-    color: #28a745;
-  }
-
-  .stat-info {
-    flex-grow: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Vertically center content */
-  }
-
-  .stat-info h6 {
-    color: #6c757d;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
-  }
-
-  .stat-info h2 {
+  .metric-value {
     font-size: 1.5rem;
-    font-weight: 600;
-    color: #212529;
-    margin: 0;
   }
 
-
-  @media (max-width: 768px) {
-    .stat-card {
-      margin-bottom: 0.75rem;
-      min-height: 84px;
-    }
-
-    .stat-content {
-      padding: 0.75rem;
-      gap: 0.75rem;
-    }
-
-    .stat-icon {
-      width: 40px;
-      height: 40px;
-    }
-
-    .stat-info h2 {
-      font-size: 1.25rem;
-    }
-
-    .notification-badge {
-      font-size: 0.65rem;
-      min-width: 1.25rem;
-    }
+  .quick-actions {
+    flex-direction: column;
   }
 
-  @media (max-width: 480px) {
-    .notification-badge {
-      top: -20px;
-      right: -180px;
-      font-size: 0.6rem;
-      min-width: 1rem;
-    }
+  .action-button {
+    width: 100%;
+    justify-content: center;
   }
+}
 </style>

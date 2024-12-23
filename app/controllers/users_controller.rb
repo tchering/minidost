@@ -26,6 +26,18 @@ class UsersController < ApplicationController
                status: "active",                       # - Task status is active
              })
       .count                                   # Counts total applications
+
+    # Add this to calculate unsigned contracts
+    @unsigned_contracts_count = if @user.subcontractor?
+      @user.task_applications
+        .approved
+        .joins(task: :contract)
+        .where.not(tasks: { contract: nil })
+        .where('contracts.signed_by_subcontractor IS NULL OR contracts.signed_by_subcontractor = ?', false)
+        .count
+    else
+      0
+    end
   end
 
   def show_map

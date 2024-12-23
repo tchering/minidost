@@ -1,230 +1,352 @@
-<div class="container-fluid task-statistics px-4 py-3">
-  <div class="row g-3">
-    <%# Pending Applications %>
-    <div class="col-md-4 col-lg-3">
-      <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "pending"), 
-                  class: "stat-card stat-card-pending", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-clock"></i>
-          </div>
-          <div class="stat-info">
-            <h6 class="stat-title"><%= t("task.applications_pending") %></h6>
-            <h2 class="stat-number"><%= @user.task_applications.pending.count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <%# Approved Applications %>
-    <div class="col-md-4 col-lg-3">
-      <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "approved"), 
-              class: "stat-card stat-card-approved", 
-              data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-check"></i>
-            <%# Add notification badge for contracts needing signature %>
-            <% unsigned_contracts_count = @user.task_applications
-             .approved
-             .joins(task: :contract)
-             .where.not(tasks: { contract: nil })
-             .where("contracts.signed_by_subcontractor IS NULL OR contracts.signed_by_subcontractor = ?", false)
-             .count %>
-            <% if unsigned_contracts_count > 0 %>
-              <span class="notification-badge"><%= unsigned_contracts_count %></span>
-            <% end %>
-          </div>
-          <div class="stat-info">
-            <h6 class="stat-title"><%= t("task.applications_approved") %></h6>
-            <h2 class="stat-number"><%= @user.task_applications.approved.count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <%# Rejected Applications %>
-    <div class="col-md-4 col-lg-3">
-      <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "rejected"), 
-                  class: "stat-card stat-card-rejected", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-times"></i>
-          </div>
-          <div class="stat-info">
-            <h6 class="stat-title"><%= t("task.applications_rejected") %></h6>
-            <h2 class="stat-number"><%= @user.task_applications.rejected.count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <%# In Progress Tasks %>
-    <div class="col-md-4 col-lg-3">
-      <%= link_to tasks_path( status: "in progress"), 
-                  class: "stat-card stat-card-in-progress", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-spinner"></i>
-          </div>
-          <div class="stat-info">
-            <h6 class="stat-title"><%= t("task.status_in_progress") %></h6>
-            <h2 class="stat-number"><%= @user.accepted_tasks.where(status: "in progress").count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <%# Completed Tasks %>
-    <div class="col-md-4 col-lg-3">
-      <%= link_to tasks_path(status: "completed"), 
-                  class: "stat-card stat-card-completed", 
-                  data: { turbo_frame: "map_frame" } do %>
-        <div class="stat-content">
-          <div class="stat-icon">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <div class="stat-info">
-            <h6 class="stat-title"><%= t("task.status_completed") %></h6>
-            <h2 class="stat-number"><%= @user.accepted_tasks.where(status: "completed").count %></h2>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <%# Conversations %>
-    <% if current_user == @user %>
-      <div class="col-md-4 col-lg-3">
-        <%= link_to conversations_path,data:{turbo_frame: "conversation_frame"} ,class: "stat-card stat-card-conversations" do %>
-          <div class="stat-content">
-            <div class="stat-icon">
-              <i class="fas fa-comment"></i>
-            </div>
-            <div class="stat-info">
-              <h6 class="stat-title"><%= t("task.conversations") %></h6>
-              <h2 class="stat-number"><%= @user.conversations.count %></h2>
+<div class="subcontractor-dashboard">
+  <div class="dashboard-header mb-4">
+    <div class="stats-grid">
+      <%# Applications Stats %>
+      <div class="main-stat-card">
+        <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "approved"), 
+                    data: { turbo_frame: "map_frame" },
+                    class: "stat-link" do %>
+          <div class="circular-progress">
+            <svg viewBox="0 0 36 36" class="progress-ring">
+              <path d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none"
+                stroke-width="2"
+                stroke-dasharray="<%= (@user.task_applications.approved.count.to_f / @user.task_applications.count * 100).round %>, 100"
+              />
+            </svg>
+            <div class="progress-content">
+              <span class="progress-value"><%= @user.task_applications.approved.count %></span>
+              <span class="progress-label"><%= t("task.applications_approved") %></span>
             </div>
           </div>
         <% end %>
-      <% end %>
+        
+        <div class="stat-details">
+          <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "pending"), 
+                      data: { turbo_frame: "map_frame" },
+                      class: "stat-item" do %>
+            <span class="stat-number"><%= @user.task_applications.pending.count %></span>
+            <span class="stat-text"><%= t("task.applications_pending") %></span>
+          <% end %>
+
+          <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "rejected"), 
+                      data: { turbo_frame: "map_frame" },
+                      class: "stat-item" do %>
+            <span class="stat-number"><%= @user.task_applications.rejected.count %></span>
+            <span class="stat-text"><%= t("task.applications_rejected") %></span>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Project Status Cards %>
+      <div class="status-cards">
+        <%# In Progress Projects %>
+        <%= link_to tasks_path(status: "in progress"), 
+                    class: "status-card in-progress",
+                    data: { turbo_frame: "map_frame" } do %>
+          <div class="status-icon">
+            <i class="fas fa-hammer"></i>
+          </div>
+          <div class="status-info">
+            <span class="status-count"><%= @user.accepted_tasks.where(status: "in progress").count %></span>
+            <span class="status-label"><%= t("task.status_in_progress") %></span>
+          </div>
+          <div class="status-trend">
+            <i class="fas fa-chart-line"></i>
+          </div>
+        <% end %>
+
+        <%# Completed Projects %>
+        <%= link_to tasks_path(status: "completed"), 
+                    class: "status-card completed",
+                    data: { turbo_frame: "map_frame" } do %>
+          <div class="status-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="status-info">
+            <span class="status-count"><%= @user.accepted_tasks.where(status: "completed").count %></span>
+            <span class="status-label"><%= t("task.status_completed") %></span>
+          </div>
+          <div class="status-trend positive">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+        <% end %>
+
+        <%# Messages %>
+        <%= link_to conversations_path,
+                    class: "status-card messages",
+                    data: { turbo_frame: "conversation_frame" } do %>
+          <div class="status-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="status-info">
+            <span class="status-count"><%= @user.conversations.count %></span>
+            <span class="status-label">Conversations</span>
+          </div>
+          <div class="recent-activity">
+            <div class="activity-indicator"></div>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
+
 <style>
-  .task-statistics {
-    font-family: 'Inter', sans-serif;
+.subcontractor-dashboard {
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+
+.dashboard-header {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+/* Main Stat Card */
+.main-stat-card {
+  background: linear-gradient(135deg, #1a5f7a 0%, #2563eb 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.circular-progress {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.progress-ring path {
+  stroke: #60a5fa;
+  stroke-linecap: round;
+}
+
+.progress-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.progress-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.stat-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.stat-text {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+/* Status Cards */
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.status-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.status-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.status-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.pending .status-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.active .status-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.messages .status-icon {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.notification-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.status-info {
+  flex: 1;
+}
+
+.status-count {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.status-label {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.status-trend {
+  color: #64748b;
+}
+
+.status-trend.positive {
+  color: #15803d;
+}
+
+.recent-activity {
+  display: flex;
+  align-items: center;
+}
+
+.activity-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 
-  .stat-card {
-    display: block;
-    text-decoration: none;
-    background: white;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e9ecef;
+  .main-stat-card {
     margin-bottom: 1rem;
   }
+}
 
-  .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .stat-content {
-    display: flex;
-    align-items: center;
+@media (max-width: 768px) {
+  .subcontractor-dashboard {
     padding: 1rem;
-    gap: 1rem;
   }
 
-  .stat-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    opacity: 0.9;
-    position: relative;
+  .dashboard-header {
+    padding: 1rem;
   }
 
-  .notification-badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: #ff4444;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  .status-cards {
+    grid-template-columns: 1fr;
   }
+}
 
-  .stat-card-pending .stat-icon {
-    background-color: rgba(255, 193, 7, 0.15);
-    color: #ffc107;
-  }
+/* New styles for clickable stats */
+.stat-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease;
+}
 
-  .stat-card-approved .stat-icon {
-    background-color: rgba(40, 167, 69, 0.15);
-    color: #28a745;
-  }
+.stat-link:hover {
+  transform: scale(1.05);
+}
 
-  .stat-card-rejected .stat-icon {
-    background-color: rgba(220, 53, 69, 0.15);
-    color: #dc3545;
-  }
+.stat-item {
+  text-decoration: none;
+  color: inherit;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
 
-  .stat-card-in-progress .stat-icon {
-    background-color: rgba(23, 162, 184, 0.15);
-    color: #17a2b8;
-  }
+.stat-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
 
-  .stat-card-completed .stat-icon {
-    background-color: rgba(40, 167, 69, 0.15);
-    color: #28a745;
-  }
+.status-card {
+  cursor: pointer;
+}
 
-  .stat-info {
-    flex-grow: 1;
-  }
-
-  .stat-title {
-    color: #6c757d;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
-  }
-
-  .stat-number {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #212529;
-    margin: 0;
-  }
-
-  @media (max-width: 768px) {
-    .stat-card {
-      margin-bottom: 0.75rem;
-    }
-
-    .stat-content {
-      padding: 0.75rem;
-      gap: 0.75rem;
-    }
-
-    .stat-icon {
-      width: 40px;
-      height: 40px;
-    }
-
-    .stat-number {
-      font-size: 1.25rem;
-    }
-  }
+/* Update existing status card hover state */
+.status-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+}
 </style>
