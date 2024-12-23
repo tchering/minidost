@@ -13,7 +13,8 @@
                 a 15.9155 15.9155 0 0 1 0 -31.831"
                 fill="none"
                 stroke-width="2"
-                stroke-dasharray="<%= (@user.task_applications.approved.count.to_f / @user.task_applications.count * 100).round %>, 100"
+                stroke-dasharray="<%= @user.task_applications.count.positive? ? 
+                  (@user.task_applications.approved.count.to_f / @user.task_applications.count * 100).round : 0 %>, 100"
               />
             </svg>
             <div class="progress-content">

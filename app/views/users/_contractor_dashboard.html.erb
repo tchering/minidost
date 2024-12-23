@@ -29,25 +29,27 @@
               <%= t('users.dashboard_contractor.title') %>
             </h4>
             <%# Notification Badge %>
-            <div class="notification-wrapper position-relative">
-              <%= link_to tasks_path(status: "active", has_applications: true), 
+            <% if current_user == user %>
+              <div class="notification-wrapper position-relative">
+                <%= link_to tasks_path(status: "active", has_applications: true), 
               class: "btn btn-outline-primary btn-sm rounded-3 d-inline-flex align-items-center",
               data: { turbo_frame: "map_frame" } do %>
-                <div class="d-flex align-items-center">
-                  <i class="fas fa-bell opacity-75 me-2"></i>
-                </div>
-                <% active_tasks_with_applications = @user.created_tasks
-          .where(status: "active")
-          .joins(:task_applications)
-          .distinct
-          .count %>
-                <% if active_tasks_with_applications.positive? %>
-                  <span class="notification-badge">
-                    <%= active_tasks_applications_count %>
-                  </span>
+                  <div class="d-flex align-items-center">
+                    <i class="fas fa-bell opacity-75 me-2"></i>
+                  </div>
+                  <% active_tasks_with_applications = @user.created_tasks
+                  .where(status: "active")
+                  .joins(:task_applications)
+                  .distinct
+                  .count %>
+                  <% if active_tasks_with_applications.positive? %>
+                    <span class="notification-badge">
+                      <%= active_tasks_applications_count %>
+                    </span>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </div>
+              </div>
+            <% end %>
             <%# -----------------------> %>
           </div>
         </div>

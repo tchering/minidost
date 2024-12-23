@@ -1,124 +1,239 @@
 <%# app/views/shared/_user_info.html.erb %>
-<div class="construction-profile-card card shadow-sm">
-  <div class="card-header bg-light text-center py-4">
+<div class="user-profile-card">
+  <%# Profile Header %>
+  <div class="profile-header">
     <%= image_tag(
       user.logo.attached? ? user.logo : "default_logo.png", 
       alt: "#{user.company_name}'s profile picture", 
-      class: "company-logo rounded-circle img-thumbnail", 
+      class: "company-logo", 
       data: { bs_toggle: "tooltip" }, 
       title: user.company_name
     ) %>
+    <h3 class="company-name"><%= user.company_name %></h3>
+    <span class="position-badge">
+      <%= t("users.profile.#{user.position.downcase}") %>
+    </span>
   </div>
-  <div class="card-body">
-    <div class="text-center mb-3">
-      <h3 class="card-title mb-2 text-dark"><%= user.company_name %></h3>
-      <span class="badge bg-primary text-white px-3 py-1">
-        <%= t("users.profile.#{user.position.downcase}") %>
-      </span>
+
+  <%# Profile Details %>
+  <div class="profile-details">
+    <%# Name %>
+    <div class="detail-item">
+      <div class="detail-icon">
+        <i class="fas fa-hard-hat"></i>
+      </div>
+      <div class="detail-content">
+        <small class="detail-label"><%= t('users.profile.name') %></small>
+        <span class="detail-value"><%= user.first_name %></span>
+      </div>
     </div>
-    <div class="row g-3">
-      <div class="col-12">
-        <div class="list-group list-group-flush">
-          <%# Name %>
-          <div class="list-group-item d-flex align-items-center px-0">
-            <div class="me-3 text-primary">
-              <i class="fas fa-hard-hat fa-lg"></i>
-            </div>
-            <div class="flex-grow-1">
-              <small class="text-muted text-uppercase d-block mb-1">
-                <%= t('users.profile.name') %>
-              </small>
-              <span class="fw-bold"><%= user.first_name %></span>
-            </div>
-          </div>
-          <%# Position %>
-          <%# Email %>
-          <div class="list-group-item d-flex align-items-center px-0">
-            <div class="me-3 text-primary">
-              <i class="fas fa-envelope fa-lg"></i>
-            </div>
-            <div class="flex-grow-1">
-              <small class="text-muted text-uppercase d-block mb-1">
-                <%= t('users.profile.email') %>
-              </small>
-              <%= mail_to user.email, user.email, 
-                  class: "text-decoration-none text-dark fw-bold", 
-                  data: { bs_toggle: "tooltip" }, 
-                  title: "Click to send an email" 
-              %>
-            </div>
-          </div>
-          <%# Membership Date %>
-          <div class="list-group-item d-flex align-items-center px-0">
-            <div class="me-3 text-primary">
-              <i class="fas fa-calendar-alt fa-lg"></i>
-            </div>
-            <div class="flex-grow-1">
-              <small class="text-muted text-uppercase d-block mb-1">
-                <%= t('users.profile.member') %>
-              </small>
-              <span class="fw-bold">
-                <%= user.created_at.strftime("%B %d, %Y") %>
-              </span>
-            </div>
-          </div>
-          <%# Address %>
-          <div class="list-group-item d-flex align-items-center px-0">
-            <div class="me-3 text-primary">
-              <i class="fas fa-map-marker-alt fa-lg"></i>
-            </div>
-            <div class="flex-grow-1">
-              <small class="text-muted text-uppercase d-block mb-1">
-                <%= t('users.profile.address') %>
-              </small>
-              <span class="fw-bold"><%= user.address %></span>
-            </div>
-          </div>
-        </div>
+
+    <%# Email %>
+    <div class="detail-item">
+      <div class="detail-icon">
+        <i class="fas fa-envelope"></i>
+      </div>
+      <div class="detail-content">
+        <small class="detail-label"><%= t('users.profile.email') %></small>
+        <%= mail_to user.email, user.email, class: "detail-value email-link" %>
+      </div>
+    </div>
+
+    <%# Membership %>
+    <div class="detail-item">
+      <div class="detail-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="detail-content">
+        <small class="detail-label"><%= t('users.profile.member') %></small>
+        <span class="detail-value"><%= user.created_at.strftime("%B %d, %Y") %></span>
+      </div>
+    </div>
+
+    <%# Address %>
+    <div class="detail-item">
+      <div class="detail-icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+      <div class="detail-content">
+        <small class="detail-label"><%= t('users.profile.address') %></small>
+        <span class="detail-value"><%= user.address %></span>
       </div>
     </div>
   </div>
-  <%# Optional: Profile Action Buttons %>
-  <div class="card-footer bg-light text-center">
-    <%= link_to user_path(user), 
-        class: "btn btn-outline-secondary btn-sm", 
-        data: { bs_toggle: "tooltip" }, 
-        title: "View Full Profile" do %>
-      <i class="fas fa-eye me-1"></i> View
+
+  <%# Action Buttons %>
+  <div class="profile-actions">
+    <%= link_to user_path(user), class: "action-button view" do %>
+      <i class="fas fa-eye"></i>
+      <span>View Profile</span>
+    <% end %>
+
+    <% unless current_user == user %>
+      <% conversation = Conversation.between(current_user.id, user.id).first %>
+      <% if conversation %>
+        <%= link_to chat_conversation_path(conversation), class: "action-button message" do %>
+          <i class="fas fa-comment-dots"></i>
+          <span>Message</span>
+        <% end %>
+      <% else %>
+        <%= link_to conversations_path(recipient_id: user.id), 
+            data: { turbo_method: :post }, 
+            class: "action-button start-chat" do %>
+          <i class="fas fa-comments"></i>
+          <span>Start Conversation</span>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
-  <% unless current_user == user %>
-    <% conversation = Conversation.between(current_user.id,user.id).first %>
-    <% if conversation  %>
-      <%= link_to "Message", chat_conversation_path(conversation),class:"btn btn-primary" %>
-    <% else %>
-      <%= link_to "Start Conversation",conversations_path(recipient_id: user.id),data:{turbo_method: :post},class:"btn btn-secondary" %>
-    <% end %>
-  <% end %>
 </div>
-<%# Inline CSS for additional styling %>
+
 <style>
-  .construction-profile-card {
-    max-width: 500px;
-    margin: 0 auto;
-    transition: transform 0.3s ease;
+.user-profile-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.user-profile-card:hover {
+  transform: translateY(-5px);
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+.company-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.company-name {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+.position-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.profile-details {
+  padding: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-icon {
+  width: 40px;
+  height: 40px;
+  background: #f0f9ff;
+  color: #0284c7;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.detail-content {
+  flex: 1;
+}
+
+.detail-label {
+  display: block;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.email-link {
+  text-decoration: none;
+  color: #0284c7;
+  transition: color 0.2s ease;
+}
+
+.email-link:hover {
+  color: #0369a1;
+}
+
+.profile-actions {
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  background: #f8fafc;
+}
+
+.action-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-button.view {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+}
+
+.action-button.message {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+}
+
+.action-button.start-chat {
+  background: linear-gradient(135deg, #7e22ce, #a855f7);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+@media (max-width: 576px) {
+  .user-profile-card {
+    margin: 0.5rem;
   }
 
-  .construction-profile-card:hover {
-    transform: translateY(-5px);
+  .profile-actions {
+    flex-direction: column;
   }
-
-  .company-logo {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border: 3px solid white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-
-  @media (max-width: 576px) {
-    .construction-profile-card {
-      max-width: 100%;
-    }
-  }
+}
 </style>

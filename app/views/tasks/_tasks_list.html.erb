@@ -1,57 +1,215 @@
-<div class="card-body p-5">
+<div class="tasks-dashboard">
   <% if tasks.any? %>
-    <div class="row g-4">
+    <div class="tasks-grid">
       <% tasks.each do |task| %>
-        <div class="col-md-4 mb-4">
-          <%= link_to task_path(task),data:{turbo_frame: "_top"}, class: "text-decoration-none" do %>
-            <div class="card shadow-sm h-100 border-0 rounded-4 overflow-hidden">
-              <div class="card-body">
-                <div class="text-center mb-3">
-                  <%= image_tag(
-                    task.contractor.logo.attached? ? task.contractor.logo : "default_logo.png", 
-                    class: "rounded-circle mb-3",
-                    style: "width: 80px; height: 80px; object-fit: cover;"
-                  ) %>
-                  <h5 class="card-title text-primary mb-2"><%= task.site_name %></h5>
-                  <p class="text-muted small mb-0">
-                    <i class="fas fa-building me-1"></i>
-                    <%= task.contractor.company_name %>
-                  </p>
+        <%= link_to task_path(task), data: { turbo_frame: "_top" }, class: "task-card-link" do %>
+          <div class="task-card">
+            <div class="task-header">
+              <%= image_tag(
+                task.contractor.logo.attached? ? task.contractor.logo : "default_logo.png", 
+                class: "company-avatar"
+              ) %>
+              <h3 class="site-name"><%= task.site_name %></h3>
+              <span class="company-name">
+                <i class="fas fa-building"></i>
+                <%= task.contractor.company_name %>
+              </span>
+            </div>
+
+            <div class="task-details">
+              <div class="detail-item">
+                <div class="detail-icon location">
+                  <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <div class="border-top pt-3">
-                  <p class="mb-2">
-                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
-                    <%= "#{task.street}, #{task.city}" %>
-                  </p>
-                  <p class="mb-2">
-                    <i class="fas fa-tools text-primary me-2"></i>
-                    <%= task.taskable_type.remove("Task") %>
-                  </p>
-                  <p class="mb-0">
-                    <i class="fas fa-euro-sign text-success me-2"></i>
-                    <%= number_to_currency(task.proposed_price, unit: "€", format: "%n %u") %>
-                  </p>
+                <div class="detail-content">
+                  <span class="detail-label">Location</span>
+                  <span class="detail-value"><%= "#{task.street}, #{task.city}" %></span>
                 </div>
-                <div class="mt-3">
-                  <span class="badge bg-primary">
-                    <i class="fas fa-calendar-alt me-1"></i>
-                    <%= l(task.start_date, formats: :short) %>
-                  </span>
-                  <span class="badge bg-info">
-                    <i class="fas fa-hourglass-end me-1"></i>
-                    <%= l(task.end_date, formats: :short) %>
-                  </span>
+              </div>
+
+              <div class="detail-item">
+                <div class="detail-icon type">
+                  <i class="fas fa-tools"></i>
+                </div>
+                <div class="detail-content">
+                  <span class="detail-label">Type</span>
+                  <span class="detail-value"><%= task.taskable_type.remove("Task") %></span>
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <div class="detail-icon budget">
+                  <i class="fas fa-euro-sign"></i>
+                </div>
+                <div class="detail-content">
+                  <span class="detail-label">Budget</span>
+                  <span class="detail-value"><%= number_to_currency(task.proposed_price, unit: "€", format: "%n %u") %></span>
                 </div>
               </div>
             </div>
-          <% end %>
-        </div>
+
+            <div class="task-timeline">
+              <div class="timeline-badge start">
+                <i class="fas fa-calendar-alt"></i>
+                <span><%= l(task.start_date, formats: :short) %></span>
+              </div>
+              <div class="timeline-badge end">
+                <i class="fas fa-hourglass-end"></i>
+                <span><%= l(task.end_date, formats: :short) %></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
   <% else %>
-    <div class="alert alert-info text-center">
-      <i class="fas fa-info-circle me-2"></i>
-      No tasks found matching "<%= params[:query] %>"
+    <div class="empty-state">
+      <i class="fas fa-search"></i>
+      <p>No tasks found matching "<%= params[:query] %>"</p>
     </div>
   <% end %>
 </div>
+
+<style>
+.tasks-dashboard {
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+
+.tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.task-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.task-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.task-header {
+  background: linear-gradient(135deg, #1a5f7a 0%, #2563eb 100%);
+  padding: 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.company-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 1rem;
+}
+
+.site-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.company-name {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.task-details {
+  padding: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.3s ease;
+}
+
+.detail-item:hover {
+  background: #f1f5f9;
+}
+
+.detail-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
+
+.detail-icon.location { background: #fee2e2; color: #dc2626; }
+.detail-icon.type { background: #e0f2fe; color: #0284c7; }
+.detail-icon.budget { background: #dcfce7; color: #16a34a; }
+
+.detail-content {
+  flex: 1;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.task-timeline {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.timeline-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .tasks-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .task-card {
+    margin-bottom: 1rem;
+  }
+}
+</style>

@@ -1,7 +1,17 @@
 import consumer from "channels/consumer";
 
+// Keep track of active subscription
+let activeSubscription = null;
+
 document.addEventListener("turbo:load", () => {
   const messagesContainer = document.getElementById("message-display");
+  
+  // Clean up existing subscription if it exists
+  if (activeSubscription) {
+    consumer.subscriptions.remove(activeSubscription);
+    activeSubscription = null;
+  }
+
   if (messagesContainer) {
     const conversation_id = messagesContainer.dataset.conversationId; //received from view chat.html.erb
     const currentUserId = messagesContainer.dataset.currentUserId; //received from view chat.html.erb
@@ -15,7 +25,7 @@ document.addEventListener("turbo:load", () => {
     });
 
     //! Subscribe to the conversation channel
-    consumer.subscriptions.create(
+    activeSubscription = consumer.subscriptions.create(
       {
         channel: "MessageChannel",
         conversation_id: conversation_id, //received from view chat.html.erb sent to message_channel.rb
@@ -57,6 +67,14 @@ document.addEventListener("turbo:load", () => {
         },
       }
     );
+  }
+});
+
+// Clean up on page unload
+document.addEventListener("turbo:before-cache", () => {
+  if (activeSubscription) {
+    consumer.subscriptions.remove(activeSubscription);
+    activeSubscription = null;
   }
 });
 

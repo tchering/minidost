@@ -21,7 +21,6 @@
         </div>
       </div>
     </div>
-
     <%# Pending Projects Card - New %>
     <%= link_to tasks_path(status: "pending"), data: { turbo_frame: "map_frame" }, class: "analytics-card pending" do %>
       <div class="card-content">
@@ -38,7 +37,6 @@
         </div>
       </div>
     <% end %>
-
     <%# Active Projects Card %>
     <%= link_to tasks_path(status: "active"), data: { turbo_frame: "map_frame" }, class: "analytics-card warning" do %>
       <div class="card-content">
@@ -59,7 +57,6 @@
         </div>
       </div>
     <% end %>
-
     <%# In Progress Card %>
     <%= link_to tasks_path(status: "in progress"), data: { turbo_frame: "map_frame" }, class: "analytics-card info" do %>
       <div class="card-content">
@@ -80,7 +77,6 @@
         </div>
       </div>
     <% end %>
-
     <%# Completed Card %>
     <%= link_to tasks_path(status: "completed"), data: { turbo_frame: "map_frame" }, class: "analytics-card success" do %>
       <div class="card-content">
@@ -94,270 +90,268 @@
       </div>
     <% end %>
   </div>
-
   <%# Quick Actions Bar %>
-  <div class="quick-actions">
-    <%= link_to new_task_path, class: "action-button create" do %>
-      <i class="fas fa-plus"></i>
-      <span>New Project</span>
-    <% end %>
-
-    <%= link_to tasks_path(has_applications: true), class: "action-button applications" do %>
-      <i class="fas fa-users"></i>
-      <span>Applications</span>
-      <% if active_tasks_applications_count.positive? %>
-        <span class="count-badge"><%= active_tasks_applications_count %></span>
+  <% unless current_user != @user %>
+    <div class="quick-actions">
+      <%= link_to new_task_path, class: "action-button create" do %>
+        <i class="fas fa-plus"></i>
+        <span>New Project</span>
       <% end %>
-    <% end %>
-
-    <%= link_to conversations_path, 
+      <%= link_to tasks_path(has_applications: true), class: "action-button applications" do %>
+        <i class="fas fa-users"></i>
+        <span>Applications</span>
+        <% if active_tasks_applications_count.positive? %>
+          <span class="count-badge"><%= active_tasks_applications_count %></span>
+        <% end %>
+      <% end %>
+      <%= link_to conversations_path, 
                 class: "action-button messages", 
                 data: { turbo_frame: "conversation_frame" } do %>
-      <i class="fas fa-comment-dots"></i>
-      <span>Messages</span>
-    <% end %>
-  </div>
+        <i class="fas fa-comment-dots"></i>
+        <span>Messages</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>
-
 <style>
-.contractor-analytics {
-  padding: 1.5rem;
-  background: #f8fafc;
-}
-
-.analytics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.analytics-card {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-}
-
-.analytics-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-}
-
-.card-content {
-  padding: 1.5rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  position: relative;
-}
-
-.primary .card-icon { background: #e0f2fe; color: #0284c7; }
-.warning .card-icon { background: #fef3c7; color: #d97706; }
-.info .card-icon { background: #dbeafe; color: #2563eb; }
-.success .card-icon { background: #dcfce7; color: #16a34a; }
-.pending .card-icon { background: #f1f5f9; color: #64748b; }
-
-.metrics {
-  flex: 1;
-  position: relative;
-}
-
-.metric-value {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #1e293b, #475569);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.metric-label {
-  color: #64748b;
-  font-size: 0.875rem;
-}
-
-.pulse-dot {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 12px;
-  height: 12px;
-  background: #ef4444;
-  border-radius: 50%;
-  border: 2px solid white;
-  animation: pulse 2s infinite;
-}
-
-.applications-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: #fee2e2;
-  color: #ef4444;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-top: 0.5rem;
-}
-
-.progress-ring {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-}
-
-.progress-ring svg {
-  transform: rotate(-90deg);
-}
-
-.progress-ring path {
-  fill: none;
-  stroke: #2563eb;
-  stroke-width: 2.8;
-  stroke-linecap: round;
-}
-
-.trend {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 1rem;
-}
-
-.trend-graph {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 40px;
-}
-
-.bar {
-  width: 4px;
-  background: #e2e8f0;
-  border-radius: 2px;
-}
-
-.primary .bar { background: #bae6fd; }
-
-.pending-status {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: #64748b;
-}
-
-.status-indicator {
-  width: 8px;
-  height: 8px;
-  background: #64748b;
-  border-radius: 50%;
-  animation: blink 1.5s infinite;
-}
-
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.4; }
-  100% { opacity: 1; }
-}
-
-.quick-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.action-button {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 12px;
-  text-decoration: none;
-  color: white;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.action-button.create {
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
-}
-
-.action-button.applications {
-  background: linear-gradient(135deg, #c2410c, #ea580c);
-}
-
-.action-button.messages {
-  background: linear-gradient(135deg, #0d9488, #14b8a6);
-}
-
-.action-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  color: white;
-}
-
-.count-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #ef4444;
-  color: white;
-  border-radius: 20px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border: 2px solid white;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@media (max-width: 768px) {
   .contractor-analytics {
-    padding: 1rem;
+    padding: 1.5rem;
+    background: #f8fafc;
   }
 
   .analytics-grid {
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .analytics-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
+
+  .analytics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
   }
 
   .card-content {
-    padding: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    position: relative;
+  }
+
+  .primary .card-icon { background: #e0f2fe; color: #0284c7; }
+  .warning .card-icon { background: #fef3c7; color: #d97706; }
+  .info .card-icon { background: #dbeafe; color: #2563eb; }
+  .success .card-icon { background: #dcfce7; color: #16a34a; }
+  .pending .card-icon { background: #f1f5f9; color: #64748b; }
+
+  .metrics {
+    flex: 1;
+    position: relative;
   }
 
   .metric-value {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #1e293b, #475569);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .metric-label {
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+
+  .pulse-dot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    background: #ef4444;
+    border-radius: 50%;
+    border: 2px solid white;
+    animation: pulse 2s infinite;
+  }
+
+  .applications-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #fee2e2;
+    color: #ef4444;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+
+  .progress-ring {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+  }
+
+  .progress-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .progress-ring path {
+    fill: none;
+    stroke: #2563eb;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+  }
+
+  .trend {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 1rem;
+  }
+
+  .trend-graph {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
+  }
+
+  .bar {
+    width: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+  }
+
+  .primary .bar { background: #bae6fd; }
+
+  .pending-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    background: #64748b;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
   }
 
   .quick-actions {
-    flex-direction: column;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .action-button {
-    width: 100%;
-    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
   }
-}
+
+  .action-button.create {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+  }
+
+  .action-button.applications {
+    background: linear-gradient(135deg, #c2410c, #ea580c);
+  }
+
+  .action-button.messages {
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+  }
+
+  .action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: white;
+  }
+
+  .count-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 2px solid white;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media (max-width: 768px) {
+    .contractor-analytics {
+      padding: 1rem;
+    }
+
+    .analytics-grid {
+      gap: 1rem;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .metric-value {
+      font-size: 1.5rem;
+    }
+
+    .quick-actions {
+      flex-direction: column;
+    }
+
+    .action-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 </style>

@@ -8,6 +8,7 @@
           <label>Contractor</label>
           <div class="d-flex align-items-center gap-2">
             <% if task.contractor.present? %>
+              <%= link_to user_path(task.contractor) do %>
               <div class="contractor-logo">
                 <% if task.contractor.logo.attached? %>
                   <%= image_tag task.contractor.logo, class: "rounded-circle", size: "40x40" %>
@@ -15,121 +16,122 @@
                   <%= image_tag "default_logo.png", class: "rounded-circle", size: "40x40" %>
                 <% end %>
               </div>
-              <p class="text-dark mb-0"><%= task.contractor.company_name %></p>
-            <% else %>
-              <p class="text-dark mb-0">N/A</p>
             <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>Sub Contractor</label>
-          <div class="d-flex align-items-center gap-2">
-            <% if task.sub_contractor.present? %>
-              <div class="contractor-logo">
-                <% if task.sub_contractor.logo.attached? %>
-                  <%= image_tag task.sub_contractor.logo, class: "rounded-circle", size: "40x40" %>
-                <% else %>
-                  <%= image_tag "default_logo.png", class: "rounded-circle", size: "40x40" %>
-                <% end %>
-              </div>
-              <p class="text-dark mb-0"><%= task.sub_contractor.company_name %></p>
-            <% else %>
-              <p class="text-dark mb-0">N/A</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%# Site Information %>
-  <div class="col-12 mb-4">
-    <h5 class="text-primary border-bottom pb-2 mb-3">Site Information</h5>
-    <div class="row g-3">
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>Site Name</label>
-          <p class="text-dark"><%= task.site_name %></p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>Address</label>
-          <p class="text-dark"><%= "#{task.street}, #{task.city}, #{task.area_code}" %></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%# Price Information %>
-  <div class="col-12 mb-4">
-    <h5 class="text-primary border-bottom pb-2 mb-3">Price Details</h5>
-    <div class="row g-3">
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>Proposed Price</label>
-          <p class="text-dark"><%= number_to_currency(task.proposed_price, unit: "€") %></p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>Accepted Price</label>
-          <p class="text-dark"><%= number_to_currency(task.accepted_price, unit: "€") if task.accepted_price %></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%# Schedule Information %>
-  <div class="col-12 mb-4">
-    <h5 class="text-primary border-bottom pb-2 mb-3">Schedule</h5>
-    <div class="row g-3">
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>Start Date</label>
-          <p class="text-dark"><%= task.start_date&.strftime("%B %d, %Y") %></p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="attribute-group">
-          <label>End Date</label>
-          <p class="text-dark"><%= task.end_date&.strftime("%B %d, %Y") %></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%# Status Information %>
-  <div class="col-12 mb-4">
-    <h5 class="text-primary border-bottom pb-2 mb-3">Status</h5>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="attribute-group">
-          <label>Current Status</label>
-          <span class="badge bg-<%= status_color(task.status) %> rounded-pill px-3 py-2">
-            <%= task.status %>
-          </span>
-        </div>
-      </div>
-      <%#! Form for sub contractor to update work progress %>
-      <div class="col-md-4">
-        <div class="attribute-group">
-          <label>Work Progress</label>
-          <p class="text-dark"><%= task.work_progress %></p>
-          <% if task.sub_contractor.present? && task.sub_contractor_id == current_user.id && task.status == "In Progress" %>
-            <%= form_with(model: @task, class: "needs-validation") do |f| %>
-              <%= f.text_area :work_progress, class: "form-control", rows: 3 %>
-            <% end %>
+            <p class="text-dark mb-0"><%= task.contractor.company_name %></p>
+          <% else %>
+            <p class="text-dark mb-0">N/A</p>
           <% end %>
         </div>
       </div>
-      <%#! ----------------------------------------------- %>
-      <div class="col-md-4">
-        <div class="attribute-group">
-          <label>Billing Process</label>
-          <p class="text-dark"><%= task.billing_process %></p>
+    </div>
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>Sub Contractor</label>
+        <div class="d-flex align-items-center gap-2">
+          <% if task.sub_contractor.present? %>
+            <div class="contractor-logo">
+              <% if task.sub_contractor.logo.attached? %>
+                <%= image_tag task.sub_contractor.logo, class: "rounded-circle", size: "40x40" %>
+              <% else %>
+                <%= image_tag "default_logo.png", class: "rounded-circle", size: "40x40" %>
+              <% end %>
+            </div>
+            <p class="text-dark mb-0"><%= task.sub_contractor.company_name %></p>
+          <% else %>
+            <p class="text-dark mb-0">N/A</p>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
+</div>
+<%# Site Information %>
+<div class="col-12 mb-4">
+  <h5 class="text-primary border-bottom pb-2 mb-3">Site Information</h5>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>Site Name</label>
+        <p class="text-dark"><%= task.site_name %></p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>Address</label>
+        <p class="text-dark"><%= "#{task.street}, #{task.city}, #{task.area_code}" %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<%# Price Information %>
+<div class="col-12 mb-4">
+  <h5 class="text-primary border-bottom pb-2 mb-3">Price Details</h5>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>Proposed Price</label>
+        <p class="text-dark"><%= number_to_currency(task.proposed_price, unit: "€") %></p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>Accepted Price</label>
+        <p class="text-dark"><%= number_to_currency(task.accepted_price, unit: "€") if task.accepted_price %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<%# Schedule Information %>
+<div class="col-12 mb-4">
+  <h5 class="text-primary border-bottom pb-2 mb-3">Schedule</h5>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>Start Date</label>
+        <p class="text-dark"><%= task.start_date&.strftime("%B %d, %Y") %></p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="attribute-group">
+        <label>End Date</label>
+        <p class="text-dark"><%= task.end_date&.strftime("%B %d, %Y") %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<%# Status Information %>
+<div class="col-12 mb-4">
+  <h5 class="text-primary border-bottom pb-2 mb-3">Status</h5>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="attribute-group">
+        <label>Current Status</label>
+        <span class="badge bg-<%= status_color(task.status) %> rounded-pill px-3 py-2">
+          <%= task.status %>
+        </span>
+      </div>
+    </div>
+    <%#! Form for sub contractor to update work progress %>
+    <div class="col-md-4">
+      <div class="attribute-group">
+        <label>Work Progress</label>
+        <p class="text-dark"><%= task.work_progress %></p>
+        <% if task.sub_contractor.present? && task.sub_contractor_id == current_user.id && task.status == "In Progress" %>
+          <%= form_with(model: @task, class: "needs-validation") do |f| %>
+            <%= f.text_area :work_progress, class: "form-control", rows: 3 %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <%#! ----------------------------------------------- %>
+    <div class="col-md-4">
+      <div class="attribute-group">
+        <label>Billing Process</label>
+        <p class="text-dark"><%= task.billing_process %></p>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 <style>
   .contractor-logo img {

@@ -40,29 +40,36 @@
   </div>
 </div>
 <script>
+  // Use a single turbo:load listener for all functionality
   document.addEventListener("turbo:load", function() {
+    // Mark messages as read
     fetch("<%= mark_as_read_conversation_messages_path(@conversation) %>", {
       method: 'POST',
       headers: {
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
       }
     });
-  });
-</script>
-<script>
-  document.addEventListener('turbo:load', function() {
+
+    // Handle message form submission
     const messageForm = document.querySelector('.message-form');
     const messageInput = document.querySelector('.message-input');
 
     if (messageInput && messageForm) {
-      messageInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          messageForm.requestSubmit();
-        }
-      });
+      // Remove existing listeners first
+      messageInput.removeEventListener('keydown', handleEnterKey);
+      messageInput.addEventListener('keydown', handleEnterKey);
     }
+
+    // Scroll to bottom
+    scrollToBottom();
   });
+
+  function handleEnterKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      e.target.form.requestSubmit();
+    }
+  }
 
   function scrollToBottom() {
     const messageDisplay = document.getElementById('message-display');
@@ -70,19 +77,6 @@
       messageDisplay.scrollTop = messageDisplay.scrollHeight;
     }
   }
-
-  document.addEventListener('turbo:load', function() {
-    scrollToBottom();
-  });
-
-  document.addEventListener('turbo:load', function() {
-    const messageForm = document.querySelector('.message-form');
-    if (messageForm) {
-      messageForm.addEventListener('submit', function() {
-        setTimeout(scrollToBottom, 100);
-      });
-    }
-  });
 </script>
 <style>
   .chat-container {

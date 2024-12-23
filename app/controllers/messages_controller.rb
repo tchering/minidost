@@ -4,15 +4,23 @@ class MessagesController < ApplicationController
   def create
     @message = @conversation.messages.build(message_params)
     @message.sender = current_user
+
     respond_to do |format|
       if @message.save
+        # Single broadcast with all necessary data
+        broadcast_data = @message.as_json(include: { sender: { only: [:id, :first_name] } })
+        broadcast_data[:user_id] = current_user.id
+
         ActionCable.server.broadcast(
           "conversation_#{@conversation.id}",
-          @message.as_json(include: :sender)
+          broadcast_data
         )
+
         format.html { redirect_to chat_conversation_path(@conversation) }
       else
-        format.html { redirect_to chat_conversation_path(@conversation), status: :unprocessable_entity, alert: "Message failed to sent" }
+        format.html { redirect_to chat_conversation_path(@conversation),
+                      status: :unprocessable_entity,
+                      alert: "Message failed to send" }
       end
     end
   end
