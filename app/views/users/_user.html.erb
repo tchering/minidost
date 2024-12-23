@@ -72,4 +72,34 @@
   .badge {
     font-weight: 500;
   }
+
+  @media (max-width: 768px) {
+    .user-card .card-body {
+      padding: 1rem;
+    }
+    
+    .user-card .row {
+      flex-direction: column;
+    }
+    
+    .user-card .col-md-3,
+    .user-card .col-md-2 {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .user-card img {
+      width: 40px;
+      height: 40px;
+    }
+  }
 </style>
