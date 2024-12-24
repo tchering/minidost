@@ -113,3 +113,15 @@ dialog[data-dialog-target="dialog"] {
 .background {
   background: linear-gradient(135deg, #1a5f7a 0%, #2563eb 100%);
 }
+
+.dropdown-menu {
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  display: block !important;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+}

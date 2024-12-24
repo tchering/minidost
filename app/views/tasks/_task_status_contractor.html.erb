@@ -32,10 +32,7 @@
             <%= @user.created_tasks.where(status: "pending").count %>
           </div>
           <div class="metric-label"><%= t("task.status_pending") %></div>
-          <div class="pending-status">
-            <span class="status-indicator"></span>
-            <%= t("task.awaiting_review") %>
-          </div>
+          
         </div>
       </div>
     <% end %>
@@ -75,14 +72,18 @@
         <div class="metrics">
           <div class="metric-value">
             <%= TaskApplication.joins(:task)
-                         .where(tasks: { 
-                           contractor_id: @user.id,
-                           status: "approved"
-                         }, 
-                         application_status: "approved")
-                         .count %>
+                     .where(tasks: { 
+                       contractor_id: @user.id,
+                       status: "approved"
+                     }, 
+                     application_status: "approved")
+                     .count %>
           </div>
           <div class="metric-label"><%= t("task.tasks_approved") %></div>
+          <div class="pending-status">
+            <span class="status-indicator"></span>
+            <%= t("task.generate_contract") %>
+          </div>
         </div>
       </div>
     <% end %>
@@ -186,7 +187,7 @@
   }
 
   .card-content {
-    padding: 1.5rem;
+    padding: 1rem;
     display: flex;
     align-items: flex-start;
     gap: 1rem;

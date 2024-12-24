@@ -51,11 +51,23 @@
             <div class="task-timeline">
               <div class="timeline-badge start">
                 <i class="fas fa-calendar-alt"></i>
-                <span><%= l(task.start_date, formats: :short) %></span>
+                <span>
+                  <% if task.start_date.present? %>
+                    <%= l(task.start_date, formats: :short) %>
+                  <% else %>
+                    <%= t("task.no_start_date") %>
+                  <% end %>
+                </span>
               </div>
               <div class="timeline-badge end">
                 <i class="fas fa-hourglass-end"></i>
-                <span><%= l(task.end_date, formats: :short) %></span>
+                <span>
+                  <% if task.end_date.present? %>
+                    <%= l(task.end_date, formats: :short) %>
+                  <% else %>
+                    <%= t("task.no_end_date") %>
+                  <% end %>
+                </span>
               </div>
             </div>
           </div>
