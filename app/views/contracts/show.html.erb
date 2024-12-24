@@ -216,6 +216,11 @@
                   <i class="fas fa-signature me-2"></i>Sign as Subcontractor
                 <% end %>
               <% end %>
+              <% if @contract.signed_by_contractor && !@contract.signed_by_subcontractor && current_user == @contract.contractor %>
+                <div class=" btn-outline-warning btn-sm">
+                  <i class="fas fa-clock me-2"></i>Waiting for Subcontractor's Signature
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
