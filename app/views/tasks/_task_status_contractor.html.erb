@@ -97,13 +97,7 @@
         <i class="fas fa-plus"></i>
         <span>New Project</span>
       <% end %>
-      <%= link_to tasks_path(has_applications: true), class: "action-button applications" do %>
-        <i class="fas fa-users"></i>
-        <span>Applications</span>
-        <% if active_tasks_applications_count.positive? %>
-          <span class="count-badge"><%= active_tasks_applications_count %></span>
-        <% end %>
-      <% end %>
+      
       <%= link_to conversations_path, 
                 class: "action-button messages", 
                 data: { turbo_frame: "conversation_frame" } do %>
