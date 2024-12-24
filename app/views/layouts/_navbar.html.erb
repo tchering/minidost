@@ -164,12 +164,43 @@
     color: #ffffff;
   }
 
-@media (max-width: 991.98px) {
-  .custom-navbar .navbar-collapse {
-    background: rgb(29, 86, 159);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-top: 0.5rem;
+  @media (max-width: 991.98px) {
+    .custom-navbar .navbar-collapse {
+      background: rgb(29, 86, 159);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+    }
   }
-}
+
+  /* Add these new styles */
+  .navbar .dropdown-menu {
+    min-width: 200px; /* Ensure minimum width */
+    right: 0; /* Align to the right */
+    left: auto; /* Override default left alignment */
+    margin-top: 0.5rem; /* Add some space from the toggle button */
+  }
+
+  .navbar .dropdown-menu[data-bs-popper] {
+    left: auto; /* Force right alignment */
+    right: 0;
+  }
+
+  .navbar .flag {
+    margin-right: 8px; /* Add space between flag and text */
+    width: 20px; /* Set consistent flag width */
+  }
+
+  .navbar .dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+
+  /* Ensure the language dropdown container is properly positioned */
+  .nav-item.dropdown {
+    position: relative;
+  /* Add these new styles */
+  }
 </style>
