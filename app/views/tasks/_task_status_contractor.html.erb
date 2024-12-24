@@ -21,18 +21,20 @@
         </div>
       </div>
     </div>
-    <%# Pending Projects Card - New %>
+    <%# Pending Projects Card %>
     <%= link_to tasks_path(status: "pending"), data: { turbo_frame: "map_frame" }, class: "analytics-card pending" do %>
       <div class="card-content">
         <div class="card-icon">
           <i class="fas fa-clock"></i>
         </div>
         <div class="metrics">
-          <div class="metric-value"><%= @user.created_tasks.where(status: "pending").count %></div>
-          <div class="metric-label">Pending Projects</div>
+          <div class="metric-value">
+            <%= @user.created_tasks.where(status: "pending").count %>
+          </div>
+          <div class="metric-label"><%= t("task.status_pending") %></div>
           <div class="pending-status">
             <span class="status-indicator"></span>
-            Awaiting Review
+            <%= t("task.awaiting_review") %>
           </div>
         </div>
       </div>
@@ -47,13 +49,40 @@
           <% end %>
         </div>
         <div class="metrics">
-          <div class="metric-value"><%= @user.created_tasks.where(status: "active").count %></div>
-          <div class="metric-label">Active Projects</div>
+          <div class="metric-value">
+            <%= @user.created_tasks.where(status: "active").count %>
+          </div>
+          <div class="metric-label"><%= t("task.status_active") %></div>
           <% if active_tasks_applications_count.positive? %>
             <div class="applications-badge">
-              <%= active_tasks_applications_count %>  applications
+              <%= active_tasks_applications_count %> <%= t("task.applications") %>
             </div>
           <% end %>
+        </div>
+      </div>
+    <% end %>
+    <%# Approved Applications Card %>
+    <%= link_to tasks_path(
+      application_status: "approved", 
+      status: "approved"
+    ), 
+    class: "analytics-card info", 
+    data: { turbo_frame: "map_frame" } do %>
+      <div class="card-content">
+        <div class="card-icon">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="metrics">
+          <div class="metric-value">
+            <%= TaskApplication.joins(:task)
+                         .where(tasks: { 
+                           contractor_id: @user.id,
+                           status: "approved"
+                         }, 
+                         application_status: "approved")
+                         .count %>
+          </div>
+          <div class="metric-label"><%= t("task.tasks_approved") %></div>
         </div>
       </div>
     <% end %>
@@ -89,6 +118,20 @@
         </div>
       </div>
     <% end %>
+    <%# Conversations Card (if current user) %>
+    <% if current_user == @user %>
+      <%= link_to conversations_path, class: "analytics-card messages", data: { turbo_frame: "conversation_frame" } do %>
+        <div class="card-content">
+          <div class="card-icon">
+            <i class="fas fa-comment"></i>
+          </div>
+          <div class="metrics">
+            <div class="metric-value"><%= @user.conversations.count %></div>
+            <div class="metric-label"><%= t("task.conversations") %></div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   </div>
   <%# Quick Actions Bar %>
   <% unless current_user != @user %>
@@ -97,7 +140,6 @@
         <i class="fas fa-plus"></i>
         <span>New Project</span>
       <% end %>
-      
       <%= link_to conversations_path, 
                 class: "action-button messages", 
                 data: { turbo_frame: "conversation_frame" } do %>
