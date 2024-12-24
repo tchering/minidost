@@ -109,3 +109,7 @@ dialog[data-dialog-target="dialog"] {
     max-width: 95%;
   }
 }
+
+.background {
+  background: linear-gradient(135deg, #1a5f7a 0%, #2563eb 100%);
+}

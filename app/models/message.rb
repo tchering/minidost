@@ -24,9 +24,17 @@ class Message < ApplicationRecord
       read_at: nil,
     ).count
 
+    total_unread_count = Notification.where(
+      notifiable_type: "Message",
+      recipient: recipient,
+      read_at: nil,
+    ).count
+
     ActionCable.server.broadcast(
       "notifications_#{recipient.id}",
-      { conversation_id: conversation.id, unread_count: unread_count },
+      { conversation_id: conversation.id,
+        unread_count: unread_count,
+        total_unread_count: total_unread_count },
     )
   end
 end

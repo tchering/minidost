@@ -19,6 +19,15 @@ document.addEventListener("turbo:load", () => {
         if (badge) {
           badge.textContent = data.unread_count;
         }
+
+        const totalUnreadBadge = document.querySelector(
+          ".action-button.messages .count-badge"
+        );
+        if (totalUnreadBadge) {
+          const totalCount = parseInt(data.total_unread_count) || 0;
+          totalUnreadBadge.textContent = totalCount;
+          totalUnreadBadge.style.display = totalCount > 0 ? "block" : "none";
+        }
       },
     });
   }

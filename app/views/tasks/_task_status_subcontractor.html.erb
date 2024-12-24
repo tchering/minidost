@@ -19,335 +19,336 @@
             </svg>
             <div class="progress-content">
               <span class="progress-value"><%= @user.task_applications.approved.count %></span>
-              <span class="progress-label"><%= t("task.applications_approved") %></span>
+                <span class="progress-label"><%= t("task.applications_approved") %></span>
+              </div>
             </div>
-          </div>
-        <% end %>
-        
-        <div class="stat-details">
-          <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "pending"), 
-                      data: { turbo_frame: "map_frame" },
-                      class: "stat-item" do %>
-            <span class="stat-number"><%= @user.task_applications.pending.count %></span>
-            <span class="stat-text"><%= t("task.applications_pending") %></span>
           <% end %>
-
-          <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "rejected"), 
+          <div class="stat-details">
+            <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "pending"), 
                       data: { turbo_frame: "map_frame" },
                       class: "stat-item" do %>
-            <span class="stat-number"><%= @user.task_applications.rejected.count %></span>
-            <span class="stat-text"><%= t("task.applications_rejected") %></span>
+              <span class="stat-number"><%= @user.task_applications.pending.count %></span>
+              <span class="stat-text"><%= t("task.applications_pending") %></span>
+            <% end %>
+            <%= link_to task_task_applications_path(task_id: task&.id || 0, application_status: "rejected"), 
+                      data: { turbo_frame: "map_frame" },
+                      class: "stat-item" do %>
+              <span class="stat-number"><%= @user.task_applications.rejected.count %></span>
+              <span class="stat-text"><%= t("task.applications_rejected") %></span>
+            <% end %>
+          </div>
+        </div>
+        <%# Project Status Cards %>
+        <div class="status-cards">
+          <%# In Progress Projects %>
+          <%= link_to tasks_path(status: "in progress"), 
+                    class: "status-card in-progress",
+                    data: { turbo_frame: "map_frame" } do %>
+            <div class="status-icon">
+              <i class="fas fa-hammer"></i>
+            </div>
+            <div class="status-info">
+              <span class="status-count"><%= @user.accepted_tasks.where(status: "in progress").count %></span>
+              <span class="status-label"><%= t("task.status_in_progress") %></span>
+            </div>
+            <div class="status-trend">
+              <i class="fas fa-chart-line"></i>
+            </div>
+          <% end %>
+          <%# Completed Projects %>
+          <%= link_to tasks_path(status: "completed"), 
+                    class: "status-card completed",
+                    data: { turbo_frame: "map_frame" } do %>
+            <div class="status-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="status-info">
+              <span class="status-count"><%= @user.accepted_tasks.where(status: "completed").count %></span>
+              <span class="status-label"><%= t("task.status_completed") %></span>
+            </div>
+            <div class="status-trend positive">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+          <% end %>
+          <%# Messages %>
+          <%= link_to conversations_path,
+                    class: "action-button messages status-card",
+                    data: { turbo_frame: "conversation_frame" } do %>
+            <div class="status-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div class="status-info">
+              <span class="status-count"><%= @user.conversations.count %></span>
+              <span class="status-label">Conversations</span>
+            </div>
+            <div class="recent-activity">
+              <div class="activity-indicator"></div>
+            </div>
+            <%#! total_unread_messages_count method is defined in conversation helper %>
+            <% if (unread_count = total_unread_messages_count(current_user)) > 0 %>
+              <span class="count-badge badge rounded-pill bg-danger" 
+          style="<%= unread_count > 0 ? 'display: inline;' : 'display: none;' %>">
+                <%= unread_count %>
+              </span>
+            <% end %>
           <% end %>
         </div>
       </div>
-
-      <%# Project Status Cards %>
-      <div class="status-cards">
-        <%# In Progress Projects %>
-        <%= link_to tasks_path(status: "in progress"), 
-                    class: "status-card in-progress",
-                    data: { turbo_frame: "map_frame" } do %>
-          <div class="status-icon">
-            <i class="fas fa-hammer"></i>
-          </div>
-          <div class="status-info">
-            <span class="status-count"><%= @user.accepted_tasks.where(status: "in progress").count %></span>
-            <span class="status-label"><%= t("task.status_in_progress") %></span>
-          </div>
-          <div class="status-trend">
-            <i class="fas fa-chart-line"></i>
-          </div>
-        <% end %>
-
-        <%# Completed Projects %>
-        <%= link_to tasks_path(status: "completed"), 
-                    class: "status-card completed",
-                    data: { turbo_frame: "map_frame" } do %>
-          <div class="status-icon">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <div class="status-info">
-            <span class="status-count"><%= @user.accepted_tasks.where(status: "completed").count %></span>
-            <span class="status-label"><%= t("task.status_completed") %></span>
-          </div>
-          <div class="status-trend positive">
-            <i class="fas fa-chart-bar"></i>
-          </div>
-        <% end %>
-
-        <%# Messages %>
-        <%= link_to conversations_path,
-                    class: "status-card messages",
-                    data: { turbo_frame: "conversation_frame" } do %>
-          <div class="status-icon">
-            <i class="fas fa-comments"></i>
-          </div>
-          <div class="status-info">
-            <span class="status-count"><%= @user.conversations.count %></span>
-            <span class="status-label">Conversations</span>
-          </div>
-          <div class="recent-activity">
-            <div class="activity-indicator"></div>
-          </div>
-        <% end %>
-      </div>
     </div>
   </div>
-</div>
+  <style>
+    .subcontractor-dashboard {
+      padding: 1.5rem;
+      background: #f8fafc;
+    }
 
-<style>
-.subcontractor-dashboard {
-  padding: 1.5rem;
-  background: #f8fafc;
-}
+    .dashboard-header {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
 
-.dashboard-header {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+    }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2rem;
-}
+    /* Main Stat Card */
+    .main-stat-card {
+      background: linear-gradient(135deg, #1a5f7a 0%, #2563eb 100%);
+      border-radius: 16px;
+      padding: 2rem;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
 
-/* Main Stat Card */
-.main-stat-card {
-  background: linear-gradient(135deg, #1a5f7a 0%, #2563eb 100%);
-  border-radius: 16px;
-  padding: 2rem;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
+    .circular-progress {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+    }
 
-.circular-progress {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
-}
+    .progress-ring {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
 
-.progress-ring {
-  transform: rotate(-90deg);
-  width: 100%;
-  height: 100%;
-}
+    .progress-ring path {
+      stroke: #60a5fa;
+      stroke-linecap: round;
+    }
 
-.progress-ring path {
-  stroke: #60a5fa;
-  stroke-linecap: round;
-}
+    .progress-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
 
-.progress-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
+    .progress-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
 
-.progress-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1;
-}
+    .progress-label {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
 
-.progress-label {
-  font-size: 0.875rem;
-  opacity: 0.9;
-}
+    .stat-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
 
-.stat-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
+    .stat-item {
+      text-align: center;
+    }
 
-.stat-item {
-  text-align: center;
-}
+    .stat-number {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
 
-.stat-number {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
+    .stat-text {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
 
-.stat-text {
-  font-size: 0.875rem;
-  opacity: 0.9;
-}
+    /* Status Cards */
+    .status-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
 
-/* Status Cards */
-.status-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
+    .status-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
 
-.status-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s ease;
-  border: 1px solid #e2e8f0;
-}
+    .status-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
 
-.status-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
+    .status-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      position: relative;
+    }
 
-.status-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  position: relative;
-}
+    .pending .status-icon {
+      background: #fef3c7;
+      color: #d97706;
+    }
 
-.pending .status-icon {
-  background: #fef3c7;
-  color: #d97706;
-}
+    .active .status-icon {
+      background: #dcfce7;
+      color: #15803d;
+    }
 
-.active .status-icon {
-  background: #dcfce7;
-  color: #15803d;
-}
+    .messages .status-icon {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
 
-.messages .status-icon {
-  background: #e0f2fe;
-  color: #0369a1;
-}
+    .notification-dot {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
 
-.notification-dot {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 12px;
-  height: 12px;
-  background: #ef4444;
-  border-radius: 50%;
-  border: 2px solid white;
-}
+    .status-info {
+      flex: 1;
+    }
 
-.status-info {
-  flex: 1;
-}
+    .status-count {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
 
-.status-count {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1e293b;
-}
+    .status-label {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
 
-.status-label {
-  font-size: 0.875rem;
-  color: #64748b;
-}
+    .status-trend {
+      color: #64748b;
+    }
 
-.status-trend {
-  color: #64748b;
-}
+    .status-trend.positive {
+      color: #15803d;
+    }
 
-.status-trend.positive {
-  color: #15803d;
-}
+    .recent-activity {
+      display: flex;
+      align-items: center;
+    }
 
-.recent-activity {
-  display: flex;
-  align-items: center;
-}
+    .activity-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s infinite;
+    }
 
-.activity-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: pulse 2s infinite;
-}
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
 
-@media (max-width: 1024px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
+      .main-stat-card {
+        margin-bottom: 1rem;
+      }
+    }
 
-  .main-stat-card {
-    margin-bottom: 1rem;
-  }
-}
+    @media (max-width: 768px) {
+      .subcontractor-dashboard {
+        padding: 1rem;
+      }
 
-@media (max-width: 768px) {
-  .subcontractor-dashboard {
-    padding: 1rem;
-  }
+      .dashboard-header {
+        padding: 1rem;
+      }
 
-  .dashboard-header {
-    padding: 1rem;
-  }
+      .status-cards {
+        grid-template-columns: 1fr;
+      }
+    }
 
-  .status-cards {
-    grid-template-columns: 1fr;
-  }
-}
+    /* New styles for clickable stats */
+    .stat-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.2s ease;
+    }
 
-/* New styles for clickable stats */
-.stat-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  transition: transform 0.2s ease;
-}
+    .stat-link:hover {
+      transform: scale(1.05);
+    }
 
-.stat-link:hover {
-  transform: scale(1.05);
-}
+    .stat-item {
+      text-decoration: none;
+      color: inherit;
+      padding: 1rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
 
-.stat-item {
-  text-decoration: none;
-  color: inherit;
-  padding: 1rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
+    .stat-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
 
-.stat-item:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
+    .status-card {
+      cursor: pointer;
+    }
 
-.status-card {
-  cursor: pointer;
-}
-
-/* Update existing status card hover state */
-.status-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  color: inherit;
-}
-</style>
+    /* Update existing status card hover state */
+    .status-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
