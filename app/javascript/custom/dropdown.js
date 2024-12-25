@@ -25,11 +25,18 @@ document.addEventListener('turbo:load', function() {
     if (!e.target.matches('[data-bs-toggle="dropdown"]')) {
       dropdowns.forEach(dropdown => {
         const menu = dropdown.nextElementSibling;
-        if (menu.classList.contains('show') && !menu.contains(e.target)) {
+        if (menu && menu.classList.contains('show') && !menu.contains(e.target)) {
           menu.classList.remove('show');
           dropdown.setAttribute('aria-expanded', 'false');
         }
       });
     }
+  });
+});
+
+// Handle Turbo navigation
+document.addEventListener('turbo:before-cache', () => {
+  document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+    menu.classList.remove('show');
   });
 });
