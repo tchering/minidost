@@ -18,5 +18,6 @@ fr:
         bio:
           attributes:
             text:
+              blank: "ne peut pas être vide"
               too_short: "doit avoir au moins %{count} caractères"
               too_long: "ne doit pas dépasser %{count} caractères"
