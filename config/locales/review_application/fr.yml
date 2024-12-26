@@ -1,0 +1,44 @@
+fr:
+  review_application:
+    header:
+      title: "Examen de la Candidature"
+      reference: "Référence"
+      task_budget: "Budget de la Tâche"
+      proposal: "Proposition"
+
+    profile:
+      contact_details: "Coordonnées"
+
+    professional_details:
+      title: "Détails Professionnels"
+      experience: "Expérience"
+      insurance: "Assurance"
+      skills: "Compétences"
+      status: "Statut"
+
+    project_proposal:
+      title: "Proposition de Projet"
+      timeline: "Calendrier"
+      payment_terms: "Conditions de Paiement"
+      cover_letter: "Lettre de Motivation"
+      references: "Références"
+      no_cover_letter: "Aucune lettre de motivation fournie"
+      no_references: "Aucune référence fournie"
+
+    decision:
+      title: "Décision de Candidature"
+      sent_message: "Envoyer un Message"
+      back: "Retour"
+      reject: "Rejeter"
+      approve: "Approuver"
+      delete_interest: "Supprimer l'Intérêt"
+
+    confirm:
+      approve: "Êtes-vous sûr de vouloir approuver cette candidature ?"
+      reject: "Êtes-vous sûr de vouloir rejeter cette candidature ?"
+      delete_interest: "Êtes-vous sûr de vouloir retirer votre candidature ?"
+
+    status:
+      pending: "En Attente"
+      approved: "Approuvé"
+      rejected: "Rejeté"

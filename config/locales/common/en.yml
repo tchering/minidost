@@ -40,3 +40,6 @@ en:
 
     copyright:
       text: "© %{year} Copyright:"
+
+  general:
+    years: "years"

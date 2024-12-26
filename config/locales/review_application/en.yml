@@ -1,0 +1,44 @@
+en:
+  review_application:
+    header:
+      title: "Application Review"
+      reference: "Reference"
+      task_budget: "Task Budget"
+      proposal: "Proposal"
+
+    profile:
+      contact_details: "Contact Details"
+
+    professional_details:
+      title: "Professional Details"
+      experience: "Experience"
+      insurance: "Insurance"
+      skills: "Skills"
+      status: "Status"
+
+    project_proposal:
+      title: "Project Proposal"
+      timeline: "Timeline"
+      payment_terms: "Payment Terms"
+      cover_letter: "Cover Letter"
+      references: "References"
+      no_cover_letter: "No cover letter provided"
+      no_references: "No references provided"
+
+    decision:
+      title: "Application Decision"
+      sent_message: "Send Message"
+      back: "Back"
+      reject: "Reject"
+      approve: "Approve"
+      delete_interest: "Delete Interest"
+
+    confirm:
+      approve: "Are you sure you want to approve this application?"
+      reject: "Are you sure you want to reject this application?"
+      delete_interest: "Are you sure you want to withdraw your application?"
+
+    status:
+      pending: "Pending"
+      approved: "Approved"
+      rejected: "Rejected"

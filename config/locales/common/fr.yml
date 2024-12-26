@@ -40,3 +40,6 @@ fr:
 
     copyright:
       text: "© %{year} Droits réservés :"
+
+  general:
+    years: "ans"
