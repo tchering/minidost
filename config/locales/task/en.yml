@@ -30,6 +30,14 @@ en:
     not_interested_message: "You have removed your candidacy for this project"
     already_interested_message: "You have already expressed interest in this project"
     delete_turbo_confirm: "Are you sure you want to withdraw your candidacy for this project?"
+    conversations: "Conversations"
+    applications: "Applications"
+    applications_approved: "Approved Applications"
+    applications_pending: "Pending Applications"
+    applications_rejected: "Rejected Applications"
+    generate_contract: "Generate Contract"
+    new_project: "New Project"
+    messages: "Messages"
 
     error:
       not_contractor_message: "You must be a Contractor to access this page"

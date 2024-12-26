@@ -3,7 +3,7 @@
   <!-- Section: Social media -->
   <div class="footer-social">
     <div class="social-text">
-      <span>Get connected with us on social networks:</span>
+      <span><%= t('footer.social.connect') %></span>
     </div>
     <div class="social-icons">
       <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
@@ -12,7 +12,6 @@
       <a href="#" class="social-link"><i class="fab fa-github"></i></a>
     </div>
   </div>
-
   <!-- Section: Links -->
   <div class="footer-content">
     <div class="container">
@@ -20,111 +19,109 @@
         <!-- Company Info -->
         <div>
           <h6 class="text-uppercase fw-bold mb-4">
-            <i class="fas fa-building me-3"></i>MiniDost
+            <i class="fas fa-building me-3"></i><%= t('footer.company.name') %>
           </h6>
           <p>
-            Your trusted partner in business management and organization solutions.
+            <%= t('footer.company.description') %>
           </p>
         </div>
         <!-- Products -->
         <div>
-          <h6 class="text-uppercase fw-bold mb-4">Products</h6>
-          <p><a href="#!" class="text-white">Management</a></p>
-          <p><a href="#!" class="text-white">Analytics</a></p>
-          <p><a href="#!" class="text-white">Reports</a></p>
-          <p><a href="#!" class="text-white">Solutions</a></p>
+          <h6 class="text-uppercase fw-bold mb-4"><%= t('footer.products.title') %></h6>
+          <p><a href="#!" class="text-white"><%= t('footer.products.management') %></a></p>
+          <p><a href="#!" class="text-white"><%= t('footer.products.analytics') %></a></p>
+          <p><a href="#!" class="text-white"><%= t('footer.products.reports') %></a></p>
+          <p><a href="#!" class="text-white"><%= t('footer.products.solutions') %></a></p>
         </div>
         <!-- Useful links -->
         <div>
-          <h6 class="text-uppercase fw-bold mb-4">Useful links</h6>
-          <p><a href="#!" class="text-white">Pricing</a></p>
-          <p><a href="#!" class="text-white">Settings</a></p>
-          <p><a href="#!" class="text-white">Orders</a></p>
-          <p><a href="#!" class="text-white">Help</a></p>
+          <h6 class="text-uppercase fw-bold mb-4"><%= t('footer.useful_links.title') %></h6>
+          <p><a href="#!" class="text-white"><%= t('footer.useful_links.pricing') %></a></p>
+          <p><a href="#!" class="text-white"><%= t('footer.useful_links.settings') %></a></p>
+          <p><a href="#!" class="text-white"><%= t('footer.useful_links.orders') %></a></p>
+          <p><a href="#!" class="text-white"><%= t('footer.useful_links.help') %></a></p>
         </div>
         <!-- Contact -->
         <div>
-          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-          <p><i class="fas fa-home me-3"></i> Paris, 75001, FR</p>
-          <p><i class="fas fa-envelope me-3"></i> info@minidost.com</p>
-          <p><i class="fas fa-phone me-3"></i> + 33 234 567 88</p>
-          <p><i class="fas fa-print me-3"></i> + 33 234 567 89</p>
+          <h6 class="text-uppercase fw-bold mb-4"><%= t('footer.contact.title') %></h6>
+          <p><i class="fas fa-home me-3"></i><%= t('footer.contact.address') %></p>
+          <p><i class="fas fa-envelope me-3"></i><%= t('footer.contact.email') %></p>
+          <p><i class="fas fa-phone me-3"></i><%= t('footer.contact.phone') %></p>
+          <p><i class="fas fa-print me-3"></i><%= t('footer.contact.fax') %></p>
         </div>
       </div>
     </div>
   </div>
-
   <!-- Copyright -->
   <div class="footer-copyright">
-    <span>© <%= Time.current.year %> Copyright:</span>
-    <a href="#" class="copyright-link">MiniDost</a>
+    <span><%= t('footer.copyright.text', year: Time.current.year) %></span>
+    <a href="#" class="copyright-link"><%= t('footer.company.name') %></a>
   </div>
 </footer>
-
 <style>
-.modern-footer {
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
-  color: white;
-  margin-top: 3rem;
-}
-
-.footer-social {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.social-icons {
-  display: flex;
-  gap: 1rem;
-}
-
-.social-link {
-  color: white;
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-}
-
-.social-link:hover {
-  transform: translateY(-3px);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.footer-content {
-  padding: 4rem 0;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.footer-copyright {
-  background: rgba(0, 0, 0, 0.1);
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.875rem;
-}
-
-.copyright-link {
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  transition: opacity 0.3s ease;
-}
-
-.copyright-link:hover {
-  opacity: 0.8;
-}
-
-@media (max-width: 768px) {
-  .footer-social {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
+  .modern-footer {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    margin-top: 3rem;
   }
-}
+
+  .footer-social {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .social-link {
+    color: white;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .social-link:hover {
+    transform: translateY(-3px);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .footer-content {
+    padding: 4rem 0;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-copyright {
+    background: rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .copyright-link {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .copyright-link:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .footer-social {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+  }
 </style>

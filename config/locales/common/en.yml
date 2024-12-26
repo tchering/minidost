@@ -1,0 +1,42 @@
+en:
+  navbar:
+    users: "Users"
+    dashboard: "Dashboard"
+    team: "Team"
+    projects: "Projects"
+    about: "About"
+    logout: "Logout"
+    login: "Login"
+    edit_profile: "Edit Profile"
+
+  footer:
+    social:
+      connect: "Get connected with us on social networks:"
+
+    company:
+      name: "MiniDost"
+      description: "Your trusted partner in business management and organization solutions."
+
+    products:
+      title: "Products"
+      management: "Management"
+      analytics: "Analytics"
+      reports: "Reports"
+      solutions: "Solutions"
+
+    useful_links:
+      title: "Useful links"
+      pricing: "Pricing"
+      settings: "Settings"
+      orders: "Orders"
+      help: "Help"
+
+    contact:
+      title: "Contact"
+      address: "Paris, 75001, FR"
+      email: "info@minidost.com"
+      phone: "+ 33 234 567 88"
+      fax: "+ 33 234 567 89"
+
+    copyright:
+      text: "© %{year} Copyright:"

@@ -1,0 +1,42 @@
+fr:
+  navbar:
+    users: "Utilisateurs"
+    dashboard: "Tableau de bord"
+    team: "Équipe"
+    projects: "Projets"
+    about: "À propos"
+    logout: "Déconnexion"
+    login: "Connexion"
+    edit_profile: "Modifier le profil"
+
+  footer:
+    social:
+      connect: "Connectez-vous avec nous sur les réseaux sociaux :"
+
+    company:
+      name: "MiniDost"
+      description: "Votre partenaire de confiance en gestion d'entreprise et solutions organisationnelles."
+
+    products:
+      title: "Produits"
+      management: "Gestion"
+      analytics: "Analyses"
+      reports: "Rapports"
+      solutions: "Solutions"
+
+    useful_links:
+      title: "Liens utiles"
+      pricing: "Tarification"
+      settings: "Paramètres"
+      orders: "Commandes"
+      help: "Aide"
+
+    contact:
+      title: "Contact"
+      address: "Paris, 75001, FR"
+      email: "info@minidost.com"
+      phone: "+ 33 234 567 88"
+      fax: "+ 33 234 567 89"
+
+    copyright:
+      text: "© %{year} Droits réservés :"

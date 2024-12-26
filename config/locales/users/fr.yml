@@ -2,7 +2,7 @@ fr:
   users:
     # Add any user-specific translations here
     profile:
-      title: "User Profile"
+      title: "Profil Utilisateur"
       edit: "Edit Profile"
       name: "Nom"
       position: "Position"

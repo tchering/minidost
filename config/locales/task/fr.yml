@@ -34,10 +34,18 @@ fr:
     status_completed: "Travaux Terminé"
     available_tasks: "Tâches disponibles"
     no_available_tasks: "Aucune tâche disponible"
-    interested_message: "Le notification a été envoyée à l'employeur"
-    not_interested_message: "Vous avez retiré votre candidature pour cette projet"
-    already_interested_message: "Vous avez déjà exprimé votre intérêt pour cette projet"
+    interested_message: "La notification a été envoyée à l'employeur"
+    not_interested_message: "Vous avez retiré votre candidature pour ce projet"
+    already_interested_message: "Vous avez déjà exprimé votre intérêt pour ce projet"
     delete_turbo_confirm: "Voulez-vous vraiment retirer votre candidature pour ce projet ?"
+    conversations: "Conversations"
+    applications: "Candidatures"
+    applications_approved: "Candidatures Approuvées"
+    applications_pending: "Candidatures en Attente"
+    applications_rejected: "Candidatures Rejetées"
+    generate_contract: "Générer un Contrat"
+    new_project: "Nouveau Projet"
+    messages: "Messages"
 
     error: 
       not_contractor_message: "Vous devez être un Donneur d'ordre pour accéder à cette page" 
@@ -47,7 +55,7 @@ fr:
       create: "Créer"
       update: "Mettre à jour"
       delete: "Supprimer"
-      send_interest: "Envoyer un candidature"
+      send_interest: "Envoyer une candidature"
       delete_interest: "Annuler la candidature"
   activerecord:
     errors:
