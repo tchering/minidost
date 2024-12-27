@@ -2,15 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 import { createConsumer } from "@rails/actioncable"
 
 export default class extends Controller {
-  static targets = ["badge", "list", "button", "messageCount"]
+  static targets = ["badge", "list", "button"]
 
   connect() {
     this.subscription = createConsumer().subscriptions.create("NotificationChannel", {
       received: this.handleNotification.bind(this)
     });
-
-    // Initialize message counts
-    this.updateMessageCounts();
   }
 
   disconnect() {
@@ -19,74 +16,64 @@ export default class extends Controller {
     }
   }
 
-  updateMessageCounts() {
-    const conversationElements = document.querySelectorAll('[data-conversation-id]');
-    conversationElements.forEach(element => {
-      const conversationId = element.dataset.conversationId;
-      const unreadCount = element.dataset.unreadCount || 0;
-      const badge = element.querySelector('.badge-notification');
-      if (badge) {
-        badge.textContent = unreadCount;
-        badge.style.display = unreadCount > 0 ? 'block' : 'none';
-      }
-    });
+  handleNotificationClick(event) {
+    // Mark notification as read
+    const notification = event.currentTarget;
+    notification.classList.remove('unread');
+    
+    // Update badge count
+    const unreadCount = this.listTarget.querySelectorAll('.unread').length - 1;
+    if (unreadCount <= 0) {
+      this.badgeTarget.remove();
+    } else {
+      this.badgeTarget.textContent = unreadCount;
+    }
   }
 
   handleNotification(data) {
     const notification = data.notification;
     
-    // Check for existing notification from same sender in same conversation
-    const existingNotification = this.listTarget.querySelector(
-      `[data-sender-id="${notification.sender_id}"][data-conversation-id="${notification.conversation_id}"]`
-    );
-
-    // Format the time using the browser's locale
-    const timeText = this.formatTimeAgo(new Date(notification.created_at));
-
-    if (existingNotification) {
-      // Update existing notification
-      const textElement = existingNotification.querySelector('.notification-text');
-      textElement.textContent = notification.text;
-      const timeElement = existingNotification.querySelector('.text-muted');
-      timeElement.textContent = timeText;
-    } else {
-      // Add new notification
-      const notificationHtml = this.buildNotificationHtml(notification, timeText);
-      this.listTarget.insertAdjacentHTML("afterbegin", notificationHtml);
-
-      // Update badge count
-      const currentCount = parseInt(this.badgeTarget.textContent || "0");
-      this.badgeTarget.textContent = currentCount + 1;
-      this.badgeTarget.style.display = "flex";
-
-      // Remove "No notifications" message if it exists
-      const emptyMessage = this.listTarget.querySelector(".no-notifications");
-      if (emptyMessage) {
-        emptyMessage.remove();
-      }
+    // Update badge count
+    let badgeElement = this.badgeTarget;
+    if (!badgeElement) {
+      badgeElement = document.createElement('span');
+      badgeElement.className = 'notification-badge';
+      badgeElement.setAttribute('data-notifications-target', 'badge');
+      this.buttonTarget.appendChild(badgeElement);
     }
-
-    // Update message counts in conversations list
-    if (notification.notifiable_type === "Message") {
-      this.updateMessageCounts();
+    
+    const currentCount = parseInt(badgeElement.textContent || '0');
+    badgeElement.textContent = currentCount + 1;
+    
+    // Add new notification to list
+    const timeText = this.formatTimeAgo(new Date(notification.created_at));
+    const notificationHtml = this.buildNotificationHtml(notification, timeText);
+    
+    // Insert at the top of the list
+    this.listTarget.insertAdjacentHTML('afterbegin', notificationHtml);
+    
+    // Remove oldest notification if more than 10
+    const notifications = this.listTarget.querySelectorAll('.notification-item');
+    if (notifications.length > 10) {
+      notifications[notifications.length - 1].remove();
     }
   }
 
   formatTimeAgo(date) {
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-
+    
     if (diffInSeconds < 60) {
-      return I18n.t('datetime.distance_in_words.less_than_x_minutes', { count: 1 });
+      return 'just now';
     } else if (diffInSeconds < 3600) {
       const minutes = Math.floor(diffInSeconds / 60);
-      return I18n.t('datetime.distance_in_words.x_minutes', { count: minutes });
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else if (diffInSeconds < 86400) {
       const hours = Math.floor(diffInSeconds / 3600);
-      return I18n.t('datetime.distance_in_words.about_x_hours', { count: hours });
+      return `about ${hours} hour${hours > 1 ? 's' : ''} ago`;
     } else {
       const days = Math.floor(diffInSeconds / 86400);
-      return I18n.t('datetime.distance_in_words.x_days', { count: days });
+      return `${days} day${days > 1 ? 's' : ''} ago`;
     }
   }
 
@@ -95,11 +82,13 @@ export default class extends Controller {
       <a href="${notification.path}" 
          class="dropdown-item notification-item unread" 
          data-turbo-method="patch"
-         data-sender-id="${notification.sender_id}"
-         data-conversation-id="${notification.conversation_id}">
+         data-action="click->notifications#handleNotificationClick"
+         data-notification-id="${notification.id}"
+         data-sender-id="${notification.sender_id || ''}"
+         data-conversation-id="${notification.conversation_id || ''}">
         <div class="d-flex align-items-center">
-          <div class="notification-icon me-3">
-            <i class="${this.getNotificationIcon(notification)}"></i>
+          <div class="me-2">
+            ${this.getNotificationIcon(notification)}
           </div>
           <div class="notification-content flex-grow-1">
             <p class="notification-text mb-1">${notification.text}</p>
@@ -111,12 +100,17 @@ export default class extends Controller {
   }
 
   getNotificationIcon(notification) {
-    const icons = {
-      Message: "fas fa-envelope",
-      TaskApplication: "fas fa-file-alt",
-      Contract: notification.action === "sign_required" ? 
-        "fas fa-file-signature" : "fas fa-file-contract"
+    switch(notification.notifiable_type) {
+      case 'Message':
+        return '<i class="fas fa-envelope"></i>';
+      case 'TaskApplication':
+        return '<i class="fas fa-file-alt"></i>';
+      case 'Contract':
+        return notification.action === 'sign_required' ? 
+          '<i class="fas fa-file-signature"></i>' : 
+          '<i class="fas fa-file-contract"></i>';
+      default:
+        return '<i class="fas fa-bell"></i>';
     }
-    return icons[notification.notifiable_type] || "fas fa-bell"
   }
 }

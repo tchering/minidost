@@ -14,13 +14,18 @@ fr:
         one: "il y a 1 jour"
         other: "il y a %{count} jours"
   notifications:
+    title: "Notifications"
     no_notifications: "Aucune notification"
     mark_all_as_read: "Marquer tout comme lu"
+    view_all: "Voir toutes les notifications"
+    default: "Nouvelle notification"
     messages:
       new_message: "Nouveau message de %{sender}"
       new_messages: "%{count} nouveaux messages de %{sender}"
     task_applications:
       new_application: "Nouvelle candidature pour le chantier à %{site}, %{city}"
+      new_application_default: "Nouvelle candidature"
     contracts:
       sign_required: "Contrat prêt à signer : %{site}, %{city}"
       signed: "%{user} a signé le contrat"
+      default: "Mise à jour du contrat"

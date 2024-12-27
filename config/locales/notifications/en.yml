@@ -14,13 +14,18 @@ en:
         one: "1 day ago"
         other: "%{count} days ago"
   notifications:
+    title: "Notifications"
     no_notifications: "No notifications"
     mark_all_as_read: "Mark all as read"
+    view_all: "View all notifications"
+    default: "New notification"
     messages:
       new_message: "New message from %{sender}"
       new_messages: "%{count} new messages from %{sender}"
     task_applications:
       new_application: "New application for task in %{site}, %{city}"
+      new_application_default: "New task application"
     contracts:
       sign_required: "Contract ready for signature: %{site}, %{city}"
       signed: "%{user} has signed the contract"
+      default: "Contract update"

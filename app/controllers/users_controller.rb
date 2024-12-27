@@ -18,6 +18,20 @@ class UsersController < ApplicationController
       .find_by(application_status: "pending")
       &.task
 
+    # Eager load notifications with their notifiable records and associations
+    @notifications = @user.notifications
+      .includes(
+        :recipient,
+        notifiable: [
+          :conversation,  # For Message notifications
+          :sender,        # For Message notifications
+          :task,         # For TaskApplication and Contract notifications
+          :user          # For Contract notifications
+        ]
+      )
+      .order(created_at: :desc)
+      .limit(10)
+
     #! @active_tasks_applications_count is passed to view _task_status.html.erb
     @active_tasks_applications_count = TaskApplication
       .joins(:task) # Joins TaskApplication with Task table

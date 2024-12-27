@@ -1,4 +1,6 @@
 class NotificationChannel < ApplicationCable::Channel
+  include NotificationsHelper
+
   def subscribed
     stream_for current_user
   end
@@ -8,6 +10,12 @@ class NotificationChannel < ApplicationCable::Channel
   end
 
   def self.broadcast_notification(notification)
+    helper = Class.new do
+      include NotificationsHelper
+      include ActionView::Helpers::TranslationHelper
+      include AbstractController::Translation
+    end.new
+
     broadcast_to(
       notification.recipient,
       {
@@ -15,9 +23,7 @@ class NotificationChannel < ApplicationCable::Channel
           id: notification.id,
           notifiable_type: notification.notifiable_type,
           action: notification.action,
-          text: NotificationsHelper.instance_method(:notification_text)
-                                 .bind(Class.new { include NotificationsHelper }.new)
-                                 .call(notification),
+          text: helper.notification_text(notification),
           path: generate_notification_path(notification),
           created_at: notification.created_at,
           sender_id: notification.sender_id,
@@ -31,15 +37,24 @@ class NotificationChannel < ApplicationCable::Channel
 
   def self.generate_notification_path(notification)
     helpers = Rails.application.routes.url_helpers
+    locale_param = { locale: I18n.locale }
+
     case notification.notifiable_type
     when "Message"
-      helpers.chat_conversation_path(notification.notifiable.conversation, locale: I18n.locale)
+      conversation = notification.notifiable.conversation
+      helpers.chat_conversation_path(id: conversation.id, **locale_param)
     when "TaskApplication"
-      helpers.task_path(notification.notifiable.task, locale: I18n.locale)
+      task = notification.notifiable.task
+      helpers.task_task_applications_path(task_id: task.id, **locale_param)
     when "Contract"
-      helpers.task_contract_path(notification.notifiable.task, notification.notifiable, locale: I18n.locale)
+      task = notification.notifiable.task
+      contract = notification.notifiable
+      helpers.task_contract_path(task_id: task.id, id: contract.id, **locale_param)
     else
-      helpers.notifications_path(locale: I18n.locale)
+      helpers.notifications_path(**locale_param)
     end
+  rescue => e
+    Rails.logger.error "Failed to generate notification path: #{e.message}"
+    helpers.notifications_path(**locale_param)
   end
 end
