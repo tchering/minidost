@@ -129,11 +129,9 @@
                 data: { turbo_frame: "conversation_frame" } do %>
         <i class="fas fa-comment-dots"></i>
         <span><%= t('task.messages') %></span>
-        <%#! total_unread_messages_count method is defined in conversation helper %>
-        <% if (unread_count = total_unread_messages_count(current_user)) > 0 %>
-          <span class="count-badge badge rounded-pill bg-danger" 
-          style="<%= unread_count > 0 ? 'display: inline;' : 'display: none;' %>">
-            <%= unread_count %>
+        <% if total_unread_messages_count(current_user) > 0 %>
+          <span class="count-badge badge rounded-pill bg-danger" style="display: inline;">
+            new
           </span>
         <% end %>
       <% end %>

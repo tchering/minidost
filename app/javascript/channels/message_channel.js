@@ -51,19 +51,31 @@ document.addEventListener("turbo:load", () => {
               <div class="message-bubble ${data.read ? "" : "unread"}">
                 ${data.content}
               </div>
-              <div class="message-time">
-                ${new Date(data.created_at).toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+              <div class="message-timestamp">
+                ${new Date().toLocaleTimeString()}
               </div>
             </div>
           </div>
           `;
+
           messagesContainer.insertAdjacentHTML("beforeend", messageHtml);
           messagesContainer.scrollTop = messagesContainer.scrollHeight;
-          // Focus on the input field after sending a message
-          // document.querySelector(".message-input").focus();
+
+          // Update badges to show "new"
+          const conversationBadges = document.querySelectorAll('.badge-notification');
+          conversationBadges.forEach(badge => {
+            if (badge.closest(`[data-conversation-id="${conversation_id}"]`)) {
+              badge.textContent = "new";
+              badge.style.display = "block";
+            }
+          });
+
+          // Update task status badge
+          const taskStatusBadge = document.querySelector('.action-button.messages .count-badge');
+          if (taskStatusBadge) {
+            taskStatusBadge.textContent = "new";
+            taskStatusBadge.style.display = "inline";
+          }
         },
       }
     );
@@ -77,4 +89,3 @@ document.addEventListener("turbo:before-cache", () => {
     activeSubscription = null;
   }
 });
-

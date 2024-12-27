@@ -44,14 +44,35 @@ export default class extends Controller {
     
     const currentCount = parseInt(badgeElement.textContent || '0');
     badgeElement.textContent = currentCount + 1;
-    
-    // Add new notification to list
+
+    // Check for existing notification from the same sender
+    const existingNotification = this.listTarget.querySelector(
+      `.notification-item[data-sender-id="${notification.sender_id}"]`
+    );
+
     const timeText = this.formatTimeAgo(new Date(notification.created_at));
-    const notificationHtml = this.buildNotificationHtml(notification, timeText);
-    
-    // Insert at the top of the list
-    this.listTarget.insertAdjacentHTML('afterbegin', notificationHtml);
-    
+
+    if (existingNotification) {
+      // Update existing notification
+      const messageCount = parseInt(existingNotification.dataset.messageCount || '1') + 1;
+      existingNotification.dataset.messageCount = messageCount;
+      
+      // Update notification text to show message count
+      const textElement = existingNotification.querySelector('.notification-text');
+      textElement.textContent = `Nouveau message de ${notification.text.split(' de ')[1]}`;
+      
+      // Update time
+      const timeElement = existingNotification.querySelector('.notification-time');
+      timeElement.textContent = timeText;
+
+      // Move to top
+      this.listTarget.insertBefore(existingNotification, this.listTarget.firstChild);
+    } else {
+      // Add new notification
+      const notificationHtml = this.buildNotificationHtml(notification, timeText);
+      this.listTarget.insertAdjacentHTML('afterbegin', notificationHtml);
+    }
+
     // Remove oldest notification if more than 10
     const notifications = this.listTarget.querySelectorAll('.notification-item');
     if (notifications.length > 10) {

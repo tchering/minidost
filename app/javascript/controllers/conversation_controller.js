@@ -26,21 +26,27 @@ export default class extends Controller {
   }
 
   handleMessage(data) {
-    // Update unread count
+    // Update unread count in dataset
     const currentCount = parseInt(this.element.dataset.unreadCount || "0");
     const newCount = currentCount + 1;
-    
     this.element.dataset.unreadCount = newCount;
     
     if (this.hasBadgeTarget) {
-      this.badgeTarget.textContent = newCount;
-      this.badgeTarget.style.display = newCount > 0 ? "block" : "none";
+      this.badgeTarget.textContent = "new";
+      this.badgeTarget.style.display = "block";
     }
 
-    // Update last message preview
+    // Update last message preview if it exists
     const messagePreview = this.element.querySelector(".text-muted.text-truncate");
     if (messagePreview) {
       messagePreview.textContent = data.content;
+    }
+
+    // Update the global message badge in task status
+    const taskStatusBadge = document.querySelector('.action-button.messages .count-badge');
+    if (taskStatusBadge) {
+      taskStatusBadge.textContent = "new";
+      taskStatusBadge.style.display = "inline";
     }
   }
 }
