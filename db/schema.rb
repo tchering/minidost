@@ -133,8 +133,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_25_112343) do
     t.datetime "read_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "action"
+    t.bigint "sender_id"
+    t.bigint "conversation_id"
+    t.index ["conversation_id"], name: "index_notifications_on_conversation_id"
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+    t.index ["sender_id"], name: "index_notifications_on_sender_id"
   end
 
   create_table "peintre_tasks", force: :cascade do |t|
@@ -258,7 +263,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_25_112343) do
   add_foreign_key "conversations", "users", column: "sender_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "notifications", "conversations"
   add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "notifications", "users", column: "sender_id"
   add_foreign_key "task_applications", "tasks"
   add_foreign_key "task_applications", "users", column: "subcontractor_id"
   add_foreign_key "tasks", "users", column: "contractor_id"

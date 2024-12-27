@@ -10,17 +10,20 @@
         <div class="conversation-wrapper d-flex" >
           <% @conversations.each do |conversation| %>
             <%= link_to chat_conversation_path(conversation),data:{turbo_frame: "_top"}, class: "text-decoration-none text-dark" do %>
-              <div class="conversation-card m-2" , data-conversation-id="<%= conversation.id %>">
+              <div class="conversation-card m-2" 
+                   data-conversation-id="<%= conversation.id %>"
+                   data-unread-count="<%= unread_notifications_count(conversation, current_user) %>"
+                   data-controller="conversation">
                 <div class="conversation-content text-center">
                   <% other_participant = conversation.participants.find {|p| p != current_user} %>
-                  <%= image_tag(conversation.participants.find {|p| p != current_user}.logo.attached? ? conversation.participants.find {|p| p != current_user}.logo : "default_logo.png",class:"rounded-circle img-thumbnail",size:"50") %>
-                  <%#!Notification unread_notifications_count is defined in conversations_helper.rb %>
-                  <span class="badge rounded-pill badge-notification bg-danger">
-                    <%= unread_notifications_count(conversation,current_user) %>
+                  <%= image_tag(other_participant.logo.attached? ? other_participant.logo : "default_logo.png", class: "rounded-circle img-thumbnail", size: "50") %>
+                  <span class="badge rounded-pill badge-notification bg-danger" 
+                        data-conversation-target="badge"
+                        style="<%= unread_notifications_count(conversation, current_user) > 0 ? '' : 'display: none;' %>">
+                    <%= unread_notifications_count(conversation, current_user) %>
                   </span>
-                  <%#!------------ %>
                   <h5 class="mb-1 fw-semibold">
-                    <%= conversation.participants.find { |p| p != current_user }.company_name %>
+                    <%= other_participant.company_name %>
                   </h5>
                   <small class="text-muted text-truncate d-block">
                     <%= conversation.messages.last&.content || "No messages yet" %>

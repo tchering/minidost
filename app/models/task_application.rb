@@ -18,4 +18,18 @@ class TaskApplication < ApplicationRecord
   belongs_to :task
   #This is trying to say that the subcontractor_id is a foreign key that references the id of the User model
   belongs_to :subcontractor, class_name: "User", foreign_key: "subcontractor_id"
+
+  has_many :notifications, as: :notifiable, dependent: :destroy
+
+  after_create_commit :create_notification
+
+  private
+
+  def create_notification
+    notification = notifications.create(
+      recipient: task.contractor,
+      action: "new_application"
+    )
+    NotificationChannel.broadcast_notification(notification)
+  end
 end

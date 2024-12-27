@@ -7,6 +7,7 @@ class Contract < ApplicationRecord
   belongs_to :contractor, class_name: "User"
   belongs_to :subcontractor, class_name: "User"
   has_one_attached :pdf_file
+  has_many :notifications, as: :notifiable, dependent: :destroy
 
   validates :contract_date, :terms_and_conditions, :payment_terms, presence: true
   validates :contract_number, uniqueness: true, allow_nil: true
@@ -20,6 +21,8 @@ class Contract < ApplicationRecord
 
   before_create :set_initial_status
   after_create :generate_contract_number
+  after_create_commit :notify_subcontractor
+  after_update_commit :notify_contract_signed, if: :saved_change_to_signed_by_subcontractor?
   before_validation :set_default_terms, on: :create
 
   def generate_pdf
@@ -48,5 +51,23 @@ class Contract < ApplicationRecord
   def set_default_terms
     self.terms_and_conditions ||= DefaultContractTerms::STANDARD_TERMS
     self.payment_terms ||= DefaultContractTerms::STANDARD_PAYMENT_TERMS
+  end
+
+  def notify_subcontractor
+    notification = notifications.create(
+      recipient: subcontractor,
+      action: "sign_required"
+    )
+    NotificationChannel.broadcast_notification(notification)
+  end
+
+  def notify_contract_signed
+    return unless signed_by_subcontractor?
+    
+    notification = notifications.create(
+      recipient: contractor,
+      action: "contract_signed"
+    )
+    NotificationChannel.broadcast_notification(notification)
   end
 end

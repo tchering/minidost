@@ -1,0 +1,26 @@
+en:
+  datetime:
+    distance_in_words:
+      less_than_x_minutes:
+        one: "just now"
+        other: "less than %{count} minutes"
+      x_minutes:
+        one: "1 minute ago"
+        other: "%{count} minutes ago"
+      about_x_hours:
+        one: "about 1 hour ago"
+        other: "about %{count} hours ago"
+      x_days:
+        one: "1 day ago"
+        other: "%{count} days ago"
+  notifications:
+    no_notifications: "No notifications"
+    mark_all_as_read: "Mark all as read"
+    messages:
+      new_message: "New message from %{sender}"
+      new_messages: "%{count} new messages from %{sender}"
+    task_applications:
+      new_application: "New application for task in %{site}, %{city}"
+    contracts:
+      sign_required: "Contract ready for signature: %{site}, %{city}"
+      signed: "%{user} has signed the contract"

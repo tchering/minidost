@@ -16,9 +16,9 @@ class MessagesController < ApplicationController
           broadcast_data
         )
 
-        format.html { redirect_to chat_conversation_path(@conversation) }
+        format.html { redirect_to chat_conversation_path(@conversation, locale: I18n.locale) }
       else
-        format.html { redirect_to chat_conversation_path(@conversation),
+        format.html { redirect_to chat_conversation_path(@conversation, locale: I18n.locale),
                       status: :unprocessable_entity,
                       alert: "Message failed to send" }
       end

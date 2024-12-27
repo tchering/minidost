@@ -50,6 +50,7 @@ class User < ApplicationRecord
 
   #! Associations with Notification model
   has_many :received_notifications, class_name: "Notification", foreign_key: "recipient_id", dependent: :destroy
+  has_many :notifications, foreign_key: "recipient_id", dependent: :destroy
 
   #?Finds all conversations where the user is either sender OR recipient
   # The id refers to the current user's id automatically because:

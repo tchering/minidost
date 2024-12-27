@@ -60,6 +60,12 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resources :notifications, only: [:index, :update] do
+      collection do
+        post :mark_all_as_read
+      end
+    end
   end
 
   # Health check route outside locale scope since it's for internal use

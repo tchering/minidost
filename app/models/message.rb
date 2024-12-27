@@ -4,44 +4,30 @@ class Message < ApplicationRecord
 
   validates :content, presence: true, length: { min: 1, maximum: 1000 }
   scope :ordered, -> { order(created_at: :asc) }
-  #! Associatin with notification
+  
   has_many :notifications, as: :notifiable, dependent: :destroy
 
-  after_create :create_notification
+  after_create_commit :create_notification
 
   private
 
   def create_notification
-    # If current user is the conversation sender, notify the recipient
-    # If current user is not the sender, notify the conversation sender
     recipient = conversation.sender == sender ? conversation.recipient : conversation.sender
-    notification = notifications.create(recipient: recipient)
-
-    unread_count = Notification.where(
-      notifiable_type: "Message",
-      notifiable_id: conversation.messages.pluck(:id),
+    
+    # Find or create notification for this sender in this conversation
+    notification = Notification.find_or_initialize_by(
       recipient: recipient,
-      read_at: nil,
-    ).count
-
-    total_unread_count = Notification.where(
       notifiable_type: "Message",
-      recipient: recipient,
       read_at: nil,
-    ).count
-
-    ActionCable.server.broadcast(
-      "notifications_#{recipient.id}",
-      { conversation_id: conversation.id,
-        unread_count: unread_count,
-        total_unread_count: total_unread_count },
+      action: "new_message",
+      sender_id: sender.id,
+      conversation_id: conversation.id
     )
+
+    # Update or set the notifiable to the latest message
+    notification.notifiable = self
+    notification.save
+
+    NotificationChannel.broadcast_notification(notification)
   end
 end
-
-# When you create a notification through the association:
-# notifications.create(recipient: recipient)
-# Rails will automatically set:
-
-# notifiable_id = message's id
-# notifiable_type = "Message"

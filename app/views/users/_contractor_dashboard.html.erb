@@ -29,25 +29,62 @@
               <%= t('users.dashboard_contractor.title') %>
             </h4>
             <%# Notification Badge %>
+            <%# Notification Dropdown %>
             <% if current_user == user %>
-              <div class="notification-wrapper position-relative">
-                <%= link_to tasks_path(status: "active", has_applications: true), 
-              class: "btn btn-outline-primary btn-sm rounded-3 d-inline-flex align-items-center",
-              data: { turbo_frame: "map_frame" } do %>
-                  <div class="d-flex align-items-center">
-                    <i class="fas fa-bell opacity-75 me-2"></i>
-                  </div>
-                  <% active_tasks_with_applications = @user.created_tasks
-                  .where(status: "active")
-                  .joins(:task_applications)
-                  .distinct
-                  .count %>
-                  <% if active_tasks_with_applications.positive? %>
-                    <span class="notification-badge">
-                      <%= active_tasks_applications_count %>
+              <div class="notification-wrapper position-relative" data-controller="notifications">
+                <button class="btn btn-outline-primary btn-sm rounded-3 position-relative"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        data-notifications-target="button">
+                  <i class="fas fa-bell opacity-75"></i>
+                  <% unread_count = current_user.notifications.unread.count %>
+                  <% if unread_count.positive? %>
+                    <span class="notification-badge" data-notifications-target="badge">
+                      <%= unread_count %>
                     </span>
                   <% end %>
-                <% end %>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end p-0 notification-dropdown">
+                  <div class="notification-header d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <h6 class="mb-0">Notifications</h6>
+                    <% if unread_count.positive? %>
+                      <%= button_to mark_all_as_read_notifications_path, 
+                          class: "btn btn-link btn-sm p-0 text-decoration-none",
+                          data: { turbo_method: :post } do %>
+                        <small>Mark all as read</small>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <div class="notification-list" data-notifications-target="list">
+                    <% current_user.notifications.order(created_at: :desc).limit(10).each do |notification| %>
+                      <%= link_to notification_path(notification), 
+                          class: "dropdown-item notification-item #{'unread' if notification.read_at.nil?}",
+                          data: { turbo_method: :patch } do %>
+                        <div class="d-flex align-items-center">
+                          <div class="notification-icon me-3">
+                            <%= notification_icon(notification) %>
+                          </div>
+                          <div class="notification-content flex-grow-1">
+                            <p class="notification-text mb-1"><%= notification_text(notification) %></p>
+                            <small class="text-muted"><%= time_ago_in_words(notification.created_at) %> ago</small>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                    <% if current_user.notifications.empty? %>
+                      <div class="dropdown-item text-center text-muted py-3">
+                        <small>No notifications</small>
+                      </div>
+                    <% end %>
+                  </div>
+                  <% if current_user.notifications.count > 10 %>
+                    <div class="notification-footer border-top p-2 text-center">
+                      <%= link_to notifications_path, class: "text-decoration-none" do %>
+                        <small>View all notifications</small>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
             <% end %>
             <%# -----------------------> %>
@@ -211,4 +248,64 @@
           }
         }
       }
+
+  .notification-dropdown {
+    width: 350px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  .notification-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+  }
+
+  .notification-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .notification-item.unread {
+    background-color: #f0f7ff;
+  }
+
+  .notification-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #e9ecef;
+  }
+
+  .notification-icon i {
+    font-size: 0.875rem;
+    color: #495057;
+  }
+
+  .notification-text {
+    font-size: 0.875rem;
+    color: #495057;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border-radius: 50%;
+    padding: 2px;
+    font-size: 0.675rem;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 </style>
