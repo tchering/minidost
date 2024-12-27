@@ -16,6 +16,9 @@ class NotificationChannel < ApplicationCable::Channel
       include AbstractController::Translation
     end.new
 
+    # Get total unread notifications count for the recipient
+    unread_count = Notification.where(recipient: notification.recipient, read_at: nil).count
+
     broadcast_to(
       notification.recipient,
       {
@@ -28,7 +31,21 @@ class NotificationChannel < ApplicationCable::Channel
           created_at: notification.created_at,
           sender_id: notification.sender_id,
           conversation_id: notification.conversation_id
-        }
+        },
+        conversation_id: notification.conversation_id,
+        unread: true,
+        unread_count: unread_count
+      }
+    )
+
+    # Also broadcast to any frames that might need updating
+    ActionCable.server.broadcast(
+      "notifications_#{notification.recipient.id}",
+      {
+        type: "message",
+        conversation_id: notification.conversation_id,
+        unread: true,
+        unread_count: unread_count
       }
     )
   end
