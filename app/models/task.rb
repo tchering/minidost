@@ -33,6 +33,8 @@ class Task < ApplicationRecord
   #! Associations with contract model
   has_one :contract, dependent: :destroy
 
+  has_many :notifications, as: :notifiable, dependent: :destroy
+
   validates :taskable_type, presence: true
   validates :site_name, :street, :city, :status, presence: true
 
@@ -51,6 +53,8 @@ class Task < ApplicationRecord
   # Add geocoding functionality
   geocoded_by :full_address
   after_validation :geocode, if: :address_changed?
+
+  after_create_commit :notify_new_task
 
   def add_interested_subcontractor(subcontractor_id)
     self.sub_contractor_list = [] if sub_contractor_list.nil?
@@ -84,5 +88,18 @@ class Task < ApplicationRecord
 
   def address_changed?
     street_changed? || city_changed? || area_code_changed?
+  end
+
+  def notify_new_task
+    # Find all subcontractors to notify about new task
+    subcontractors = User.where(position: "sub-contractor")
+
+    subcontractors.each do |subcontractor|
+      notification = notifications.create(
+        recipient: subcontractor,
+        action: "new_task"
+      )
+      NotificationChannel.broadcast_notification(notification)
+    end
   end
 end

@@ -8,18 +8,24 @@ class NotificationsController < ApplicationController
 
   def update
     @notification.update(read_at: Time.current) unless @notification.read_at
-    
+
     path = case @notification.notifiable_type
-    when "Message"
-      chat_conversation_path(@notification.notifiable.conversation, locale: I18n.locale)
-    when "TaskApplication"
-      task_path(@notification.notifiable.task, locale: I18n.locale)
-    when "Contract"
-      task_contract_path(@notification.notifiable.task, @notification.notifiable, locale: I18n.locale)
-    else
-      root_path(locale: I18n.locale)
-    end
-    
+      when "Message"
+        chat_conversation_path(@notification.notifiable.conversation, locale: I18n.locale)
+      when "TaskApplication"
+        if @notification.action == "approved"
+          task_path(@notification.notifiable.task, locale: I18n.locale)
+        else
+          review_application_task_task_application_path(@notification.notifiable.task, @notification.notifiable, locale: I18n.locale)
+        end
+      when "Contract"
+        task_contract_path(@notification.notifiable.task, @notification.notifiable, locale: I18n.locale)
+      when "Task"
+        task_path(@notification.notifiable, locale: I18n.locale) # Redirect to the task directly
+      else
+        root_path(locale: I18n.locale)
+      end
+
     redirect_to path
   end
 

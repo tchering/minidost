@@ -14,6 +14,8 @@ module NotificationsHelper
       else
         content_tag(:i, "", class: "fas fa-file-contract")
       end
+    when "Task"
+      content_tag(:i, "", class: "fas fa-clipboard-list")
     else
       content_tag(:i, "", class: "fas fa-bell")
     end
@@ -29,6 +31,8 @@ module NotificationsHelper
       handle_task_application_notification(notification)
     when "Contract"
       handle_contract_notification(notification)
+    when "Task"
+      handle_task_notification(notification)
     else
       I18n.t('notifications.default')
     end
@@ -44,7 +48,7 @@ module NotificationsHelper
                          .where(sender: message.sender)
                          .where('created_at >= ?', notification.created_at)
                          .count
-    
+
     if unread_count > 1
       I18n.t('notifications.messages.new_messages', count: unread_count, sender: message.sender.first_name)
     else
@@ -56,24 +60,53 @@ module NotificationsHelper
     application = notification.notifiable
     return I18n.t('notifications.task_applications.new_application_default') unless application&.task
 
-    I18n.t('notifications.task_applications.new_application', 
-      site: application.task.site_name, 
-      city: application.task.city)
+    case notification.action
+    when "new_application"
+      # For contractors - new application received
+      I18n.t('notifications.task_applications.new_application',
+        site: application.task.site_name,
+        city: application.task.city)
+    when "approved"
+      # For subcontractors - application approved
+      I18n.t('notifications.task_applications.approved',
+        site: application.task.site_name,
+        contractor: application.task.contractor.company_name)
+    when "rejected"
+      # For subcontractors - application rejected
+      I18n.t('notifications.task_applications.rejected',
+        site: application.task.site_name,
+        contractor: application.task.contractor.company_name)
+    end
   end
 
   def handle_contract_notification(notification)
     contract = notification.notifiable
     return I18n.t('notifications.contracts.default') unless contract&.task
 
-    if notification.action == "sign_required"
-      I18n.t('notifications.contracts.sign_required', 
-        site: contract.task.site_name, 
+    case notification.action
+    when "sign_required"
+      I18n.t('notifications.contracts.sign_required',
+        site: contract.task.site_name,
         city: contract.task.city)
-    else
-      # Determine who signed based on the notification recipient
-      signer = notification.recipient == contract.contractor ? contract.subcontractor : contract.contractor
-      I18n.t('notifications.contracts.signed', 
-        user: signer.first_name)
+    when "contractor_signed"
+      I18n.t('notifications.contracts.contractor_signed',
+        site: contract.task.site_name,
+        contractor: contract.contractor.company_name)
+    when "contract_signed"
+      I18n.t('notifications.contracts.signed',
+        user: contract.subcontractor.first_name)
+    end
+  end
+
+  def handle_task_notification(notification)
+    task = notification.notifiable
+    return I18n.t('notifications.default') unless task
+
+    case notification.action
+    when "new_task"
+      I18n.t('notifications.tasks.new_task',
+        site: task.site_name,
+        contractor: task.contractor.company_name)
     end
   end
 end

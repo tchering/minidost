@@ -22,6 +22,7 @@ class Contract < ApplicationRecord
   before_create :set_initial_status
   after_create :generate_contract_number
   after_create_commit :notify_subcontractor
+  after_update_commit :notify_contractor_signed, if: :saved_change_to_signed_by_contractor?
   after_update_commit :notify_contract_signed, if: :saved_change_to_signed_by_subcontractor?
   before_validation :set_default_terms, on: :create
 
@@ -61,9 +62,19 @@ class Contract < ApplicationRecord
     NotificationChannel.broadcast_notification(notification)
   end
 
+  def notify_contractor_signed
+    return unless signed_by_contractor?
+
+    notification = notifications.create(
+      recipient: subcontractor,
+      action: "contractor_signed"
+    )
+    NotificationChannel.broadcast_notification(notification)
+  end
+
   def notify_contract_signed
     return unless signed_by_subcontractor?
-    
+
     notification = notifications.create(
       recipient: contractor,
       action: "contract_signed"

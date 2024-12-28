@@ -25,7 +25,12 @@ fr:
     task_applications:
       new_application: "Nouvelle candidature pour le chantier à %{site}, %{city}"
       new_application_default: "Nouvelle candidature"
+      approved: "Votre candidature pour %{site} a été acceptée par %{contractor}"
+      rejected: "Votre candidature pour %{site} a été refusée par %{contractor}"
     contracts:
       sign_required: "Contrat prêt à signer : %{site}, %{city}"
       signed: "%{user} a signé le contrat"
       default: "Mise à jour du contrat"
+      contractor_signed: "Le contrat pour %{site} a été signé par %{contractor}. Votre signature est requise."
+    tasks:
+      new_task: "Nouveau chantier à %{site} publié par %{contractor}"

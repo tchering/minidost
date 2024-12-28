@@ -22,6 +22,7 @@ class TaskApplication < ApplicationRecord
   has_many :notifications, as: :notifiable, dependent: :destroy
 
   after_create_commit :create_notification
+  after_update :notify_status_change, if: :saved_change_to_application_status?
 
   private
 
@@ -29,6 +30,15 @@ class TaskApplication < ApplicationRecord
     notification = notifications.create(
       recipient: task.contractor,
       action: "new_application"
+    )
+    NotificationChannel.broadcast_notification(notification)
+  end
+
+  def notify_status_change
+    # Create notification for application status changes
+    notification = notifications.create(
+      recipient: subcontractor, # notify the subcontractor
+      action: application_status, # "approved" or "rejected"
     )
     NotificationChannel.broadcast_notification(notification)
   end
