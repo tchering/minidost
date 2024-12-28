@@ -1,7 +1,7 @@
 fr:
   positions:
     contractor: "Donneur d'ordre"
-    sub-contractor: "Sous-traitant"
+    subcontractor: "Sous-traitant"
   activerecord:
     attributes:
       user:
