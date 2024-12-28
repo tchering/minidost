@@ -1,6 +1,6 @@
 <style>
   .team-page {
-    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
     padding: 6rem 0;
   }
@@ -17,8 +17,13 @@
     position: relative;
     background: white;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .founder-profile:hover {
+    transform: translateY(-5px);
   }
 
   .profile-header {
@@ -92,7 +97,12 @@
     background: white;
     border-radius: 20px;
     padding: 3rem;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .company-story:hover {
+    transform: translateY(-3px);
   }
 
   .story-header {

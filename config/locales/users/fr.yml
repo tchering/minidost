@@ -9,6 +9,9 @@ fr:
       member: "Membre depuis"
       contractor: "Donneur d'ordre"
       sub-contractor: "Sous-traitant"
+      email: "Email"
+      address: "Adresse"
+      member_since: "Membre depuis"
 
     dashboard_contractor:
       title: "Tableau de bord"

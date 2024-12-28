@@ -16,9 +16,9 @@ fr:
   notifications:
     title: "Notifications"
     no_notifications: "Aucune notification"
+    default: "Nouvelle notification"
     mark_all_as_read: "Marquer tout comme lu"
     view_all: "Voir toutes les notifications"
-    default: "Nouvelle notification"
     messages:
       new_message: "Nouveau message de %{sender}"
       new_messages: "%{count} nouveaux messages de %{sender}"
