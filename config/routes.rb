@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     get "blog", to: "static_pages#blog"
     get "help", to: "static_pages#help"
     get "about", to: "static_pages#about"
+    get "team", to: "static_pages#team"
 
     # Add this line to see all routes
     # get "/routes", to: "rails/info/routes#index" if Rails.env.development?
