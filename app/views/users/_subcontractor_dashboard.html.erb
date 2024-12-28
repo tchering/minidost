@@ -146,4 +146,44 @@
       transform: translateX(-50%) !important;
     }
   }
+
+  /* Add these styles to match contractor dashboard notifications */
+  .notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #dc3545; /* Bootstrap danger red */
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 2px 8px;
+    font-size: 0.675rem;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 3px 6px rgba(220, 53, 69, 0.2);
+    border: 2px solid #ffffff;
+    transform: translate(25%, -25%);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .notification-badge:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+    transform: translate(25%, -25%) scale(1.05);
+  }
+
+  /* Remove any conflicting notification styles */
+  .notification-dropdown {
+    width: 450px !important;
+    max-height: 500px;
+    overflow-y: auto;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    right: auto !important;
+    left: 0 !important;
+    transform: translateX(-85%) !important;
+  }
 </style>

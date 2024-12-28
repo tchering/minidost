@@ -18,16 +18,16 @@ class UsersController < ApplicationController
       .find_by(application_status: "pending")
       &.task
 
-    # Eager load notifications with their notifiable records and associations
+    # Eager load only unread notifications with minimal necessary associations
     @notifications = @user.notifications
-      .includes(
-        :recipient,
-        notifiable: [
-          :conversation,  # For Message notifications
-          :sender,        # For Message notifications
-          :task,         # For TaskApplication and Contract notifications
-          :user          # For Contract notifications
-        ]
+      .where(read_at: nil)  # Only get unread notifications
+      .preload(
+        notifiable: {
+          message: :sender,            # For Message notifications
+          task_application: { task: :contractor },  # For TaskApplication notifications
+          contract: [:contractor, :subcontractor],  # For Contract notifications
+          task: :contractor           # For Task notifications
+        }
       )
       .order(created_at: :desc)
       .limit(10)
@@ -50,7 +50,11 @@ class UsersController < ApplicationController
         .where('contracts.signed_by_subcontractor IS NULL OR contracts.signed_by_subcontractor = ?', false)
         .count
     else
-      0
+      @user.created_tasks
+        .joins(:contract)
+        .where.not(contract: nil)
+        .where('contracts.signed_by_contractor IS NULL OR contracts.signed_by_contractor = ?', false)
+        .count
     end
   end
 

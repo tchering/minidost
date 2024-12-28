@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { createConsumer } from "@rails/actioncable"
 
 export default class extends Controller {
-  static targets = ["badge", "list", "button"]
+  static targets = ["badge", "list", "button", "item"]
 
   connect() {
     this.subscription = createConsumer().subscriptions.create("NotificationChannel", {
@@ -17,16 +17,33 @@ export default class extends Controller {
   }
 
   handleNotificationClick(event) {
-    // Mark notification as read
     const notification = event.currentTarget;
-    notification.classList.remove('unread');
     
-    // Update badge count
-    const unreadCount = this.listTarget.querySelectorAll('.unread').length - 1;
+    // Remove the notification item from the list
+    notification.classList.add('fade-out');
+    setTimeout(() => {
+      notification.remove();
+      this.updateNotificationCount();
+      this.checkEmptyState();
+    }, 300); // Match this with CSS transition duration
+  }
+
+  updateNotificationCount() {
+    const unreadCount = this.listTarget.querySelectorAll('.unread').length;
     if (unreadCount <= 0) {
-      this.badgeTarget.remove();
-    } else {
+      this.badgeTarget?.remove();
+    } else if (this.hasBadgeTarget) {
       this.badgeTarget.textContent = unreadCount;
+    }
+  }
+
+  checkEmptyState() {
+    const hasNotifications = this.listTarget.querySelectorAll('.notification-item').length > 0;
+    if (!hasNotifications) {
+      const emptyState = document.createElement('div');
+      emptyState.className = 'text-center p-3 text-muted';
+      emptyState.innerHTML = '<small>No notifications</small>';
+      this.listTarget.appendChild(emptyState);
     }
   }
 
@@ -34,7 +51,7 @@ export default class extends Controller {
     const notification = data.notification;
     
     // Update badge count
-    let badgeElement = this.badgeTarget;
+    let badgeElement = this.hasBadgeTarget ? this.badgeTarget : null;
     if (!badgeElement) {
       badgeElement = document.createElement('span');
       badgeElement.className = 'notification-badge';
@@ -45,68 +62,48 @@ export default class extends Controller {
     const currentCount = parseInt(badgeElement.textContent || '0');
     badgeElement.textContent = currentCount + 1;
 
+    // Remove empty state if it exists
+    const emptyState = this.listTarget.querySelector('.text-muted');
+    if (emptyState) {
+      emptyState.remove();
+    }
+
     // Check for existing notification from the same sender
     const existingNotification = this.listTarget.querySelector(
       `.notification-item[data-sender-id="${notification.sender_id}"]`
     );
 
-    const timeText = this.formatTimeAgo(new Date(notification.created_at));
-
     if (existingNotification) {
-      // Update existing notification
-      const messageCount = parseInt(existingNotification.dataset.messageCount || '1') + 1;
-      existingNotification.dataset.messageCount = messageCount;
-      
-      // Update notification text to show message count
-      const textElement = existingNotification.querySelector('.notification-text');
-      textElement.textContent = `Nouveau message de ${notification.text.split(' de ')[1]}`;
-      
-      // Update time
-      const timeElement = existingNotification.querySelector('.notification-time');
-      timeElement.textContent = timeText;
-
-      // Move to top
-      this.listTarget.insertBefore(existingNotification, this.listTarget.firstChild);
+      existingNotification.outerHTML = this.buildNotificationHtml(notification, this.formatTimeAgo(new Date(notification.created_at)));
     } else {
-      // Add new notification
-      const notificationHtml = this.buildNotificationHtml(notification, timeText);
-      this.listTarget.insertAdjacentHTML('afterbegin', notificationHtml);
-    }
-
-    // Remove oldest notification if more than 10
-    const notifications = this.listTarget.querySelectorAll('.notification-item');
-    if (notifications.length > 10) {
-      notifications[notifications.length - 1].remove();
+      this.listTarget.insertAdjacentHTML('afterbegin', 
+        this.buildNotificationHtml(notification, this.formatTimeAgo(new Date(notification.created_at)))
+      );
     }
   }
 
   formatTimeAgo(date) {
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-    
-    if (diffInSeconds < 60) {
-      return 'just now';
-    } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60);
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `about ${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else {
-      const days = Math.floor(diffInSeconds / 86400);
-      return `${days} day${days > 1 ? 's' : ''} ago`;
-    }
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInSeconds < 60) return "just now";
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    if (diffInDays === 1) return "yesterday";
+    return `${diffInDays}d ago`;
   }
 
   buildNotificationHtml(notification, timeText) {
     return `
       <a href="${notification.path}" 
          class="dropdown-item notification-item unread" 
-         data-turbo-method="patch"
-         data-action="click->notifications#handleNotificationClick"
          data-notification-id="${notification.id}"
-         data-sender-id="${notification.sender_id || ''}"
-         data-conversation-id="${notification.conversation_id || ''}">
+         data-sender-id="${notification.sender_id}"
+         data-action="click->notifications#handleNotificationClick"
+         data-turbo-method="patch">
         <div class="d-flex align-items-center">
           <div class="me-2">
             ${this.getNotificationIcon(notification)}
@@ -121,17 +118,12 @@ export default class extends Controller {
   }
 
   getNotificationIcon(notification) {
-    switch(notification.notifiable_type) {
-      case 'Message':
-        return '<i class="fas fa-envelope"></i>';
-      case 'TaskApplication':
-        return '<i class="fas fa-file-alt"></i>';
-      case 'Contract':
-        return notification.action === 'sign_required' ? 
-          '<i class="fas fa-file-signature"></i>' : 
-          '<i class="fas fa-file-contract"></i>';
-      default:
-        return '<i class="fas fa-bell"></i>';
-    }
+    const iconMap = {
+      'Message': '<i class="fas fa-envelope"></i>',
+      'TaskApplication': '<i class="fas fa-file-alt"></i>',
+      'Contract': '<i class="fas fa-file-contract"></i>',
+      'Task': '<i class="fas fa-clipboard-list"></i>'
+    };
+    return iconMap[notification.notifiable_type] || '<i class="fas fa-bell"></i>';
   }
 }

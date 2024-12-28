@@ -9,9 +9,9 @@
       <div class="d-flex align-items-center">
         <i class="fas fa-bell opacity-75 me-2"></i>
       </div>
-      <% if current_user.notifications.unread.count.positive? %>
+      <% if current_user.notifications.unread.any? %>
         <span class="notification-badge" data-notifications-target="badge">
-          <%= current_user.notifications.unread.count %>
+          <%= current_user.notifications.unread.size %>
         </span>
       <% end %>
     </button>
@@ -30,54 +30,69 @@
       </div>
 
       <div class="notification-list" data-notifications-target="list">
-        <% notifications.each do |notification| %>
-          <%= link_to notification_path(notification), 
-              class: "dropdown-item notification-item #{notification.read_at.nil? ? 'unread' : ''}", 
-              data: { 
-                turbo_method: :patch,
-                action: "click->notifications#handleNotificationClick",
-                notification_id: notification.id,
-                sender_id: notification.try(:sender_id),
-                conversation_id: notification.try(:conversation_id)
-              } do %>
-            <div class="d-flex align-items-center">
-              <div class="me-2">
-                <%= notification_icon(notification) %>
+        <% if current_user.notifications.unread.any? %>
+          <% current_user.notifications.unread.each do |notification| %>
+            <%= link_to notification_path(notification), 
+                class: "dropdown-item notification-item unread", 
+                data: { 
+                  turbo_method: :patch,
+                  action: "click->notifications#handleNotificationClick",
+                  notification_id: notification.id
+                } do %>
+              <div class="d-flex align-items-center">
+                <div class="me-2">
+                  <%= notification_icon(notification) %>
+                </div>
+                <div class="notification-content flex-grow-1">
+                  <p class="notification-text mb-1"><%= notification_text(notification) %></p>
+                  <small class="text-muted"><%= time_ago_in_words(notification.created_at) %> ago</small>
+                </div>
               </div>
-              <div class="notification-content flex-grow-1">
-                <p class="notification-text mb-1"><%= notification_text(notification) %></p>
-                <small class="text-muted"><%= time_ago_in_words(notification.created_at) %> ago</small>
-              </div>
-            </div>
+            <% end %>
           <% end %>
-        <% end %>
-
-        <% if notifications.empty? %>
-          <div class="dropdown-item text-center text-muted py-3">
-            <small><%= t('notifications.no_notifications') %></small>
+        <% else %>
+          <div class="text-center p-3 text-muted">
+            <small>No new notifications</small>
           </div>
         <% end %>
       </div>
-
-      
     </div>
   </div>
 <% end %>
 
 <style>
 .notification-dropdown {
-  width: 450px !important; /* Increased from 350px */
+  width: 450px !important;
   max-height: 500px;
   overflow-y: auto;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   right: auto !important;
   left: 0 !important;
-  transform: translateX(-85%) !important; /* Adjusted to center the wider dropdown */
+  transform: translateX(-85%) !important;
+}
+
+.notification-item {
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.notification-item.fade-out {
+  opacity: 0;
+  transform: translateX(-10px);
+  pointer-events: none;
+}
+
+.notification-item.unread {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.notification-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
 }
 
 @media (max-width: 768px) {
   .notification-dropdown {
-    width: 350px !important; /* Increased from 300px for mobile */
+    width: 350px !important;
     transform: translateX(-75%) !important;
   }
 }
