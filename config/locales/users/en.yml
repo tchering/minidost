@@ -5,6 +5,8 @@ en:
       title: "User Profile"
       edit: "Edit Profile"
       name: "Name"
+      email: "Email"
+      address: "Address"
       position: "Position"
       member: "Member since"
       contractor: "Contractor"

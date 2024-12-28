@@ -3,13 +3,13 @@ fr:
     # Add any user-specific translations here
     profile:
       title: "Profil Utilisateur"
-      edit: "Edit Profile"
+      edit: "Modifier le Profil"
       name: "Nom"
-      position: "Position"
+      position: "Poste"
       member: "Membre depuis"
-      contractor: "Donneur d'ordre"
+      contractor: "Entrepreneur"
       sub-contractor: "Sous-traitant"
-      email: "Email"
+      email: "E-mail"
       address: "Adresse"
       member_since: "Membre depuis"
 
