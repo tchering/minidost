@@ -1,0 +1,17 @@
+en:
+  cookie_consent:
+    title: "Cookie Policy"
+    message: "This website uses cookies to ensure you get the best experience on our website."
+    description: "Cookies are small text files that are stored on your device when you visit a website."
+    essential_cookies: "Essential Cookies"
+    essential_cookies_description: "Necessary for the website to function properly."
+    performance_cookies: "Performance Cookies"
+    performance_cookies_description: "Help us understand how visitors interact with our site."
+    functional_cookies: "Functional Cookies"
+    functional_cookies_description: "Enable features like remembering user preferences."
+    manage_preferences: "You can manage your cookie preferences through your browser settings."
+    learn_more_text: "For more information, please read our"
+    learn_more: "Learn more"
+    close: "Close"
+    accept: "Accept"
+    decline: "Decline"

@@ -1,0 +1,17 @@
+fr:
+  cookie_consent:
+    title: "Politique de cookies"
+    message: "Ce site utilise des cookies pour garantir la meilleure expérience sur notre site."
+    description: "Les cookies sont de petits fichiers texte qui sont stockés sur votre appareil lorsque vous visitez un site Web."
+    essential_cookies: "Cookies Essentiels"
+    essential_cookies_description: "Nécessaires au bon fonctionnement du site."
+    performance_cookies: "Cookies de Performance"
+    performance_cookies_description: "Aident à comprendre comment les visiteurs interagissent avec notre site."
+    functional_cookies: "Cookies Fonctionnels"
+    functional_cookies_description: "Permettent de se souvenir des préférences de l'utilisateur."
+    manage_preferences: "Vous pouvez gérer vos préférences en matière de cookies via les paramètres de votre navigateur."
+    learn_more_text: "Pour plus d'informations, veuillez lire notre"
+    learn_more: "En savoir plus"
+    close: "Fermer"
+    accept: "Accepter"
+    decline: "Refuser"
