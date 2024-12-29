@@ -1,0 +1,20 @@
+fr:
+  cookie_consent:
+    banner:
+      message: "Ce site utilise des cookies pour vous garantir la meilleure expérience sur notre site."
+      learn_more: "En savoir plus"
+      accept: "Accepter"
+      decline: "Refuser"
+    modal:
+      title: "Politique de cookies"
+      what_are_cookies: "Qu'est-ce que les cookies ?"
+      cookies_description: "Les cookies sont de petits fichiers texte qui sont stockés sur votre ordinateur ou votre appareil mobile lorsque vous visitez un site Web. Ils sont largement utilisés pour faire fonctionner les sites Web de manière plus efficace et offrir une meilleure expérience utilisateur."
+      how_we_use_cookies: "Comment nous utilisons les cookies"
+      cookies_purposes: "Nous utilisons des cookies pour plusieurs raisons, notamment :"
+      essential_cookies: "Cookies essentiels : requis pour le bon fonctionnement du site Web."
+      analytics_cookies: "Cookies d'analyse : nous aident à comprendre comment les visiteurs interagissent avec notre site Web."
+      preference_cookies: "Cookies de préférence : mémorisent vos paramètres et préférences."
+      marketing_cookies: "Cookies de marketing : utilisés pour diffuser des publicités pertinentes."
+      managing_cookies: "Gestion des cookies"
+      managing_description: "Vous pouvez contrôler et gérer les cookies dans les paramètres de votre navigateur. Veuillez noter que la suppression ou le blocage des cookies peut affecter votre expérience utilisateur sur notre site."
+      close: "Fermer"

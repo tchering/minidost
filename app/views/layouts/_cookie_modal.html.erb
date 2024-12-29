@@ -1,0 +1,30 @@
+<!-- Cookie Modal -->
+<div class="modal fade" id="cookieModal" tabindex="-1" aria-labelledby="cookieModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cookieModalLabel"><%= t('cookie_consent.modal.title') %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6><%= t('cookie_consent.modal.what_are_cookies') %></h6>
+        <p><%= t('cookie_consent.modal.cookies_description') %></p>
+
+        <h6><%= t('cookie_consent.modal.how_we_use_cookies') %></h6>
+        <p><%= t('cookie_consent.modal.cookies_purposes') %></p>
+        <ul>
+          <li><%= t('cookie_consent.modal.essential_cookies') %></li>
+          <li><%= t('cookie_consent.modal.analytics_cookies') %></li>
+          <li><%= t('cookie_consent.modal.preference_cookies') %></li>
+          <li><%= t('cookie_consent.modal.marketing_cookies') %></li>
+        </ul>
+
+        <h6><%= t('cookie_consent.modal.managing_cookies') %></h6>
+        <p><%= t('cookie_consent.modal.managing_description') %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('cookie_consent.modal.close') %></button>
+      </div>
+    </div>
+  </div>
+</div>

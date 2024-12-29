@@ -1,0 +1,20 @@
+en:
+  cookie_consent:
+    banner:
+      message: "This website uses cookies to ensure you get the best experience on our website."
+      learn_more: "Learn more"
+      accept: "Accept"
+      decline: "Decline"
+    modal:
+      title: "Cookie Policy"
+      what_are_cookies: "What are cookies?"
+      cookies_description: "Cookies are small text files that are stored on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide a better user experience."
+      how_we_use_cookies: "How we use cookies"
+      cookies_purposes: "We use cookies for several purposes, including:"
+      essential_cookies: "Essential cookies: Required for the website to function properly."
+      analytics_cookies: "Analytics cookies: Help us understand how visitors interact with our website."
+      preference_cookies: "Preference cookies: Remember your settings and preferences."
+      marketing_cookies: "Marketing cookies: Used to deliver relevant advertisements."
+      managing_cookies: "Managing cookies"
+      managing_description: "You can control and manage cookies in your browser settings. Please note that removing or blocking cookies may impact your user experience on our website."
+      close: "Close"
