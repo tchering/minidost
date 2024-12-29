@@ -1,10 +1,10 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg sticky-top custom-navbar">
   <div class="container-fluid">
-    <button data-mdb-collapse-init 
-      class="navbar-toggler"
+    <button class="navbar-toggler"
       type="button"
-      data-mdb-target="#navbarSupportedContent"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent"
       aria-expanded="false"
       aria-label="Toggle navigation">
@@ -62,42 +62,38 @@
           <span class="badge rounded-pill badge-notification">1</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end" 
-            aria-labelledby="navbarDropdownMenuLink"
-            data-bs-popper="none">
+            aria-labelledby="navbarDropdownMenuLink">
           <li><a class="dropdown-item" href="#">Some news</a></li>
           <li><a class="dropdown-item" href="#">Another news</a></li>
           <li><a class="dropdown-item" href="#">Something else here</a></li>
           <li><%= link_to "Create task", new_task_path, class: "dropdown-item" %></li>
         </ul>
       </div>
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown" data-turbo="false">
-          <a class="nav-link dropdown-toggle"
-             href="#"
-             id="navbarDropdown"
-             role="button"
-             data-bs-toggle="dropdown"
-             data-bs-auto-close="true"
-             aria-expanded="false">
-            <i class="<%= current_locale_flag %> flag m-0"></i>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
-              <%= link_to url_for(locale: :en, params: request.query_parameters), class: "dropdown-item #{I18n.locale == :en ? 'active' : ''}" do %>
-                <i class="flag-united-kingdom flag"></i>English
-                <%= '<i class="fas fa-check text-success ms-2"></i>'.html_safe if I18n.locale == :en %>
-              <% end %>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <%= link_to url_for(locale: :fr, params: request.query_parameters), class: "dropdown-item #{I18n.locale == :fr ? 'active' : ''}" do %>
-                <i class="flag-france flag"></i>French
-                <%= '<i class="fas fa-check text-success ms-2"></i>'.html_safe if I18n.locale == :fr %>
-              <% end %>
-            </li>
-          </ul>
-        </li>
-      </ul>
+      <div class="nav-item dropdown" data-turbo="false">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           id="navbarDropdown"
+           role="button"
+           data-bs-toggle="dropdown"
+           aria-expanded="false">
+          <i class="<%= current_locale_flag %> flag m-0"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+          <li>
+            <%= link_to url_for(locale: :en, params: request.query_parameters), class: "dropdown-item #{I18n.locale == :en ? 'active' : ''}" do %>
+              <i class="flag-united-kingdom flag"></i>English
+              <%= '<i class="fas fa-check text-success ms-2"></i>'.html_safe if I18n.locale == :en %>
+            <% end %>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <%= link_to url_for(locale: :fr, params: request.query_parameters), class: "dropdown-item #{I18n.locale == :fr ? 'active' : ''}" do %>
+              <i class="flag-france flag"></i>French
+              <%= '<i class="fas fa-check text-success ms-2"></i>'.html_safe if I18n.locale == :fr %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
