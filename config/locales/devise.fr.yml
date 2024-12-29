@@ -1,0 +1,6 @@
+fr:
+  devise:
+    sessions:
+      signed_in: "Connexion réussie ! Bienvenue."
+      signed_out: "Déconnexion réussie. À bientôt !"
+    # ...existing code...
