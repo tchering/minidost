@@ -8,51 +8,130 @@ Minidost is a comprehensive web application designed specifically for the constr
 
 ### 1. User Management System
 - **Dual Role Architecture**: 
-  - Contractors can post tasks, review applications, and manage subcontractors
-  - Subcontractors can browse, apply for, and manage assigned tasks
+  - **Contractors**:
+    - Post and manage construction tasks
+    - Review and manage subcontractor applications
+    - Generate and manage contracts
+    - Track project progress
+  - **Subcontractors**:
+    - Browse available tasks
+    - Apply for relevant projects
+    - Manage assigned tasks
+    - Communicate with contractors
+    - Sign and manage contracts
+
 - **Detailed User Profiles**:
-  - Company information
+  - Comprehensive company information
   - Professional skills and specializations
-  - Contact details
+  - Portfolio and past project showcase
   - Verification and authentication mechanisms
+  - Performance ratings and reviews
 
-### 2. Task Management
-- **Task Creation and Tracking**:
-  - Detailed task descriptions
-  - Location-based task assignments
-  - Status tracking (pending, in progress, completed)
-  - Skill-based task matching
+### 2. Task Management Workflow
+- **Task Creation and Discovery**:
+  - Contractors create detailed task listings
+  - Automatic notification sent to all matching subcontractors
+  - Intelligent task matching based on:
+    - Subcontractor skills
+    - Location proximity
+    - Previous work experience
+    - Performance history
+
 - **Task Application Process**:
-  - Subcontractors can apply for tasks
-  - Contractors can review and approve/reject applications
-  - Comprehensive application review system
+  - Subcontractors can:
+    - View task details
+    - Submit detailed application
+    - Include portfolio, rate, and availability
+  - Instant notification to contractor when application is received
+  - Contractor can:
+    - Review applications
+    - Compare applicant profiles
+    - Accept or reject applications
+  - Automated notification to subcontractor about application status
 
-### 3. Communication Tools
+- **Task Tracking and Management**:
+  - Real-time task status updates
+  - Comprehensive task lifecycle tracking:
+    - Posted
+    - Applications Open
+    - Applications Closed
+    - In Progress
+    - Under Review
+    - Completed
+    - Cancelled
+  - Milestone-based progress tracking
+  - Performance and quality rating system
+
+### 3. Contract Management
+- **Automated Contract Generation**:
+  - Dynamic contract template based on task details
+  - Automatic population of contractor and subcontractor information
+  - Customizable terms and conditions
+  - Digital signature integration
+
+- **Contract Workflow**:
+  - Contractor generates initial contract draft
+  - Notification sent to selected subcontractor
+  - Subcontractor can:
+    - Review contract details
+    - Negotiate terms
+    - Accept or request modifications
+  - Both parties must digitally sign contract
+  - Downloadable contract in multiple formats (PDF, DOCX)
+  - Secure contract storage and version tracking
+
+### 4. Communication and Collaboration Tools
 - **Integrated Messaging System**:
   - Real-time chat between contractors and subcontractors
   - Task-specific communication channels
+  - File and document sharing
+  - Message threading and context preservation
+
 - **Notification System**:
-  - Real-time web socket notifications
-  - Updates on task status changes
-  - Application reviews
-  - New messages
-  - System alerts
+  - Multi-channel notifications:
+    - In-app notifications
+    - Email alerts
+    - Optional SMS notifications
+  - Customizable notification preferences
+  - Notification types:
+    - New task postings
+    - Task application received/reviewed
+    - Contract status updates
+    - Message notifications
+    - Task milestone completions
+    - Payment reminders
 
-### 4. Geolocation and Mapping
-- **Address Autocomplete**
-- **Task Location Visualization**
-- **Proximity-based task discovery**
+### 5. Geolocation and Mapping
+- **Advanced Location Services**:
+  - Address autocomplete
+  - Task location visualization on interactive maps
+  - Proximity-based task discovery
+  - Travel distance and time estimation
+  - Location-based skill matching
 
-### 5. Multilingual Support
-- Internationalization (i18n) support
-- Currently supports English and French languages
-- Localized content for different regions
+### 6. Multilingual and Accessibility Support
+- **Internationalization**:
+  - Multi-language support
+  - Currently available in:
+    - English
+    - French
+  - Localized content and translations
+  - Right-to-left (RTL) language support
 
-### 6. Security and Authentication
-- Secure user authentication
-- Role-based access control
-- Password reset functionality
-- Secure communication channels
+### 7. Security and Compliance
+- **Robust Authentication**:
+  - Secure user registration
+  - Multi-factor authentication
+  - Role-based access control
+  - Password complexity requirements
+  - Account lockout protection
+
+- **Data Protection**:
+  - End-to-end encryption
+  - Secure document and contract storage
+  - GDPR and privacy compliance
+  - Regular security audits
+  - Comprehensive user data controls
 
 ## Technical Architecture
 
