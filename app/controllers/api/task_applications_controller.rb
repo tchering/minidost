@@ -34,11 +34,22 @@ class Api::TaskApplicationsController < ApplicationController
       return
     end
 
+    # Get task_application params from the nested structure
+    application_params = params[:task_application] || params
+    
     application = @task.task_applications.build(
       subcontractor_id: current_user.id,
       application_status: "pending",
-      proposed_price: params[:proposed_price],
-      cover_letter: params[:notes]
+      proposed_price: application_params[:proposed_price],
+      cover_letter: application_params[:cover_letter],
+      experience: application_params[:experience],
+      completion_timeframe: application_params[:completion_timeframe],
+      insurance_status: application_params[:insurance_status],
+      skills: application_params[:skills],
+      equipement_owned: application_params[:equipment_owned], 
+      payment_terms: application_params[:payment_terms],
+      references: application_params[:references],
+      negotiable: application_params[:negotiable]
     )
 
     if application.save
@@ -64,7 +75,11 @@ class Api::TaskApplicationsController < ApplicationController
     end
 
     if application.destroy
-      render json: { message: "Application withdrawn successfully" }
+      render json: { 
+        message: "Application withdrawn successfully",
+        task_id: @task.id,
+        status: "withdrawn"
+      }
     else
       render json: { error: "Failed to withdraw application" }, status: :unprocessable_entity
     end
