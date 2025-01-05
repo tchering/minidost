@@ -83,6 +83,10 @@ Rails.application.routes.draw do
 
     # Add project statistics route
     get "project_statistics", to: "project_statistics#index"
+
+    # Add tasks routes
+    get "tasks", to: "tasks#index"
+    get "tasks/:id", to: "tasks#show"
   end
 
   # Health check route outside locale scope since it's for internal use
