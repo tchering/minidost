@@ -118,6 +118,20 @@ class User < ApplicationRecord
 
   # For contractors to see applications count for their active tasks
 
+  # Authentication token methods
+  def ensure_authentication_token!
+    return auth_token if auth_token.present?
+    
+    loop do
+      self.auth_token = generate_authentication_token
+      break unless User.exists?(auth_token: auth_token)
+    end
+    
+    # Update only the auth_token column without validation
+    update_column(:auth_token, auth_token)
+    auth_token
+  end
+
   private
 
   def set_default_admin
@@ -126,5 +140,9 @@ class User < ApplicationRecord
 
   def set_default_country
     self.country ||= "France"
+  end
+
+  def generate_authentication_token
+    SecureRandom.uuid
   end
 end
