@@ -90,8 +90,13 @@ Rails.application.routes.draw do
     get "tasks/:id", to: "tasks#show"
     resources :tasks do
       get 'available_tasks', on: :collection
-      resources :task_applications, only: [:index, :create] # Keep plural for listing and creating
-      resource :task_application, only: [:destroy] # Add singular for current user's application
+      resources :task_applications, only: [:index, :show, :create, :update, :destroy]
+      get 'my_application', to: 'task_applications#show_my_application'
+      get 'applications', to: 'task_applications#index'
+      get 'applications/:id', to: 'task_applications#show'
+      post 'applications', to: 'task_applications#create'
+      patch 'applications/:id', to: 'task_applications#update'
+      delete 'applications/:id', to: 'task_applications#destroy'
     end
   end
 

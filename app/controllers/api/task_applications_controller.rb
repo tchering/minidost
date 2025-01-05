@@ -1,88 +1,50 @@
 class Api::TaskApplicationsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  skip_before_action :authenticate_user!
   before_action :authenticate_user_from_token!
   before_action :set_task
+  before_action :set_task_application, only: [:show, :update, :destroy]
 
   def index
-    applications = @task.task_applications
-    
-    # Only show applications if user is the contractor or has applied
-    unless @task.contractor_id == current_user.id || applications.exists?(subcontractor_id: current_user.id)
-      render json: { error: "Unauthorized" }, status: :unauthorized
-      return
-    end
+    @applications = @task.task_applications.includes(:subcontractor)
+    render json: @applications.map { |app| application_json(app) }
+  end
 
-    serialized_applications = applications.map do |app|
-      {
-        id: app.id,
-        subcontractor_name: app.subcontractor.company_name,
-        status: app.application_status,
-        created_at: app.created_at.iso8601,
-        proposed_price: app.proposed_price,
-        notes: app.cover_letter
-      }
-    end
+  def show
+    render json: application_json(@task_application)
+  end
 
-    render json: { applications: serialized_applications }
+  def show_my_application
+    @application = @task.task_applications.find_by(subcontractor: current_user)
+    if @application
+      render json: application_json(@application)
+    else
+      render json: { error: 'Application not found' }, status: :not_found
+    end
   end
 
   def create
-    # Check if user already has an application
-    if @task.task_applications.exists?(subcontractor_id: current_user.id)
-      render json: { error: "Application already exists" }, status: :unprocessable_entity
-      return
-    end
+    @application = @task.task_applications.build(task_application_params)
+    @application.subcontractor = current_user
+    @application.application_status = 'pending'
 
-    # Get task_application params from the nested structure
-    application_params = params[:task_application] || params
-    
-    application = @task.task_applications.build(
-      subcontractor_id: current_user.id,
-      application_status: "pending",
-      proposed_price: application_params[:proposed_price],
-      cover_letter: application_params[:cover_letter],
-      experience: application_params[:experience],
-      completion_timeframe: application_params[:completion_timeframe],
-      insurance_status: application_params[:insurance_status],
-      skills: application_params[:skills],
-      equipement_owned: application_params[:equipment_owned], 
-      payment_terms: application_params[:payment_terms],
-      references: application_params[:references],
-      negotiable: application_params[:negotiable]
-    )
-
-    if application.save
-      render json: {
-        message: "Application submitted successfully",
-        application: {
-          id: application.id,
-          status: application.application_status,
-          created_at: application.created_at.iso8601
-        }
-      }, status: :created
+    if @application.save
+      render json: application_json(@application), status: :created
     else
-      render json: { error: application.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @application.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @task_application.update(task_application_params)
+      render json: application_json(@task_application)
+    else
+      render json: { errors: @task_application.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    application = @task.task_applications.find_by(subcontractor_id: current_user.id)
-    
-    if application.nil?
-      render json: { error: "Application not found" }, status: :not_found
-      return
-    end
-
-    if application.destroy
-      render json: { 
-        message: "Application withdrawn successfully",
-        task_id: @task.id,
-        status: "withdrawn"
-      }
-    else
-      render json: { error: "Failed to withdraw application" }, status: :unprocessable_entity
-    end
+    @task_application.destroy
+    head :no_content
   end
 
   private
@@ -93,9 +55,32 @@ class Api::TaskApplicationsController < ApplicationController
     render json: { error: "Task not found" }, status: :not_found
   end
 
+  def set_task_application
+    @task_application = @task.task_applications.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Application not found" }, status: :not_found
+  end
+
+  def task_application_params
+    params.require(:task_application).permit(:proposed_price, :application_status, :cover_letter, :experience, :completion_timeframe, :insurance_status, :skills, :equipment_owned, :payment_terms, :references, :negotiable)
+  end
+
+  def application_json(application)
+    {
+      id: application.id,
+      task_id: application.task_id,
+      subcontractor_id: application.subcontractor_id,
+      subcontractor_name: application.subcontractor.company_name,
+      proposed_price: application.proposed_price,
+      status: application.application_status,
+      created_at: application.created_at,
+      updated_at: application.updated_at
+    }
+  end
+
   def authenticate_user_from_token!
     authorization = request.headers["Authorization"]
-
+    
     if authorization.nil?
       render json: { error: "No token provided" }, status: :unauthorized and return
     end
@@ -108,5 +93,9 @@ class Api::TaskApplicationsController < ApplicationController
     else
       render json: { error: "Invalid token" }, status: :unauthorized
     end
+  end
+
+  def current_user
+    @current_user
   end
 end
