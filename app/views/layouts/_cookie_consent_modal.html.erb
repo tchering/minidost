@@ -3,9 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="cookieConsentModalLabel"><%= t('cookie_consent.title') %></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p><%= t('cookie_consent.message') %></p>
@@ -20,9 +18,9 @@
                 <p><%= t('cookie_consent.learn_more_text') %> <a href="link-to-privacy-policy"><%= t('cookie_consent.learn_more') %></a>.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('cookie_consent.close') %></button>
-                <button id="accept-cookies" class="btn btn-primary btn-sm"><%= t('cookie_consent.accept') %></button>
-                <button id="decline-cookies" class="btn btn-secondary btn-sm"><%= t('cookie_consent.decline') %></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('cookie_consent.close') %></button>
+                <button id="modal-accept-cookies" class="btn btn-primary btn-sm"><%= t('cookie_consent.accept') %></button>
+                <button id="modal-decline-cookies" class="btn btn-secondary btn-sm"><%= t('cookie_consent.decline') %></button>
             </div>
         </div>
     </div>
