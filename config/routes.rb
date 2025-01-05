@@ -67,13 +67,19 @@ Rails.application.routes.draw do
         post :mark_all_as_read
       end
     end
+
+    # Add this route to the existing routes
+    get "users/profile", to: "users#profile"
   end
 
   # API routes
   namespace :api do
-    post 'login', to: 'sessions#create'
-    delete 'logout', to: 'sessions#destroy'
-    post 'signup', to: 'registrations#create'
+    post "login", to: "sessions#create"
+    delete "logout", to: "sessions#destroy"
+    post "signup", to: "registrations#create"
+
+    # Add profile route to API namespace
+    get "users/profile", to: "users#profile"
   end
 
   # Health check route outside locale scope since it's for internal use

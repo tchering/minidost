@@ -20,14 +20,14 @@ class UsersController < ApplicationController
 
     # Eager load only unread notifications with minimal necessary associations
     @notifications = @user.notifications
-      .where(read_at: nil)  # Only get unread notifications
+      .where(read_at: nil) # Only get unread notifications
       .preload(
         notifiable: {
           message: :sender,            # For Message notifications
           task_application: { task: :contractor },  # For TaskApplication notifications
           contract: [:contractor, :subcontractor],  # For Contract notifications
-          task: :contractor           # For Task notifications
-        }
+          task: :contractor,           # For Task notifications
+        },
       )
       .order(created_at: :desc)
       .limit(10)
@@ -43,19 +43,19 @@ class UsersController < ApplicationController
 
     # Add this to calculate unsigned contracts
     @unsigned_contracts_count = if @user.subcontractor?
-      @user.task_applications
-        .approved
-        .joins(task: :contract)
-        .where.not(tasks: { contract: nil })
-        .where('contracts.signed_by_subcontractor IS NULL OR contracts.signed_by_subcontractor = ?', false)
-        .count
-    else
-      @user.created_tasks
-        .joins(:contract)
-        .where.not(contract: nil)
-        .where('contracts.signed_by_contractor IS NULL OR contracts.signed_by_contractor = ?', false)
-        .count
-    end
+        @user.task_applications
+          .approved
+          .joins(task: :contract)
+          .where.not(tasks: { contract: nil })
+          .where("contracts.signed_by_subcontractor IS NULL OR contracts.signed_by_subcontractor = ?", false)
+          .count
+      else
+        @user.created_tasks
+          .joins(:contract)
+          .where.not(contract: nil)
+          .where("contracts.signed_by_contractor IS NULL OR contracts.signed_by_contractor = ?", false)
+          .count
+      end
   end
 
   def show_map
@@ -75,6 +75,27 @@ class UsersController < ApplicationController
         [] # Empty for non-contractors
       end
     render partial: "users/map", locals: { markers: @markers, user: @user }
+  end
+
+  def profile
+    # Ensure the user is authenticated
+    authenticate_user!
+
+    # Prepare user details for the mobile app
+    user_details = {
+      id: current_user.id,
+      email: current_user.email,
+      first_name: current_user.first_name,
+      last_name: current_user.last_name,
+      company_name: current_user.company_name,
+      position: current_user.position,
+      phone: current_user.phone,
+      address: current_user.address,
+      created_at: current_user.created_at.iso8601,
+      logo_url: current_user.logo.attached? ? rails_blob_url(current_user.logo) : nil,
+    }
+
+    render json: user_details
   end
 
   private

@@ -43,3 +43,13 @@ en:
 
   general:
     years: "years"
+
+  contractor_dashboard: "Contractor Dashboard"
+  subcontractor_dashboard: "Subcontractor Dashboard"
+  total_projects: "Total Projects"
+  pending: "Pending"
+  active: "Active"
+  completed: "Completed"
+  applications: "Applications"
+  new_project: "New Project"
+  find_contractors: "Find Contractors"

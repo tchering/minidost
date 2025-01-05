@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
+  before_action :authenticate_user!, unless: :api_request?
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale
+  protect_from_forgery with: :exception, unless: -> { request.format.json? }
 
   # def after_sign_in_path_for(resource)
   #   user_path(resource)
@@ -31,5 +32,18 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale }
+  end
+
+  def current_user
+    # Check if it's an API request with a manually set current user
+    return @current_user if @current_user
+
+    # Otherwise, use Devise's current_user
+    super
+  end
+
+  def api_request?
+    request.headers["Authorization"].present? &&
+    request.format.json?
   end
 end
