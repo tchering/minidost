@@ -105,6 +105,37 @@ class Api::TasksController < ApplicationController
     render json: { error: e.message }, status: :unprocessable_entity
   end
 
+  def available_tasks
+    tasks = Task.where("LOWER(status) = ?", "active".downcase)
+                .includes(contractor: { logo_attachment: :blob })
+
+    if params[:query].present?
+      tasks = tasks.search_by_term(params[:query])
+    end
+
+    serialized_tasks = tasks.map do |task|
+      {
+        id: task.id,
+        site_name: task.site_name,
+        taskable_type: task.taskable_type,
+        taskable_id: task.taskable_id,
+        status: task.status,
+        city: task.city,
+        street: task.street,
+        start_date: task.start_date&.iso8601,
+        end_date: task.end_date&.iso8601,
+        proposed_price: task.proposed_price,
+        work_progress: task.work_progress,
+        contractor: {
+          company_name: task.contractor.company_name,
+          logo_url: task.contractor.logo.attached? ? url_for(task.contractor.logo) : nil
+        }
+      }
+    end
+
+    render json: { tasks: serialized_tasks }
+  end
+
   private
 
   def authenticate_user_from_token!

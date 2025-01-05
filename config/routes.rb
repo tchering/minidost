@@ -86,6 +86,7 @@ Rails.application.routes.draw do
 
     # Add tasks routes
     get "tasks", to: "tasks#index"
+    get "tasks/available", to: "tasks#available_tasks"
     get "tasks/:id", to: "tasks#show"
   end
 
