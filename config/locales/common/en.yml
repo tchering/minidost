@@ -53,3 +53,9 @@ en:
   applications: "Applications"
   new_project: "New Project"
   find_contractors: "Find Contractors"
+
+  # Project Statistics Keys
+  applications_approved: "Approved"
+  applications_pending: "Pending"
+  applications_rejected: "Rejected"
+  in_progress: "In Progress"

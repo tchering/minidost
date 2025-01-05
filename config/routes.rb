@@ -80,6 +80,9 @@ Rails.application.routes.draw do
 
     # Add profile route to API namespace
     get "users/profile", to: "users#profile"
+
+    # Add project statistics route
+    get "project_statistics", to: "project_statistics#index"
   end
 
   # Health check route outside locale scope since it's for internal use
