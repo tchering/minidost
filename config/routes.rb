@@ -69,6 +69,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # API routes
+  namespace :api do
+    post 'login', to: 'sessions#create'
+    delete 'logout', to: 'sessions#destroy'
+    post 'signup', to: 'registrations#create'
+  end
+
   # Health check route outside locale scope since it's for internal use
   get "up" => "rails/health#show", as: :rails_health_check
 end

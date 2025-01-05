@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_25_112343) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_05_115300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -246,6 +246,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_25_112343) do
     t.string "country", default: "France"
     t.float "latitude"
     t.float "longitude"
+    t.string "auth_token"
+    t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
     t.index ["city"], name: "index_users_on_city"
     t.index ["company_name"], name: "index_users_on_company_name"
     t.index ["email"], name: "index_users_on_email", unique: true
