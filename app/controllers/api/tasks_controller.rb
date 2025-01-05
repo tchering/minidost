@@ -8,24 +8,57 @@ class Api::TasksController < ApplicationController
     status = params[:status]
     is_contractor = params[:is_contractor] == "true"
 
-    # Determine the base query based on user type and contractor flag
-    if is_contractor
-      tasks = user.created_tasks
-    else
-      tasks = user.accepted_tasks
-    end
+    Rails.logger.debug "TasksController#index - User: #{user.id}, Status: #{status}, IsContractor: #{is_contractor}"
 
-    # Handle different status filtering
-    tasks = case status
-      when "all"
-        tasks
+    # For subcontractors, handle different application statuses
+    if !is_contractor
+      tasks = case status
+      when "pending"
+        # Tasks where the subcontractor has pending applications
+        Task.joins(:task_applications)
+            .where(task_applications: { 
+              subcontractor_id: user.id,
+              application_status: "pending"
+            })
       when "approved"
-        tasks.joins(:task_applications)
-             .where(task_applications: { application_status: "approved" })
-             .distinct
+        # Tasks where the subcontractor's application was approved
+        Task.joins(:task_applications)
+            .where(task_applications: { 
+              subcontractor_id: user.id,
+              application_status: "approved"
+            })
+      when "rejected"
+        # Tasks where the subcontractor's application was rejected
+        Task.joins(:task_applications)
+            .where(task_applications: { 
+              subcontractor_id: user.id,
+              application_status: "rejected"
+            })
+      when "completed"
+        # Tasks that are marked as completed
+        user.accepted_tasks.where(status: "completed")
+      when "in_progress"
+        # Tasks that are in progress
+        user.accepted_tasks.where(status: "in_progress")
       else
-        tasks.where(status: status)
+        # Default to all tasks where the user has applied
+        Task.joins(:task_applications)
+            .where(task_applications: { subcontractor_id: user.id })
       end
+    else
+      # For contractors, use the existing logic
+      tasks = user.created_tasks
+      tasks = case status
+        when "all"
+          tasks
+        when "approved"
+          tasks.joins(:task_applications)
+               .where(task_applications: { application_status: "approved" })
+               .distinct
+        else
+          tasks.where(status: status)
+        end
+    end
 
     # Serialize tasks with available information
     serialized_tasks = tasks.map do |task|
@@ -45,6 +78,10 @@ class Api::TasksController < ApplicationController
         work_progress: task.work_progress,
         billing_process: task.billing_process,
         applications_count: task.task_applications.count,
+        
+        # Add application details for subcontractors
+        application_status: task.task_applications.find_by(subcontractor_id: user.id)&.application_status,
+        my_application: task.task_applications.find_by(subcontractor_id: user.id).present?,
       }
     end
 

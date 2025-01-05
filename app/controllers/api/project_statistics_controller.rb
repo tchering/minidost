@@ -93,9 +93,9 @@ class Api::ProjectStatisticsController < ApplicationController
     {
       # Application statistics
       total_applications: user.task_applications.count,
-      approved_applications: user.task_applications.approved.count,
-      pending_applications: user.task_applications.pending.count,
-      rejected_applications: user.task_applications.rejected.count,
+      approved_applications: user.task_applications.where(application_status: "approved").count,
+      pending_applications: user.task_applications.where(application_status: "pending").count,
+      rejected_applications: user.task_applications.where(application_status: "rejected").count,
 
       # Project status
       in_progress_projects: user.accepted_tasks.where(status: "in progress").count,
