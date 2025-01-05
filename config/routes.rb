@@ -88,6 +88,10 @@ Rails.application.routes.draw do
     get "tasks", to: "tasks#index"
     get "tasks/available", to: "tasks#available_tasks"
     get "tasks/:id", to: "tasks#show"
+    resources :tasks do
+      get 'available_tasks', on: :collection
+      resources :task_applications, only: [:index, :create, :destroy]
+    end
   end
 
   # Health check route outside locale scope since it's for internal use

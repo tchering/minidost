@@ -55,9 +55,21 @@ class Api::TasksController < ApplicationController
 
   def show
     task = Task.find(params[:id])
+    Rails.logger.debug "Task details - contractor_id: #{task.contractor_id}, sub_contractor_id: #{task.sub_contractor_id}"
+    Rails.logger.debug "Current user id: #{current_user.id}, position: #{current_user.position}"
+    Rails.logger.debug "Has application?: #{task.task_applications.exists?(subcontractor_id: current_user.id)}"
+    Rails.logger.debug "Task status: #{task.status}"
 
     # Ensure the user has permission to view this task
-    unless task.contractor_id == current_user.id || task.sub_contractor_id == current_user.id
+    authorized = task.contractor_id == current_user.id || # Contractor can always view
+                 task.sub_contractor_id == current_user.id || # Assigned subcontractor can view
+                 task.task_applications.exists?(subcontractor_id: current_user.id) || # Applied subcontractor can view
+                 (["open", "active"].include?(task.status) && current_user.subcontractor?) # Subcontractors can view open and active tasks
+
+    Rails.logger.debug "Authorization check: #{authorized}, is_subcontractor?: #{current_user.subcontractor?}"
+    Rails.logger.debug "Status check: #{["open", "active"].include?(task.status)}"
+    
+    unless authorized
       render json: { error: "Unauthorized" }, status: :unauthorized
       return
     end
@@ -140,13 +152,17 @@ class Api::TasksController < ApplicationController
 
   def authenticate_user_from_token!
     authorization = request.headers["Authorization"]
+    Rails.logger.debug "Auth header: #{authorization}"
 
     if authorization.nil?
       render json: { error: "No token provided" }, status: :unauthorized and return
     end
 
-    token = authorization.gsub(/^Bearer /, "")
+    token = authorization.gsub(/^Bearer /, "").strip
+    Rails.logger.debug "Extracted token: #{token}"
+    
     user = User.find_by(auth_token: token)
+    Rails.logger.debug "Found user: #{user&.id}"
 
     if user
       @current_user = user

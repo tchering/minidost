@@ -27,8 +27,8 @@ class Task < ApplicationRecord
   #track all applications for a task
   has_many :task_applications, dependent: :destroy
   #track all subcontractors who applied to a task
-  has_many :interested_sub_contractors, through: :task_applications, source: :subcontractor
-  #here source is referencing  { belongs_to :subcontractor} from TaskApplication model
+  has_many :interested_subcontractors, through: :task_applications, source: :sub_contractor
+  #here source is referencing  { belongs_to :sub_contractor} from TaskApplication model
 
   #! Associations with contract model
   has_one :contract, dependent: :destroy

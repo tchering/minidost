@@ -100,12 +100,12 @@ class User < ApplicationRecord
   # user bio
   has_one :bio, dependent: :destroy
   # helper methods for position checks
-  def contractor?
-    position == "contractor"
-  end
-
   def subcontractor?
     position == "sub-contractor"
+  end
+
+  def contractor?
+    position == "contractor"
   end
 
   def thumbnail_logo
