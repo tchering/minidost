@@ -42,50 +42,68 @@ class Api::ProjectStatisticsController < ApplicationController
   end
 
   def fetch_contractor_statistics(user)
+    # Approved applications with additional details
+    approved_applications = TaskApplication.joins(:task)
+      .where(
+        tasks: {
+          contractor_id: user.id,
+          status: "approved",
+        },
+        application_status: "approved",
+      )
+
+    # Tasks without contracts
+    tasks_without_contracts = Task.joins(:task_applications)
+      .where(
+        contractor_id: user.id,
+        status: "approved",
+        task_applications: { application_status: "approved" },
+      )
+      .left_joins(:contract)
+      .where(contract: { id: nil })
+      .count
+
+    # Tasks in progress (explicitly added)
+    tasks_in_progress = user.created_tasks.where(status: "in progress").count
+
     {
       total_projects: user.created_tasks.count,
       pending_projects: user.created_tasks.where(status: "pending").count,
       active_projects: user.created_tasks.where(status: "active").count,
-      in_progress_projects: user.created_tasks.where(status: "in progress").count,
+      in_progress_projects: tasks_in_progress,
       completed_projects: user.created_tasks.where(status: "completed").count,
-      conversations_count: user.conversations.count,
+
+      # Detailed approved applications
+      approved_applications: approved_applications.count,
+      tasks_without_contracts: tasks_without_contracts,
+
+      # Active tasks applications
       active_tasks_applications_count: TaskApplication
         .joins(:task)
         .where(tasks: { contractor_id: user.id, status: "active" })
         .count,
-      approved_applications: TaskApplication
-        .joins(:task)
-        .where(
-          tasks: {
-            contractor_id: user.id,
-            status: "approved",
-          },
-          application_status: "approved",
-        )
-        .count,
-      tasks_without_contracts: Task
-        .joins(:task_applications)
-        .where(
-          contractor_id: user.id,
-          status: "approved",
-          task_applications: { application_status: "approved" },
-        )
-        .left_joins(:contract)
-        .where(contract: { id: nil })
-        .count,
+
+      # Conversations and messages
+      conversations_count: user.conversations.count,
+      total_unread_messages_count: total_unread_messages_count(user),
     }
   end
 
   def fetch_subcontractor_statistics(user)
     {
-      approved_applications: user.task_applications.approved.count,
+      # Application statistics
       total_applications: user.task_applications.count,
+      approved_applications: user.task_applications.approved.count,
       pending_applications: user.task_applications.pending.count,
       rejected_applications: user.task_applications.rejected.count,
+
+      # Project status
       in_progress_projects: user.accepted_tasks.where(status: "in progress").count,
       completed_projects: user.accepted_tasks.where(status: "completed").count,
+
+      # Conversations and messages
       conversations_count: user.conversations.count,
-      unread_messages_count: total_unread_messages_count(user),
+      total_unread_messages_count: total_unread_messages_count(user),
     }
   end
 

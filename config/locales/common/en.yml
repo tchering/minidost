@@ -59,3 +59,6 @@ en:
   applications_pending: "Pending"
   applications_rejected: "Rejected"
   in_progress: "In Progress"
+
+  tasks_approved: "Travaux Approved"
+  generate_contract: "Generate Contract"
