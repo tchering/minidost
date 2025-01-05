@@ -10,8 +10,38 @@ class Api::TasksController < ApplicationController
 
     Rails.logger.debug "TasksController#index - User: #{user.id}, Status: #{status}, IsContractor: #{is_contractor}"
 
-    # For subcontractors, handle different application statuses
-    if !is_contractor
+    # For contractors
+    if is_contractor
+      tasks = user.created_tasks
+      tasks = case status
+        when "all"
+          Rails.logger.debug "Fetching all tasks for contractor"
+          tasks
+        when "approved"
+          Rails.logger.debug "Fetching approved tasks for contractor"
+          # Get tasks that have approved status and approved applications
+          tasks.where(status: "approved")
+               .joins(:task_applications)
+               .where(task_applications: { application_status: "approved" })
+               .distinct
+        when "pending"
+          Rails.logger.debug "Fetching pending tasks for contractor"
+          tasks.where(status: "pending")
+        when "active"
+          Rails.logger.debug "Fetching active tasks for contractor"
+          tasks.where(status: "active")
+        when "in_progress"
+          Rails.logger.debug "Fetching in-progress tasks for contractor"
+          tasks.where(status: "in_progress")
+        when "completed"
+          Rails.logger.debug "Fetching completed tasks for contractor"
+          tasks.where(status: "completed")
+        else
+          Rails.logger.debug "Fetching tasks with status: #{status}"
+          tasks.where(status: status)
+        end
+    else
+      # For subcontractors, handle different application statuses
       tasks = case status
       when "pending"
         # Tasks where the subcontractor has pending applications
@@ -45,20 +75,10 @@ class Api::TasksController < ApplicationController
         Task.joins(:task_applications)
             .where(task_applications: { subcontractor_id: user.id })
       end
-    else
-      # For contractors, use the existing logic
-      tasks = user.created_tasks
-      tasks = case status
-        when "all"
-          tasks
-        when "approved"
-          tasks.joins(:task_applications)
-               .where(task_applications: { application_status: "approved" })
-               .distinct
-        else
-          tasks.where(status: status)
-        end
     end
+
+    Rails.logger.debug "Final SQL Query: #{tasks.to_sql}"
+    Rails.logger.debug "Found #{tasks.count} tasks"
 
     # Serialize tasks with available information
     serialized_tasks = tasks.map do |task|
@@ -118,6 +138,21 @@ class Api::TasksController < ApplicationController
     measurements = taskable_attributes.select { |k, _| k.include?("surface_") }
     boolean_services = taskable_attributes.select { |_, v| [true, false].include?(v) }
 
+    # Get subcontractor details if assigned
+    subcontractor_details = if task.sub_contractor
+      {
+        id: task.sub_contractor.id,
+        company_name: task.sub_contractor.company_name,
+        phone_number: task.sub_contractor.phone_number,
+        email: task.sub_contractor.email,
+        street: task.sub_contractor.street,
+        city: task.sub_contractor.city,
+        area_code: task.sub_contractor.area_code,
+        position: task.sub_contractor.position,
+        siret_number: task.sub_contractor.siret_number
+      }
+    end
+
     # Serialize task with comprehensive details
     task_details = {
       id: task.id,
@@ -126,7 +161,7 @@ class Api::TasksController < ApplicationController
       city: task.city,
       status: task.status,
       contractor_name: task.contractor.company_name,
-      subcontractor_name: task.sub_contractor&.company_name,
+      subcontractor: subcontractor_details,
       created_at: task.created_at.iso8601,
       proposed_price: task.proposed_price,
       accepted_price: task.accepted_price,
