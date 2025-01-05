@@ -62,6 +62,13 @@ class Api::TasksController < ApplicationController
       return
     end
 
+    # Group taskable attributes
+    taskable_attributes = task.taskable.attributes.except("id", "created_at", "updated_at")
+
+    text_attributes = taskable_attributes.select { |_, v| v.is_a?(String) || v.is_a?(Numeric) }
+    measurements = taskable_attributes.select { |k, _| k.include?("surface_") }
+    boolean_services = taskable_attributes.select { |_, v| [true, false].include?(v) }
+
     # Serialize task with comprehensive details
     task_details = {
       id: task.id,
@@ -84,7 +91,11 @@ class Api::TasksController < ApplicationController
       contractor_id: task.contractor_id,
       sub_contractor_id: task.sub_contractor_id,
       taskable_type: task.taskable_type,
-      taskable_details: task.taskable.attributes,
+
+      # Pre-grouped taskable details
+      text_attributes: text_attributes,
+      measurements: measurements,
+      boolean_services: boolean_services,
     }
 
     render json: task_details
