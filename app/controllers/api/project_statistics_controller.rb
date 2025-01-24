@@ -104,7 +104,7 @@ class Api::ProjectStatisticsController < ApplicationController
       rejected_applications: user.task_applications.where(application_status: "rejected").count,
 
       # Project status
-      in_progress_projects: user.accepted_tasks.where(status: "in progress").count,
+      in_progress_projects: user.accepted_tasks.where(status: "in_progress").count,
       completed_projects: user.accepted_tasks.where(status: "completed").count,
 
       # Conversations and messages

@@ -202,73 +202,9 @@ class TasksController < ApplicationController
   def taskable_params
     case params[:task][:taskable_type]
     when "PeintreTask"
-      params.require(:taskable).permit(
-        :type_de_travaux,
-        :type_de_surface,
-        :nombre_de_logements,
-        :nombre_de_pieces,
-        :surface_sol,
-        :surface_mur,
-        :surface_plafond,
-        :peinture_lisse,
-        :gouttelette,
-        :gouttelette_ecrase,
-        :pose_revetement_tapisserie,
-        :pose_revetement_toile_de_verre,
-        :pose_revetement_type_vescom,
-        :pose_sol_sans_soudure,
-        :pose_sol_avec_soudure_a_chaux,
-        :stuco_decoration,
-        :peinture_facade,
-        :pose_plaques_type_decochoc,
-        :pose_faience,
-        :pose_petite_platrerie,
-        :pose_plinthe,
-        :pose_parquet_fottant,
-        :rattrapage_bande_placo,
-        :ratissage,
-        :pose_baguette_angles,
-        :other_task
-      )
+      params.require(:taskable).permit(PeintreTask.permitted_attributes)
     when "ElectricienTask"
-      params.require(:taskable).permit(
-        # String fields
-        :type_de_travaux,
-        :type_de_batiment,
-        :nombre_de_pieces,
-        :surface_totale,
-        :amperage_principal,
-        :tension_requise,
-        :phase_type,
-
-        # Boolean fields
-        :installation_tableau_electrique,
-        :mise_aux_normes_tableau,
-        :pose_prises_electriques,
-        :pose_interrupteurs,
-        :installation_eclairage,
-        :pose_luminaires,
-        :installation_cuisine,
-        :installation_salle_de_bain,
-        :installation_exterieure,
-        :installation_cave_garage,
-        :mise_a_la_terre,
-        :installation_differentiel,
-        :installation_parafoudre,
-        :verification_conformite,
-        :installation_domotique,
-        :installation_videophone,
-        :installation_alarme,
-        :installation_ventilation,
-        :depannage_urgent,
-        :recherche_panne,
-        :modification_existant,
-        :passage_cables,
-        :saignee_murs,
-
-        # Text field
-        :other_task
-      )
+      params.require(:taskable).permit(ElectricienTask.permitted_attributes)
     else
       {}
     end

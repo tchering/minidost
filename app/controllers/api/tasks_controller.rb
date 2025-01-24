@@ -6,7 +6,7 @@ class Api::TasksController < ApplicationController
   def index
     user = current_user
     status = params[:status]
-    is_contractor = params[:is_contractor] == "true"
+    is_contractor = params[:is_contractor] == "true" || params[:position] == "contractor"
 
     Rails.logger.debug "TasksController#index - User: #{user.id}, Status: #{status}, IsContractor: #{is_contractor}"
 
