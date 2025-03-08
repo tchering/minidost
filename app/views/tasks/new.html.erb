@@ -19,6 +19,9 @@
               </div>
             <% end %>
             <%# Activity Selection %>
+            <%# 1. parameterize - converts to URL-friendly string "Peintre"-> "peintre"%>
+            <%# 2. classify - converts to class name format "peintre"-> "Peintre"%>
+            <%# 3. + "Task" suffix "Peintre" -> "PeintreTask"%>
             <div class="mb-5">
               <div class="form-outline">
                 <%= f.label :taskable_type, t("task.select_activity"), class: "form-label" %>
@@ -129,7 +132,7 @@
                 </div>
               </div>
             </div>
-            <%# Dynamic Fields Container %>
+            <%#! Dynamic Fields Container %>
             <div data-task-form-target="taskableFields">
               <%= f.fields_for :taskable do |taskable_form| %>
                 <%= render "tasks/form_#{@taskable_type.underscore}", 

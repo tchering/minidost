@@ -88,9 +88,12 @@ class TasksController < ApplicationController
   def create
     @task = current_user.created_tasks.build(task_params)
     @taskable_type = params[:task][:taskable_type]
+    # above we have params[:task][:taskable_type] becuase in tasks/new.html.erb we have nested form for task attributes and also taskable fields attributes therefore params[:task] is the parent form and params[:task][:taskable_type] is the nested form
 
     if @taskable_type.present?
       @task.taskable = @taskable_type.constantize.new(taskable_params.to_h)
+      #So from task/new.html.erb @taskable_type is "PeintreTask"(string) now constantize transforms it to PeintreTask(class) . In new method we have already build object for @task but since task/new.html.erb is nested form we need to build object for taskable too
+
     else
       @task.errors.add(:base, t("task.select_activity"))
       # @task.errors.add(:taskable_type, "Activity must be selected")
@@ -142,7 +145,7 @@ class TasksController < ApplicationController
 
   def load_taskable_fields
     @taskable_type = params[:taskable_type]
-
+    # Here params[:taskable_type] comes from the AJAX request query parameter when user changes the select field.
     respond_to do |format|
       format.html do
         render partial: "tasks/form_#{@taskable_type.underscore}",
@@ -193,6 +196,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
+  #! below contractor is not needed becuase its set automatically when creating a new task through the current_user association
   def task_params
     common_fields = %i[taskable_type sub_contractor_id site_name street city area_code proposed_price
                        accepted_price start_date end_date status work_progress billing_process]

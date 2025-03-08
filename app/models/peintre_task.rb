@@ -3,6 +3,7 @@
 class PeintreTask < ApplicationRecord
   has_one :task, as: :taskable, dependent: :destroy
 
+  # The self keyword before the method name indicates that this method is a class method, not an instance method. This means that you can call this method directly on the class itself (e.g., PeintreTask.permitted_attributes) rather than on an instance of the class.
   def self.permitted_attributes
     %i[
       #! String fields
